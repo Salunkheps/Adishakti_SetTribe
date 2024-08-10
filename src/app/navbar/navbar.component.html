@@ -1,40 +1,4 @@
-<!-- <nav class="navbar">
-  <div class="top-bar">
-    <div class="address">
-      <i class="fa fa-home"></i>
-      <p>601, Ram Nagar Dewas</p>
-    </div>
-    <div class="phone">
-      <i class="fa fa-phone"></i>
-      <p>+1800-123-123</p>
-    </div>
-  </div>
-  <div class="main-nav">
-    <div class="logo">
-      <a href="#"><h1>Adishakti Astrology</h1></a>
-    </div>
-    <ul class="nav-links">
-      <li [class.active]="currentTab === 'home'">
-        <a routerLink="/" (click)="setActiveTab('home'); closeDropdown()">Home</a>
-      </li>
-      <li [class.active]="currentTab === 'find-astrologers'">
-        <a routerLink="/find-astrologers" (click)="setActiveTab('find-astrologers'); closeDropdown()">Find Astrologers</a>
-      </li>
-      <li [class.active]="currentTab === 'about-us'">
-        <a routerLink="/about-us" (click)="setActiveTab('about-us'); closeDropdown()">About Us</a>
-      </li>
-      <li [class.active]="currentTab === 'blogs'">
-        <a routerLink="/blogs" (click)="setActiveTab('blogs'); closeDropdown()">Blogs</a>
-      </li>
-      <li class="dropdown" (click)="toggleDropdown()" [class.active]="showDropdown">
-        <a class="dropbtn">Login</a>
-        <div class="dropdown-content" [ngClass]="{ 'show': showDropdown }">
-          <app-login *ngIf="showDropdown"></app-login>
-        </div>
-      </li>
-    </ul>
-  </div>
-</nav> -->
+
 
 <nav class="navbar navbar-expand-lg navbar-light col">
   <div>
@@ -65,13 +29,16 @@
           Dropdown link
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item navbar-light" href="#"><li><a routerLink="/feedback"><i class="fas fa-comment-dots"></i> Feedback</a></li></a>
-          <a class="dropdown-item" href="#"><li *ngIf="!isLoggedIn"><a routerLink="/login"><i class="fas fa-sign-in-alt"></i> Login</a></li></a>
-          <a class="dropdown-item" href="#"><li *ngIf="!isLoggedIn">  <li *ngIf="!isLoggedIn"><a routerLink="/astrologer-login"><i class="fas fa-user-plus"></i> Astrologer login</a></li></a>
-          <a class="dropdown-item" href="#"> <li *ngIf="!isLoggedIn"><i class="fas fa-user"></i> Profile</a>
-          <a class="dropdown-item" href="#"><li *ngIf="!isLoggedIn"><a (click)="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li></a>
+          <a class="dropdown-item navbar-light"routerLink="/feedback" ><li><a ><i class="fas fa-comment-dots"></i> Feedback</a></li></a>
+          <a class="dropdown-item" routerLink="/login"><li *ngIf="!isLoggedIn"><a ><i class="fas fa-sign-in-alt"></i> Login</a></li></a>
+          <a class="dropdown-item"routerLink="/astrologer-login"><li *ngIf="!isLoggedIn" routerLink="/astrologer-login">  <li *ngIf="!isLoggedIn"><a ><i class="fas fa-user-plus"></i> Astrologer login</a></li></a>
+        
+         
           <hr>
-          <a class="dropdown-item" href="#"> <li *ngIf="!isLoggedIn"><a routerLink="/admin-login"><i class="fas fa-user-plus"></i>Admin login</a></li></a>
+       
+          <a class="dropdown-item"> <li *ngIf="!isLoggedIn"><i class="fas fa-user"></i> Profile</a>
+          <a class="dropdown-item" routerLink="/admin-login"> <li *ngIf="!isLoggedIn"><a ><i class="fas fa-user-plus"></i>Admin login</a></li></a>
+          <a class="dropdown-item" ><li *ngIf="!isLoggedIn"><a (click)="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li></a>
         </div>
       </li>
     </ul>
