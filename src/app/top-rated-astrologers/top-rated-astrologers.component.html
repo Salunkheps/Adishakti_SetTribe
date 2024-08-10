@@ -1,19 +1,56 @@
-
-<div class="top-rated-astrologers">
-  <h2 class="heading">Top Rated Astrologers</h2>
-  <div class="slider-container">
-    <div class="slider">
-      <div class="slide" *ngFor="let astrologer of astrologers">
-        <div class="card">
-          <img [src]="astrologer.profileImage" alt="{{ astrologer.firstName }} {{ astrologer.lastName }}">
-          <div class="info">
-            <h3>{{ astrologer.firstName }} {{ astrologer.lastName }}</h3>
-            <p>Skills: {{ astrologer.skills.join(', ') }}</p>
-          </div>
+<h1>Top Rated Astrologers</h1>
+<div class="outside">
+  <div class="find-astrologers">
+    <div class="astrologer-list">
+      <div class="astrologer" *ngFor="let astrologer of filteredAstrologers">
+        <img
+          [src]="
+            'data:image/png;base64,' + astrologer.astrologerImages.imageData
+          "
+          alt="Astrologer Image"
+          class="astrologer-image"
+        />
+        <div class="astrologer-details">
+          <h3>
+            {{ astrologer.firstName | uppercase }}
+            {{ astrologer.lastName | uppercase }}
+          </h3>
+          <p>Skills: {{ astrologer.skills }}</p>
+          <p>ratePerMinute: {{ astrologer.ratePerMinute }}</p>
+          <p>
+            Languages Known:
+            <span *ngFor="let language of astrologer.languagesKnown"
+              >{{ language }},
+            </span>
+          </p>
+          <p>
+            Rating:
+            <span class="star-rating">
+              <span
+                *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+                (mouseover)="hoverRating = i + 1"
+                (mouseleave)="hoverRating = null"
+                [class.filled]="
+                  astrologer.rating >= i + 1 ||
+                  (hoverRating && hoverRating >= i + 1)
+                "
+              >
+                &#9733;
+              </span>
+            </span>
+            ({{ astrologer.rating }})
+          </p>
+        </div>
+        <div class="astrologer-actions">
+          <button class="btn-chat" (click)="navigateToCall(astrologer)">
+            Call
+          </button>
+          <button class="btn-call" (click)="navigateToChat(astrologer)">
+            Chat
+          </button>
         </div>
       </div>
     </div>
-    <button class="slider-prev" (click)="prevSlide()">&#10094;</button>
-    <button class="slider-next" (click)="nextSlide()">&#10095;</button>
   </div>
 </div>
+

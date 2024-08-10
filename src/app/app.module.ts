@@ -41,6 +41,7 @@ import { PaymentComponent } from './payment/payment.component';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,7 +70,7 @@ import { PaymentComponent } from './payment/payment.component';
     InsertblogComponent,
 
     CallWithAstrologerComponent,
-   
+
     AstrologerLoginComponent,
     ManageAstrologersComponent,
     ManageUsersComponent,
@@ -77,7 +78,8 @@ import { PaymentComponent } from './payment/payment.component';
     ManageBlogsComponent,
     AdminastrologerComponent,
     AdminDashboardComponent,
-    PaymentComponent
+    PaymentComponent,
+
 
 
   ],

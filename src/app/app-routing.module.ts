@@ -26,6 +26,8 @@ import { AdminastrologerComponent } from './adminastrologer/adminastrologer.comp
 import { ManageBlogsComponent } from './manage-blogs/manage-blogs.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { PaymentComponent } from './payment/payment.component';
+import { AuthService } from './auth.guard';
+
 
 // import { NavbarComponent } from './navbar/navbar.component';
 
@@ -33,23 +35,23 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'Home', component: HomeComponent },
   { path: 'about-us', component: AboutUsComponent },
-  { path: 'blogs', component: BlogsComponent },
+  { path: 'blogs/:id', component: BlogsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   // { path: 'navbar', component: NavbarComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'feedback', component: FeedbackFormComponent },
   { path: 'astrologer-signup', component: AstrologerSignupComponent },
-  { path: 'chatwithastro/:id', component: ChatWithAstrologerComponent },
+  { path: 'chatwithastro/:id', component: ChatWithAstrologerComponent, canActivate: [AuthService] },
   { path: 'astrodash', component: AstrologerDashboardComponent },
   { path: 'astroprofile', component: AstroProfileComponent },
   { path: 'astroclient', component: ClientListComponent },
   { path: 'astroreport', component: AstroReportComponent },
   { path: 'astroclient', component: ClientListComponent },
   { path: 'insert-blog-component', component: InsertblogComponent },
-  { path: 'find-astrologers', component: FindAstrologersComponent },
+  { path: 'find-astrologers', component: FindAstrologersComponent, canActivate: [AuthService] },
 
-  { path: 'callwithastro/:id', component: CallWithAstrologerComponent },
+  { path: 'callwithastro/:id', component: CallWithAstrologerComponent, canActivate: [AuthService] },
   { path: 'astrologer-login', component: AstrologerLoginComponent },
   { path: 'insert-blog', component: InsertblogComponent },
 
@@ -64,10 +66,11 @@ const routes: Routes = [
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'admin-dashbord', component: AdminDashboardComponent },
   { path: 'payment', component: PaymentComponent },
+
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

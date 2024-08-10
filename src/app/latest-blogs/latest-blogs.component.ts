@@ -30,8 +30,8 @@ export class LatestBlogsComponent implements OnInit {
     );
   }
 
-  readMore(blogId: number): void {
-    this.router.navigate(['/blog', blogId]);
+  readMore(id: number): void {
+    this.router.navigate(['/blogs', id]);
   }
 }
 
