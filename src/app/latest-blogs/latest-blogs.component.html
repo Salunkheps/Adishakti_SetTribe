@@ -3,7 +3,7 @@
 <div class="latest-blogs">
   <h2>Latest from Blogs</h2>
   <div class="blog" *ngFor="let blog of blogs">
-    <img [src]="blog.featuredImage" alt="{{blog.title}}">
+    <!-- <img [src]="blog.featuredImage" alt="{{blog.title}}"> -->
     <h3>{{blog.title}}</h3>
     <p>by {{blog.astrologer.name}}</p>
     <button (click)="readMore(blog.id)">Read more</button>

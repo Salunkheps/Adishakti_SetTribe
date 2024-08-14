@@ -1,36 +1,49 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../auth.guard'; // Adjust import path as needed
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   isLoggedIn = false;
   showDropdown = false;
-  currentTab = ''; 
- static homeClick:any=true
-  static blogClick:boolean=false
-  static findAistro:boolean=false
-NavbarComponent: any;
-   onClickHome(){
- 
-    NavbarComponent.homeClick=true
-    NavbarComponent.blogClick=false
-    NavbarComponent.findAistro=false
+  currentTab = '';
+  static homeClick = true;
+  static blogClick = false;
+  static findAistro = false;
+
+  constructor(private authService: AuthService, private router: Router) { }
+
+  ngOnInit(): void {
+    // Check login state on initialization
+    this.isLoggedIn = this.authService.isLoggedIn();
   }
-  onClickBlog(){
-    NavbarComponent.homeClick=false
-    NavbarComponent.blogClick=true
-    NavbarComponent.findAistro=false
+
+  onClickHome() {
+    NavbarComponent.homeClick = true;
+    NavbarComponent.blogClick = false;
+    NavbarComponent.findAistro = false;
   }
-  onClickfindAistro(){
-    NavbarComponent.homeClick=false
-    NavbarComponent.blogClick=false
-    NavbarComponent.findAistro=true
+
+  onClickBlog() {
+    NavbarComponent.homeClick = false;
+    NavbarComponent.blogClick = true;
+    NavbarComponent.findAistro = false;
   }
-  active:boolean=false
-  
+
+  onClickFindAstrologers() {
+    if (this.isLoggedIn) {
+      this.router.navigate(['/find-astrologers']);
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
+
+  active: boolean = false;
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     const clickedInside = (event.target as HTMLElement).closest('.dropdown');
@@ -44,8 +57,9 @@ NavbarComponent: any;
   }
 
   logout() {
+    this.authService.logout();
     this.isLoggedIn = false;
-    this.showDropdown = false; 
+    this.showDropdown = false;
   }
 
   setActiveTab(tabName: string) {
