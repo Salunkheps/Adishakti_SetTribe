@@ -33,6 +33,11 @@ export class NavbarComponent implements OnInit {
     NavbarComponent.blogClick = true;
     NavbarComponent.findAistro = false;
   }
+  onClickFeedback() {
+    NavbarComponent.homeClick = false;
+    NavbarComponent.blogClick = true;
+    NavbarComponent.findAistro = false;
+  }
 
   onClickFindAstrologers() {
     if (this.isLoggedIn) {

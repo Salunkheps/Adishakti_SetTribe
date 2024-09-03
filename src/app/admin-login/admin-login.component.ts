@@ -19,7 +19,7 @@ export class AdminLoginComponent {
   admin: Admin | null = null;
   errorMessage: string = '';
   data: any = []
-  apiUrl = 'http://localhost:8080/';
+  apiUrl = 'http://localhost:8081/';
 
   constructor(private http: HttpClient, private router: Router) {
 

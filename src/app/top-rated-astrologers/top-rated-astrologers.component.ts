@@ -58,7 +58,7 @@ export class TopRatedAstrologersComponent implements OnInit {
   getAllData(): void {
     this.http
       .get<Astrologer[]>(
-        'http://localhost:8080/api/astrologers/get-astrologers'
+        'http://localhost:8081/api/astrologers/get-astrologers'
       )
       .subscribe(
         (data) => {
@@ -74,7 +74,7 @@ export class TopRatedAstrologersComponent implements OnInit {
   getSearchData(): void {
     this.http
       .get<Astrologer[]>(
-        `http://localhost:8080/api/astrologers/get-data/${this.searchTerm}`
+        `http://localhost:8081/api/astrologers/get-data/${this.searchTerm}`
       )
       .subscribe(
         (data) => {

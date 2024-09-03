@@ -22,15 +22,17 @@
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown link
+          Login As
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item navbar-light" routerLink="/feedback"><i class="fas fa-comment-dots"></i> Feedback</a>
-          <a class="dropdown-item" routerLink="/login" *ngIf="!isLoggedIn"><i class="fas fa-sign-in-alt"></i> Login</a>
+          <a class="dropdown-item" routerLink="/login" *ngIf="!isLoggedIn"><i class="fas fa-sign-in-alt"></i> User</a>
           <a class="dropdown-item" routerLink="/astrologer-login" *ngIf="!isLoggedIn"><i class="fas fa-user-plus"></i> Astrologer login</a>
           <hr>    <a class="dropdown-item" routerLink="/admin-login" *ngIf="!isLoggedIn"><i class="fas fa-user-plus"></i> Admin login</a>
           <a class="dropdown-item" *ngIf="isLoggedIn" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/feedback" (click)="onClickFeedback()"><i class="fas fa-feedback"></i> Feedback</a>
       </li>
     </ul>
   </div>

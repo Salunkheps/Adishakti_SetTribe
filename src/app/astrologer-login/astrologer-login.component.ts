@@ -17,7 +17,7 @@ export class AstrologerLoginComponent {
   customer: Customer | null = null;
   errorMessage: string = '';
 
-  apiUrl = 'http://localhost:8080/';
+  apiUrl = 'http://localhost:8081/';
 
   constructor(private http: HttpClient, private router: Router) { }
 

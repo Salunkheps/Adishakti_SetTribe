@@ -13,7 +13,7 @@ export class SignupComponent implements OnInit {
   hidePassword: boolean = true;
   uploadedImage!: File;
   image: any = []
-  backEndUrl: string = 'http://localhost:8080/api/users';
+  backEndUrl: string = 'http://localhost:8081/api/users';
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -52,43 +52,100 @@ export class SignupComponent implements OnInit {
     alert("insert image")
     this.imageUploadAction()
   }
+  // imageUploadAction() {
+  //   const imageFormData = new FormData();
+  //   imageFormData.append('image', this.uploadedImage, this.uploadedImage.name);
+  //   this.http.post('http://localhost:8081/api/astrologers/convert-image', imageFormData, { observe: 'response' })
+  //     .subscribe((response) => {
+  //       this.image = response;
+  //       this.imageInsert?.setValue(this.image.body.imageData);
+  //     }
+  //       , (error) => {
+  //         alert("Something Went Wrong")
+  //       }
+  //     );
+  // }
   imageUploadAction() {
     const imageFormData = new FormData();
     imageFormData.append('image', this.uploadedImage, this.uploadedImage.name);
-    this.http.post('http://localhost:8080/api/astrologers/convert-image', imageFormData, { observe: 'response' })
-      .subscribe((response) => {
-        this.image = response;
-        this.imageInsert?.setValue(this.image.body.imageData);
-      }
-        , (error) => {
-          alert("Something Went Wrong")
+  
+    this.http.post('http://localhost:8081/api/astrologers/convert-image', imageFormData, { observe: 'response' })
+      .subscribe(
+        (response: any) => {
+          console.log('Full response received from server:', response);
+  
+          // Check if response has a body and imageData
+          if (response && response.body && response.body.imageData) {
+            console.log('Image data received:', response.body.imageData);
+  
+            // Set the form control value
+            this.imageInsert?.setValue(response.body.imageData);
+            this.image = response;  // Save the response in the component's image property
+  
+          } else {
+            console.error('Response does not contain expected imageData:', response);
+            alert('Unexpected response format.');
+          }
+        },
+        (error) => {
+          console.error('Error during image upload:', error);
+  
+          // Provide detailed error feedback
+          if (error.status === 500) {
+            alert('Server error: Please check the server logs.');
+          } else if (error.status === 404) {
+            alert('API endpoint not found: Please check the URL.');
+          } else {
+            alert('Something went wrong during the image upload.');
+          }
         }
       );
   }
+  
   signup() {
+    console.log('Form submission started'); // Debug statement
     if (this.signupForm.invalid) {
-      if (this.firstName?.errors?.['required']) {
-        alert('First Name is required');
-      }
-      if (this.lastName?.errors?.['required']) {
-        alert('Last Name is required');
-      }
-      if (this.email?.errors?.['required'] || this.email?.errors?.['email']) {
-        alert('Email is required and must be in a valid format');
-      }
-      if (this.password?.errors?.['minlength']) {
-        alert('Password should be at least 8 characters long');
-      } else if (this.password?.errors?.['required']) {
-        alert('Password is required');
-      }
-      if (this.mobileNumber?.errors?.['required']) {
-        alert('Mobile Number is required');
-      } else if (this.mobileNumber?.errors?.['pattern']) {
-        alert('Mobile Number must be numeric and 10 digits long');
-      }
+      console.log('Form is invalid'); // Debug statement
+      this.showValidationErrors();
       return;
     }
-
+    console.log('Form is valid, proceeding with submission'); // Debug statement
+  
+    this.http.post(this.backEndUrl, this.signupForm.value).subscribe(
+      response => {
+        console.log('Signup successful:', response);
+        alert('Signup successful! You can now log in.');
+        this.router.navigate(['/login']);
+      },
+      error => {
+        console.error('Signup failed:', error);
+        alert('Signup failed! Please try again later.');
+      }
+    );
+  }
+  
+  showValidationErrors() {
+    if (this.firstName?.errors?.['required']) {
+      alert('First Name is required');
+    }
+    if (this.lastName?.errors?.['required']) {
+      alert('Last Name is required');
+    }
+    if (this.email?.errors?.['required'] || this.email?.errors?.['email']) {
+      alert('Email is required and must be in a valid format');
+    }
+    if (this.password?.errors?.['minlength']) {
+      alert('Password should be at least 8 characters long');
+    } else if (this.password?.errors?.['required']) {
+      alert('Password is required');
+    }
+    if (this.mobileNumber?.errors?.['required']) {
+      alert('Mobile Number is required');
+    } else if (this.mobileNumber?.errors?.['pattern']) {
+      alert('Mobile Number must be numeric and 10 digits long');
+    }
+  
+  
     this.http.post(this.backEndUrl, this.signupForm.value).subscribe(
       response => {
         console.log('Signup successful:', response);

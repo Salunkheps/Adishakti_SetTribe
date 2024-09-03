@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit{
   errMass:boolean=false
   showPassword: boolean = false;  
   indication:boolean=false
-  apiUrl = 'http://localhost:8080/';
+  apiUrl = 'http://localhost:8081/';
   data:any=[]
   constructor(private http: HttpClient, private router: Router) {
    
@@ -117,7 +117,7 @@ export class LoginComponent implements OnInit{
   }
   getAllData(){
    
-    this.http.get("http://localhost:8080/api/astrologers/get-astrologers").subscribe(
+    this.http.get("http://localhost:8081/api/astrologers/get-astrologers").subscribe(
       (data)=>{
         this.data=data
     

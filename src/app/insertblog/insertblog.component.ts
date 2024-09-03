@@ -9,7 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class InsertblogComponent {
   newArray:any = [];
-  backEndUrl: string = 'http://localhost:8080';
+  backEndUrl: string = 'http://localhost:8081';
   data:any=[]
   uploadedImage!: File;
   image:any=[]
@@ -29,7 +29,7 @@ export class InsertblogComponent {
     this.imageUploadAction()
   }
   getAllData(){
-    this.http.get("http://localhost:8080/api/astrologers/get-astrologers").subscribe(
+    this.http.get("http://localhost:8081/api/astrologers/get-astrologers").subscribe(
       (data)=>{
         this.data=data
      
@@ -41,7 +41,7 @@ export class InsertblogComponent {
      )
   }
   sub(){
-    this.http.post('http://localhost:8080/api/blogs', this.myData.value)
+    this.http.post('http://localhost:8081/api/blogs', this.myData.value)
       .subscribe((response) => { 
         alert("insert Data") 
         
@@ -56,7 +56,7 @@ export class InsertblogComponent {
     
     const imageFormData = new FormData();
     imageFormData.append('image', this.uploadedImage, this.uploadedImage.name);
-    this.http.post('http://localhost:8080/api/astrologers/convert-image', imageFormData, { observe: 'response' })
+    this.http.post('http://localhost:8081/api/astrologers/convert-image', imageFormData, { observe: 'response' })
       .subscribe((response) => { 
         //alert("insert") 
         this.image=response;
