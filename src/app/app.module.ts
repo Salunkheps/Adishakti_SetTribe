@@ -37,6 +37,7 @@ import { ManageBlogsComponent } from './manage-blogs/manage-blogs.component';
 import { AdminastrologerComponent } from './adminastrologer/adminastrologer.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { PaymentComponent } from './payment/payment.component';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -66,7 +67,7 @@ import { PaymentComponent } from './payment/payment.component';
     AstroProfileComponent,
     ClientListComponent,
     AstroReportComponent,
-
+    
     InsertblogComponent,
 
     CallWithAstrologerComponent,
@@ -84,10 +85,12 @@ import { PaymentComponent } from './payment/payment.component';
 
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    // UsersRoutingModule,
     HttpClientModule,
 
   ],
