@@ -1,4 +1,9 @@
-<app-navbar></app-navbar>
+
+<app-navbar></app-navbar> 
+<video autoplay muted loop id="background-video" >
+  <source src="astrov5.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
 <form [formGroup]="signupForm" (ngSubmit)="signup()" class="signup-form">
   <h2>Sign Up</h2>
 
@@ -17,6 +22,40 @@
       <b *ngIf="lastName?.errors?.['required']">Last Name is required</b>
     </div>
   </div>
+  <img *ngIf="image!=''"  [src]="'data:image/png;base64,'+image.body.imageData" alt="Norway" [width]="50" >
+  <div class="form-group">
+    <label for="filr">Profile Photo</label>
+    <input type="file" accept="image/png, image/gif, image/jpeg"  (change)="onImageUpload($event)">
+  </div>
+  <div class="form-group">
+    <label for="dob">Date of Birth</label>
+    <input type="date" id="dob" formControlName="dob" required />
+  </div>
+
+  <div class="form-group">
+    <label for="city">City</label>
+    <input type="text" id="city" formControlName="city" required />
+  </div>
+
+  <div class="form-group">
+    <label for="district">District</label>
+    <input type="text" id="district" formControlName="district" required />
+  </div>
+
+  <div class="form-group">
+    <label for="state">State</label>
+    <input type="text" id="state" formControlName="state" required />
+  </div>
+
+  <div class="form-group">
+    <label for="country">Country</label>
+    <input type="text" id="country" formControlName="country" required />
+  </div>
+
+  <div class="form-group">
+    <label for="pinCode">Pin Code</label>
+    <input type="text" id="pinCode" formControlName="pinCode" required />
+  </div>
 
   <div class="form-group">
     <label for="mobileNumber">Mobile Number</label>
@@ -28,24 +67,12 @@
   </div>
 
   <div class="form-group">
-    <label for="filr">Upload Your image</label>
-    <img *ngIf="image != ''" [src]="'data:image/png;base64,'+image.body.imageData" alt="Uploaded Image" [width]="50">
-    <input type="file" accept="image/png, image/gif, image/jpeg" (change)="onImageUpload($event)">
-  </div>
-
-  <div class="form-group">
     <label for="gender">Gender</label>
     <select id="gender" formControlName="gender" required>
-      <option value="" disabled selected>Select Gender</option>
       <option value="male">Male</option>
       <option value="female">Female</option>
       <option value="other">Other</option>
     </select>
-  </div>
-
-  <div class="form-group">
-    <label for="dob">Date of Birth</label>
-    <input type="date" id="dob" formControlName="dob" required />
   </div>
 
   <div class="form-group">
@@ -58,88 +85,7 @@
     <input type="time" id="birthTime" formControlName="birthTime" required />
   </div>
 
-  <div class="form-group">
-    <label for="country">Country</label>
-    <select id="country" formControlName="country" (change)="onCountryChange()" required>
-      <option value="" disabled selected>Select Country</option>
-      <option value="India">India</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
-
-  <div class="form-group" *ngIf="signupForm.get('country')?.value === 'Other'">
-    <label for="otherCountry">Please specify your country</label>
-    <input type="text" id="otherCountry" formControlName="otherCountry" />
-    <div
-      *ngIf="signupForm.get('otherCountry')?.invalid && (signupForm.get('otherCountry')?.dirty || signupForm.get('otherCountry')?.touched)"
-      class="error-message">
-      <b *ngIf="signupForm.get('otherCountry')?.errors?.['required']">Country name is required</b>
-    </div>
-  </div>
-
-  <!-- <div class="form-group">
-    <label for="state">State</label>
-    <select id="state" formControlName="state" (change)="onStateChange()" required>
-      <option value="" disabled selected>Select State</option>
-      <option value="Maharashtra">Maharashtra</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
-
-  <div class="form-group" *ngIf="signupForm.get('state')?.value === 'Other'">
-    <label for="otherState">Please specify your state</label>
-    <input type="text" id="otherState" formControlName="otherState" />
-    <div *ngIf="signupForm.get('otherState')?.invalid && (signupForm.get('otherState')?.dirty || signupForm.get('otherState')?.touched)" class="error-message">
-      <b *ngIf="signupForm.get('otherState')?.errors?.['required']">State name is required</b>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label for="district">District</label>
-    <select id="district" formControlName="district" required>
-      <option value="" disabled selected>Select District</option>
-      <option *ngFor="let district of districts" [value]="district.districtName">{{district.districtName}}</option>
-    </select>
-  </div> -->
-
-  <div class="form-group">
-    <label for="state">State</label>
-    <select id="state" formControlName="state" (change)="onStateChange()" required>
-      <option value="" disabled selected>Select State</option>
-      <option value="Maharashtra">Maharashtra</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
-
-  <!-- District Dropdown: Displayed only if the selected state is Maharashtra -->
-  <div class="form-group" *ngIf="signupForm.get('state')?.value === 'Maharashtra'">
-    <label for="district">District</label>
-    <select id="district" formControlName="district" required>
-      <option value="" disabled selected>Select District</option>
-      <option *ngFor="let district of districts" [value]="district.districtName">{{district.districtName}}</option>
-    </select>
-  </div>
-
-  <!-- Other State Input: Displayed only if the selected state is "Other" -->
-  <div class="form-group" *ngIf="signupForm.get('state')?.value === 'Other'">
-    <label for="otherState">Please specify your state</label>
-    <input type="text" id="otherState" formControlName="otherState" />
-    <div
-      *ngIf="signupForm.get('otherState')?.invalid && (signupForm.get('otherState')?.dirty || signupForm.get('otherState')?.touched)"
-      class="error-message">
-      <b *ngIf="signupForm.get('otherState')?.errors?.['required']">State name is required</b>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="city">City</label>
-    <input type="text" id="city" formControlName="city" required />
-  </div>
-
-  <div class="form-group">
-    <label for="pinCode">Pin Code</label>
-    <input type="text" id="pinCode" formControlName="pinCode" required />
-  </div>
-
+  <!-- Move Email and Password fields to the end -->
   <div class="form-group">
     <label for="email">Email</label>
     <input type="email" id="email" formControlName="email" required />
@@ -160,9 +106,13 @@
       <b *ngIf="password?.errors?.['minlength']">Password must be at least 8 characters long</b>
     </div>
   </div>
+  <div class="form-group">
+    <label for="country">confirm password</label>
+    <input type="password" id="country" formControlName="confirmpass" required />
+  </div>
 
   <button type="submit">Sign Up</button>
   <p class="login-link">Already have an account? <a routerLink="/login">Login</a></p>
 </form>
+<app-footer></app-footer>
 
-{{signupForm.value | json}}

@@ -1,8 +1,25 @@
+
+/* Importing Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
 body, html {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Lato', sans-serif;
+  background-color: #f7f9fc; /* Light background */
+  color: #2c3e50; /* Dark text color */
 }
+
+/* Sidebar Slide-In Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 
 .dashboard-container {
   display: flex;
@@ -11,16 +28,22 @@ body, html {
 
 .sidebar {
   width: 250px;
-  background-color: #333;
-  color: #fff;
+  background-color: #34495e; /* Darker navy */
+  color: #ecf0f1;
   display: flex;
   flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease-out; /* Apply slide-in animation */
 }
 
 .sidebar-header {
-  padding: 20px;
+  padding: 25px 20px;
   text-align: center;
-  background-color: #444;
+  background-color: #3b5998; /* Modern blue tone */
+  font-size: 1.5em;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #1abc9c;
 }
 
 .sidebar-menu {
@@ -36,32 +59,66 @@ body, html {
 .sidebar-menu li a {
   display: block;
   padding: 15px 20px;
-  color: #fff;
+  color: #ecf0f1;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  font-size: 1.1em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: 500;
 }
 
 .sidebar-menu li a:hover {
-  background-color: #555;
+  background-color:  #3b5998 ; /* Bright accent color */
+  color: #fff;
+  animation: pulse 0.3s ease; /* Add pulse animation on hover */
 }
 
+/* Pulse Animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 .main-content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  background-color: #ffffff; /* White content area */
+  padding: 20px;
+}
+
+/* Fade-In Animation for Topbar */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .topbar {
-  background-color: #420E57;
-  color: #fff;
-  padding: 15px 20px;
+  background-color: #3b5998; /* Modern blue tone */
+  color: #ffffff;
+  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  animation: fadeIn 0.5s ease; /* Apply fade-in animation */
 }
 
 .topbar h1 {
   margin: 0;
+  font-size: 1.8em;
+  font-weight: 700;
 }
 
 .user-info {
@@ -70,71 +127,92 @@ body, html {
 }
 
 .user-info p {
-  margin: 0 10px 0 0;
+  margin: 0 15px 0 0;
+  font-weight: 400;
 }
 
 .user-info a {
-  color: #fff;
+  color: #ecf0f1;
   text-decoration: none;
-}
-
-.dashboard-section, .availability-section {
-  padding: 20px;
+  font-weight: 500;
 }
 
 .dashboard-section {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 20px; /* Space between cards */
 }
 
 .stat {
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 15px;
-  width: 22%;
+  background-color: #ffffff;
+  border: 1px solid #ccc; /* Softer border */
+  border-radius: 10px;
+  padding: 20px;
+  width: calc(25% - 20px); /* Responsive width with gap */
   text-align: center;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat:hover {
+  transform: translateY(-5px); /* Subtle lift effect on hover */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
 }
 
 .stat h3 {
   margin: 0;
   margin-bottom: 10px;
+  font-size: 1.5em;
+  color: #3b5998; /* Modern blue tone */
+}
+
+.availability-section {
+  margin-top: 30px;
 }
 
 .availability-section h2 {
   margin-top: 0;
+  color: #3b5998; /* Modern blue tone */
+  font-weight: 700;
+  font-size: 1.8em;
 }
 
 .availability-form {
   display: flex;
   flex-direction: column;
   max-width: 400px;
+  margin: 0 auto; /* Center the form */
+  padding: 20px;
+  background-color: #f5f5f5; /* Light form background */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for form */
 }
 
 .availability-form label {
   margin-bottom: 5px;
+  font-weight: 500;
 }
 
 .availability-form select, 
 .availability-form input, 
 .availability-form button {
   margin-bottom: 15px;
-  padding: 10px;
+  padding: 12px;
   font-size: 16px;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc; /* Softer border */
   border-radius: 5px;
 }
 
 .availability-form button {
-  background-color: #420E57;
-  color: #fff;
+  background-color:  #3b5998  ; /* Bright accent color */
+  color: #ffffff;
   border: none;
   cursor: pointer;
+  font-weight: 700;
+  transition: background-color 0.3s ease;
 }
 
 .availability-form button:hover {
-  background-color: #420E57;
+  background-color:  #3b5998 ; /* Slightly darker on hover */
 }

@@ -1,4 +1,8 @@
 <app-navbar></app-navbar> 
+<video autoplay muted loop id="background-video" >
+  <source src="astrov66.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
 <form [formGroup]="signupForm" (ngSubmit)="signup(signupForm)" class="signup-form">
   <h2>Astrologer Sign Up</h2>
 
@@ -138,4 +142,5 @@
     <input type="password" id="country" formControlName="confirmpass" required />
   </div>
   <button type="submit">Sign</button>
+  <p class="login-link">Already have an account? <a routerLink="/astrologer-login">Login</a></p>
 </form>

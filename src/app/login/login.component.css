@@ -1,3 +1,6 @@
+
+
+/* Overall body style */
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
@@ -8,8 +11,12 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),no-repeat center center fixed;
+  background-size: cover;
+  animation: fadeIn 1.5s ease-in-out;
 }
 
+/* Background video */
 #background-video {
   position: absolute;
   top: 50%;
@@ -20,94 +27,110 @@ body {
   height: auto;
   z-index: -1;
   transform: translate(-50%, -50%);
+  opacity: 0.7;
   background-size: cover;
 }
 
+/* Container styling */
+ 
 .container {
   z-index: 1;
   max-width: 400px;
   width: 100%;
   padding: 20px;
 }
+.anchor{
+  color: #fff;
+}
+u.anchor{
+  color: #fff;
+}
 
 .login-container {
-  background-color: rgba(205, 196, 196, 0.9);
+  background-color: #afa7cf2c; /* White background for contrast */
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
+/* Login title */
 .login-title {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 600;
   margin-bottom: 25px;
-  color: #333333;
+  color: #fff;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  animation: zoomIn 1.5s ease-out;
 }
 
+/* Form group */
 .form-group {
   margin-bottom: 20px;
   text-align: left;
-  position: relative; /* Added */
+  position: relative;
 }
 
+/* Input label */
 label {
   font-size: 14px;
-  color: #131313;
+  color: #fff;
   margin-bottom: 5px;
   display: inline-block;
 }
 
+/* Input field */
 .form-control {
   width: 100%;
   padding: 12px 15px;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 5px;
   font-size: 14px;
   box-sizing: border-box;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transition: all 0.3s ease;
 }
 
 .form-control:focus {
   border-color: #007bff;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   outline: none;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
+/* Password input group */
 .input-group {
-  position: relative; /* Ensures eye icon is positioned relative to the input */
+  position: relative;
 }
 
 .input-group .form-control {
-  width: 100%; /* Adjusted to take up the full width of its container */
-  padding-right: 40px; /* Added padding to make space for the eye icon */
+  padding-right: 40px;
 }
 
 .input-group-append {
   position: absolute;
-  right: 10px; /* Adjust as needed */
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  height: 100%;
-  display: flex;
-  align-items: center;
-  pointer-events: none; /* Allows clicks to pass through to the input */
+}
+.input-group-append.i{
+  background-color: black;
 }
 
 .input-group-append .btn {
-  border: none; /* Remove border */
-  background: transparent; /* Remove background */
-  padding: 0;
-  height: 100%;
-  font-size: 16px;
-  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: #fff;
 }
 
+/* Buttons container */
 .buttons-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
+  color: #0f0d0d;
 }
 
 .btn-primary {
@@ -118,22 +141,17 @@ label {
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.3s;
-  text-decoration: none; /* To make anchor buttons look consistent */
+  transition: all 0.3s;
+  text-decoration: none;
+}
+.anchor{
+  color: #0f0d0d;
 }
 
 .btn-primary:hover {
   background-color: #0056b3;
 }
-
-.register-button {
-  background-color: #28a745;
-}
-
-.register-button:hover {
-  background-color: #218838;
-}
-
+/* Error message */
 .error-message {
   color: #ff0000;
   font-size: 14px;
@@ -146,4 +164,36 @@ label {
 
 .login-button {
   margin-right: 10px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

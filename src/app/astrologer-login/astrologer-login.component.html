@@ -1,10 +1,15 @@
+
 <app-navbar></app-navbar>
 <body>
+    <video autoplay muted loop id="background-video" >
+        <source src="astrov1.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
     <div class="container mt-5">
         <div class="login-container">
-            <h2 class="login-title">Sign In</h2>
+            <h2 class="login-title">login</h2>
             <div class="form-group">
-                <label for="email">Email:</label>
+                <label for="email">Username:</label>
                 <input type="email" id="email" class="form-control" [(ngModel)]="email">
             </div>
             <div class="form-group">
@@ -13,9 +18,11 @@
             </div>
             <div class="buttons-container">
                 <button class="btn btn-primary login-button" (click)="validateCredentials()">Login</button>
-                <!-- Apply btn-primary styling to Register button -->
-                <a class="btn btn-primary register-button" routerLink="/astrologer-signup">Register</a>
-            </div>
+            </div><br>
+            <div class="anchor">
+                <u class="anchor">Don't have account? <a routerLink="/astrologer-signup">Register</a></u>
+                </div>
+            
             <div *ngIf="errorMessage" class="error-message mt-3">
                 {{ errorMessage }}
             </div>

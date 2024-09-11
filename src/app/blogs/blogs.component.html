@@ -1,78 +1,51 @@
-<app-navbar></app-navbar>
-<!DOCTYPE html>
-<html>
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-</head>
-<body class="w3-light-grey w3-content" style="max-width:1600px">
-
-
-<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
-  <div class="w3-container">
-    <a href="#" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey" title="close menu">
-      <i class="fa fa-remove"></i>
-    </a>
-    
-    <h4><b>Blog</b></h4>
-
-  </div>
-  <div class="w3-bar-block">
-    <a class="w3-bar-item w3-button w3-padding w3-text-teal" (click)="gerData()"><i ></i>ALL</a> 
-    <a class="w3-bar-item w3-button w3-padding " (click)="getTec()"><i ><img src="\images\icons\tecnology.png" width="30px"></i>Technology</a> 
-    <a  class="w3-bar-item w3-button w3-padding" (click)="getHelth()"><i ><img src="\images\icons\helth.png" width="30px"></i>Health</a> 
-    <a   class="w3-bar-item w3-button w3-padding" (click)="getLifeStyle()"><i ><img src="\images\icons\lifestyle.png" width="30px"></i>Lifestyle </a>
-    <a   class="w3-bar-item w3-button w3-padding"(click)="getEducation()"><i ><img src="\images\icons\education.png" width="30px"></i>Education  </a>
-  </div>
- 
-</nav>
-
-<div class="w3-overlay w3-hide-large w3-animate-opacity" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
-
-  <!-- Header -->
-  <header id="portfolio">
-    
-    <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" ><i class="fa fa-bars"></i></span>
-    <div class="w3-container">
-   
-   
-    </div>
+<div>
+  <!-- Topbar -->
+  <header>
+    <h1>Blogs</h1>
   </header>
-  
-  <div class="w3-bar-block" style="margin-left:300px">
-    <h1 class="headr"><b>Adishakti</b></h1>
-  <!-- First Photo Grid-->
-  <div class="w3-row-padding" >
-    <div class="w3-sidebar pkk" style="z-index:5;" id="mySidebar" *ngIf="displayBlock"><span   (click)="closs()">&#10006;</span>
-<br>
-<img [src]="'data:image/png;base64,'+individualData.featuredImage" alt="Norway" >
 
-<p><b>{{individualData.title}}</b></p>
-<p>{{individualData.content}}
-          </p>
-          <br><p>Written By:{{individualData.astrologer.firstName}}   {{individualData.astrologer.lastName}}</p>
+  <!-- Sidebar -->
+  <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" id="mySidebar">
+    <div class="w3-bar-block">
+      <a href="#" class="w3-bar-item w3-button w3-padding" (click)="gerData()">
+        <img src="/images/icons/all_blogs.png" width="30px"> All Blogs
+      </a>
+      <a href="#" class="w3-bar-item w3-button w3-padding" (click)="getTec()">
+        <img src="/images/icons/tecnology.png" width="30px"> Technology
+      </a>
+      <a href="#" class="w3-bar-item w3-button w3-padding" (click)="getHelth()">
+        <img src="/images/icons/helth.png" width="30px"> Health
+      </a>
+      <a href="#" class="w3-bar-item w3-button w3-padding" (click)="getLifeStyle()">
+        <img src="/images/icons/lifestyle.png" width="30px"> Lifestyle
+      </a>
+      <a href="#" class="w3-bar-item w3-button w3-padding" (click)="getEducation()">
+        <img src="/images/icons/education.png" width="30px"> Education
+      </a>
     </div>
-    <div class="w3-third w3-container w3-margin-bottom" *ngFor="let i Of data">
-      <img [src]="'data:image/png;base64,'+i.featuredImage" alt="Norway"  style="width:100%"   class="w3-hover-opacity">
-      <div class="w3-container w3-white pcs">
-        <p><b>{{i.title}}</b></p>
-        <p>{{i.content}}</p>
+  </nav>
+
+  <!-- Blog Content -->
+  <div class="w3-row-padding" style="margin-left:250px;">
+    <!-- Blog Cards -->
+    <div class="w3-third w3-container w3-margin-bottom" *ngFor="let i of data">
+      <img [src]="'data:image/png;base64,' + i.featuredImage" alt="Blog Image" width="100%" height="200px">
+      <div class="w3-container">
+        <p><b>{{ i.title }}</b></p>
+        <p>{{ i.content | slice: 0:100 }}...</p>
         <div class="view-more">
           <button (click)="viewMore(i)">View More</button>
         </div>
       </div>
-    
     </div>
+  </div>
 
-  
+  <!-- Individual Blog View -->
+  <div class="pkk" *ngIf="displayBlock">
+    <span (click)="closs()">&#10006;</span>
+    <img [src]="'data:image/png;base64,' + individualData.featuredImage" alt="Blog Image" height="200px">
+    <p><b>{{ individualData.title }}</b></p>
+    <p>{{ individualData.content }}</p>
+    <p>Written By: {{ individualData.author }}</p>
   </div>
- 
-  </div>
-</body>
-</html>
+</div>

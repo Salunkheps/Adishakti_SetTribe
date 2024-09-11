@@ -1,10 +1,14 @@
 <app-navbar></app-navbar>
 <body>
+    <video autoplay muted loop id="background-video" >
+        <source src="astrov3.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
     <div class="container mt-5">
         <div class="login-container">
             <h2 class="login-title">Sign In</h2>
             <div class="form-group">
-                <label for="email">Email:</label>
+                <label for="email">Username:</label>
                 <input type="email" id="email" class="form-control" [(ngModel)]="email">
             </div>
             <div class="form-group">
@@ -24,3 +28,5 @@
     </div>
 </body>
 <app-footer></app-footer>
+
+

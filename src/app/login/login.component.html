@@ -1,3 +1,4 @@
+
 <app-navbar></app-navbar>
 <body>
     <video autoplay muted loop id="background-video" >
@@ -9,7 +10,7 @@
             <form [formGroup]="myData">
             <h2 class="login-title">Login</h2>
             <div class="form-group">
-                <label for="email">Email Or Phone Number</label>
+                <label for="email">Username:</label>
                 <input type="text" id="email" placeholder="Enter Email Or Phone Number" class="form-control" formControlName="user">
             </div>
             <div class="error-message mt-3">
@@ -34,9 +35,10 @@
              </div>
             <div class="buttons-container">
                 <button class="btn btn-primary login-button" (click)="validateCredentials()">Login</button>
-                <a class="btn btn-primary register-button" routerLink="/signup">Signup</a>
+            </div><br>
+            <div class="anchor">
+            <u class="anchor">Don't have an account? <a routerLink="/signup">Register</a></u>
             </div>
-           
         </form>
           
             <div *ngIf="user" class="mt-3">
@@ -45,3 +47,6 @@
         </div>
     </div>
 </body>
+<app-footer></app-footer>
+
+
