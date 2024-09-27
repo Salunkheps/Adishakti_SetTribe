@@ -1,141 +1,162 @@
-<app-navbar></app-navbar> 
-<form [formGroup]="signupForm" (ngSubmit)="signup(signupForm)" class="signup-form">
-  <h2>Astrologer Sign Up</h2>
+<app-navbar></app-navbar>
 
-  <div class="form-group">
-    <label for="firstName">First Name</label>
-    <input type="text" id="firstName" formControlName="firstName" required />
-    <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)" class="error-message">
-      <b *ngIf="firstName?.errors?.['required']">First Name is required</b>
+
+<!-- Background image using HTML -->
+<!-- <img src="astro10.jpg" alt="Background" class="background-image"> -->
+
+<div class="card-container">
+  <form [formGroup]="signupForm" (ngSubmit)="signup(signupForm)" class="signup-form">
+    <h2>Astrologer Sign Up</h2>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" formControlName="firstName" placeholder="Enter your first name" required />
+        <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)" class="error-message">
+          <b *ngIf="firstName?.errors?.['required']">First Name is required</b>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" formControlName="lastName" placeholder="Enter your last name" required />
+        <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="error-message">
+          <b *ngIf="lastName?.errors?.['required']">Last Name is required</b>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="mobile">Mobile Number</label>
+        <input type="text" id="mobile" formControlName="mobile" placeholder="Enter your mobile number" required
+          maxlength="10" pattern="^[0-9]{10}$" />
+        <div *ngIf="mobile?.invalid && (mobile?.dirty || mobile?.touched)" class="error-message">
+          <b *ngIf="mobile?.errors?.['required']">Mobile Number is required</b>
+          <b *ngIf="mobile?.errors?.['pattern']">Mobile Number must be numeric and 10 digits long</b>
+          <b *ngIf="mobile?.errors?.['maxlength']">Mobile Number cannot exceed 10 digits</b>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select id="gender" formControlName="gender" required>
+          <option value="" disabled>Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="aadharNumber">Aadhar Number</label>
+        <input type="text" id="aadharNumber" formControlName="aadharNumber" placeholder="Enter your Aadhar number"
+          required maxlength="12" pattern="^[0-9]{12}$" />
+        <div *ngIf="aadharNumber?.invalid && (aadharNumber?.dirty || aadharNumber?.touched)" class="error-message">
+          <b *ngIf="aadharNumber?.errors?.['required']">Aadhar Number is required</b>
+          <b *ngIf="aadharNumber?.errors?.['pattern']">Aadhar Number must be numeric and 12 digits long</b>
+          <b *ngIf="aadharNumber?.errors?.['maxlength']">Aadhar Number cannot exceed 12 digits</b>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" formControlName="dob" required />
+      </div>
+
+      <div class="form-group">
+        <label for="skills">Astrologer Skills</label>
+        <select id="skills" formControlName="skills" required>
+          <option value="" disabled>Select Your Skills</option>
+          <option value="horoscope">Horoscope Reading</option>
+          <option value="tarot">Tarot Reading</option>
+          <option value="numerology">Numerology</option>
+          <option value="palmistry">Palmistry</option>
+          <option value="vedic-astrology">Vedic Astrology</option>
+          <option value="feng-shui">Feng Shui</option>
+          <option value="face-reading">Face Reading</option>
+        </select>
+      </div>
+
+
+
+
+      <div class="form-group">
+        <label for="experience">Experience (years)</label>
+        <select id="experience" formControlName="experience" required>
+          <option value="" disabled>Select Your Experience</option>
+          <option value="0-1">0-1 years</option>
+          <option value="1-3">1-3 years</option>
+          <option value="3-5">3-5 years</option>
+          <option value="5+">5+ years</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="languages">Languages Known</label>
+        <select id="languages" formControlName="languages">
+          <option value="" disabled>Select Your Languages</option>
+          <option value="english">English</option>
+          <option value="hindi">Hindi</option>
+          <option value="marathi">Marathi</option>
+          <option value="others">Others</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="certification">Certification</label>
+        <input type="text" id="certification" formControlName="certification" placeholder="Enter your certification"
+          required />
+      </div>
+
+      <div class="form-group">
+        <label for="degree">Degree</label>
+        <input type="text" id="degree" formControlName="degree" placeholder="Enter your degree" required />
+      </div>
+
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" id="city" formControlName="city" placeholder="Enter your city" required />
+      </div>
+
+      <div class="form-group">
+        <label for="pinCode">Pin Code</label>
+        <input type="text" id="pinCode" formControlName="pinCode" placeholder="Enter your pin code" required
+          maxlength="6" pattern="^[0-9]{6}$" />
+        <div *ngIf="pinCode?.invalid && (pinCode?.dirty || pinCode?.touched)" class="error-message">
+          <b *ngIf="pinCode?.errors?.['required']">Pin Code is required</b>
+          <b *ngIf="pinCode?.errors?.['pattern']">Pin Code must be numeric and 6 digits long</b>
+          <b *ngIf="pinCode?.errors?.['maxlength']">Pin Code cannot exceed 6 digits</b>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="profilePhoto">Profile Photo</label>
+        <input type="file" formControlName="profilePhoto" accept="image/png, image/gif, image/jpeg" (change)="onImageUpload($event)">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email as Username</label>
+        <input type="email" id="email" formControlName="email" placeholder="Enter your email" required />
+        <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-message">
+          <b *ngIf="email?.errors?.['required']">Email is required</b>
+          <b *ngIf="email?.errors?.['email']">Invalid email address</b>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" formControlName="password" placeholder="Enter your password" required />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmpass">Confirm Password</label>
+        <input type="password" id="confirmpass" formControlName="confirmpass" placeholder="Confirm your password"
+          required />
+      </div>
     </div>
-  </div>
 
-  <div class="form-group">
-    <label for="lastName">Last Name</label>
-    <input type="text" id="lastName" formControlName="lastName" required />
-    <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="error-message">
-      <b *ngIf="lastName?.errors?.['required']">Last Name is required</b>
-    </div>
-  </div>
+    <button type="submit">Sign Up</button>
+  </form>
+</div>
 
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" id="email" formControlName="email" required />
-    <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-message">
-      <b *ngIf="email?.errors?.['required']">Email is required</b>
-      <b *ngIf="email?.errors?.['email']">Invalid email address</b>
-    </div>
-  </div>
 
-  <div class="form-group">
-    <label for="mobile">Mobile Number</label>
-    <input type="text" id="mobile" formControlName="mobile" required />
-    <div *ngIf="mobile?.invalid && (mobile?.dirty || mobile?.touched)" class="error-message">
-      <b *ngIf="mobile?.errors?.['required']">Mobile Number is required</b>
-      <b *ngIf="mobile?.errors?.['pattern']">Mobile Number must be numeric and 10 digits long</b>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label for="dob">Date of Birth</label>
-    <input type="date" id="dob" formControlName="dob" required />
-  </div>
-
-  <div class="form-group">
-    <label for="gender">Gender</label>
-    <label for="male">Male</label>
-    <input id="male" type="radio" formControlName="gender" value="male">
-    <label for="female">Female</label>
-    <input id="female" type="radio" formControlName="gender" value="female">
-    <label for="other">Other</label>
-    <input type="radio" id="other" formControlName="gender" value="other">
-    <!-- <select id="gender" formControlName="gender" required>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-      <option value="other">Other</option>
-    </select> -->
-  </div>
-
-  <div class="form-group">
-    <label for="aadharNumber">Aadhar Number</label>
-    <input type="text" id="aadharNumber" formControlName="aadharNumber" required />
-  </div>
-
-  <div class="form-group">
-    <label for="experience">Experience (years)</label>
-    <input type="number" id="experience" formControlName="experience" required />
-  </div>
-
-  <div class="form-group">
-    <label for="languagesKnown">Languages Known (comma-separated)</label>
-    <input type="text" id="languagesKnown" formControlName="languagesKnown" required />
-    <select id="gender" formControlName="lang" (change)="skillsChange()"required>
-      <option value="Hindi">Hindi</option>
-      <option value="English">English</option>
-      <option value="Marathi">Marathi</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label for="skills">Skills (comma-separated)</label>
-    <!-- <input type="text" id="skills"  required /> -->
-    <select formControlName="skills">
-      <option>Aistrology</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label for="certification">Certification</label>
-    <input type="text" id="certification" formControlName="certification" required />
-  </div>
-
-  <div class="form-group">
-    <label for="degree">Degree</label>
-    <input type="text" id="degree" formControlName="degree" required />
-  </div>
-
-  <div class="form-group">
-    <label for="ratePerMinute">Rate per Minute</label>
-    <input type="number" id="ratePerMinute" formControlName="ratePerMinute" required />
-  </div>
-
-  <div class="form-group">
-    <label for="city">City</label>
-    <input type="text" id="city" formControlName="city" required />
-  </div>
-
-  <div class="form-group">
-    <label for="district">District</label>
-    <input type="text" id="district" formControlName="district" required />
-  </div>
-
-  <div class="form-group">
-    <label for="state">State</label>
-    <input type="text" id="state" formControlName="state" required />
-  </div>
-
-  <div class="form-group">
-    <label for="country">Country</label>
-    <input type="text" id="country" formControlName="country" required />
-  </div>
-
-  <div class="form-group">
-    <label for="pinCode">Pin Code</label>
-    <input type="text" id="pinCode" formControlName="pinCode" required />
-  </div>
-
-  <img *ngIf="image!=''"  [src]="'data:image/png;base64,'+image.body.imageData" alt="Norway" [width]="50" >
-  <div class="form-group">
-    <label for="filr">Upload Images</label>
-    <input type="file" accept="image/png, image/gif, image/jpeg"  (change)="onImageUpload($event)">
-  </div>
-  <div class="form-group">
-    <label for="country">password</label>
-    <input type="text" id="country" formControlName="password" required />
-  </div>
-  <div class="form-group">
-    <label for="country">confirm password</label>
-    <input type="password" id="country" formControlName="confirmpass" required />
-  </div>
-  <button type="submit">Sign</button>
-</form>
+<app-footer></app-footer>
