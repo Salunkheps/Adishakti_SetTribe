@@ -1,0 +1,17 @@
+<div class="latestblog">
+    <div class="latest-blogs">
+      <div class="blog" *ngFor="let blog of healthcareBlogs">
+        <div class="blog-image-container">
+          <img [src]="blog.featuredImage" alt="{{blog.title}}" class="blog-image">
+        </div>
+        <div class="blog-content">
+          <h3>{{blog.title}}</h3>
+          <p>by {{blog.astrologer.name}}</p>
+          <button (click)="readMore(blog.id)">View more</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  

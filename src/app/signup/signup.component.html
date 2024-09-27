@@ -1,168 +1,107 @@
 <app-navbar></app-navbar>
-<form [formGroup]="signupForm" (ngSubmit)="signup()" class="signup-form">
-  <h2>Sign Up</h2>
 
-  <div class="form-group">
-    <label for="firstName">First Name</label>
-    <input type="text" id="firstName" formControlName="firstName" required />
-    <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)" class="error-message">
-      <b *ngIf="firstName?.errors?.['required']">First Name is required</b>
-    </div>
+<!-- Background image using HTML -->
+<img src="userimage1.jpg" alt="Background" class="background-image">
+
+<div class="signup-container">
+  <!-- Sign Up Form -->
+  <div class="signup-form-container">
+    <form [formGroup]="signupForm" (ngSubmit)="signup()" class="signup-form">
+      <h2>User Registration</h2>
+
+      <div class="form-content">
+        <div class="form-column">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" formControlName="firstName" required placeholder="Enter Your First Name" />
+            <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)" class="error-message">
+              <b *ngIf="firstName?.errors?.['required']">First Name is required</b>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" formControlName="lastName" required placeholder="Enter Your Last Name" />
+            <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="error-message">
+              <b *ngIf="lastName?.errors?.['required']">Last Name is required</b>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" formControlName="gender" required>
+              <option value="" disabled>Select Your Option</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="mobileNumber">Mobile Number</label>
+            <input type="text" id="mobileNumber" formControlName="mobileNumber" required placeholder="Enter Your Mobile Number" maxlength="10" />
+            <div *ngIf="mobileNumber?.invalid && (mobileNumber?.dirty || mobileNumber?.touched)" class="error-message">
+              <b *ngIf="mobileNumber?.errors?.['required']">Mobile Number is required</b>
+              <b *ngIf="mobileNumber?.errors?.['pattern']">Mobile Number must be numeric and 10 digits long</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-column">
+          <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" formControlName="city" required placeholder="Enter Your City" />
+          </div>
+
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" formControlName="dob" required />
+          </div>
+
+          <div class="form-group">
+            <label for="birthPlace">Birth Place</label>
+            <input type="text" id="birthPlace" formControlName="birthPlace" required placeholder="Enter Your Birth Place" />
+          </div>
+
+          <div class="form-group">
+            <label for="birthTime">Birth Time</label>
+            <input type="time" id="birthTime" formControlName="birthTime" required />
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Fields -->
+      <div class="form-group">
+        <label for="file">Profile Photo</label>
+        <input type="file" accept="image/png, image/gif, image/jpeg" (change)="onImageUpload($event)" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email As Username</label>
+        <input type="email" id="email" formControlName="email" required placeholder="Enter Your Email" />
+        <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-message">
+          <b *ngIf="email?.errors?.['required']">Email is required</b>
+          <b *ngIf="email?.errors?.['email']">Invalid email address</b>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input [type]="hidePassword ? 'password' : 'text'" id="password" formControlName="password" required placeholder="Enter Your Password" />
+        <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error-message">
+          <b *ngIf="password?.errors?.['required']">Password is required</b>
+          <b *ngIf="password?.errors?.['minlength']">Password must be at least 8 characters long</b>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" formControlName="confirmpass" required placeholder="Confirm Your Password" />
+      </div>
+
+      <button type="submit" class="signup-button">Sign Up</button>
+    </form>
   </div>
+</div>
 
-  <div class="form-group">
-    <label for="lastName">Last Name</label>
-    <input type="text" id="lastName" formControlName="lastName" required />
-    <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="error-message">
-      <b *ngIf="lastName?.errors?.['required']">Last Name is required</b>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label for="mobileNumber">Mobile Number</label>
-    <input type="text" id="mobileNumber" formControlName="mobileNumber" required />
-    <div *ngIf="mobileNumber?.invalid && (mobileNumber?.dirty || mobileNumber?.touched)" class="error-message">
-      <b *ngIf="mobileNumber?.errors?.['required']">Mobile Number is required</b>
-      <b *ngIf="mobileNumber?.errors?.['pattern']">Mobile Number must be numeric and 10 digits long</b>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label for="filr">Upload Your image</label>
-    <img *ngIf="image != ''" [src]="'data:image/png;base64,'+image.body.imageData" alt="Uploaded Image" [width]="50">
-    <input type="file" accept="image/png, image/gif, image/jpeg" (change)="onImageUpload($event)">
-  </div>
-
-  <div class="form-group">
-    <label for="gender">Gender</label>
-    <select id="gender" formControlName="gender" required>
-      <option value="" disabled selected>Select Gender</option>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-      <option value="other">Other</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label for="dob">Date of Birth</label>
-    <input type="date" id="dob" formControlName="dob" required />
-  </div>
-
-  <div class="form-group">
-    <label for="birthPlace">Birth Place</label>
-    <input type="text" id="birthPlace" formControlName="birthPlace" required />
-  </div>
-
-  <div class="form-group">
-    <label for="birthTime">Birth Time</label>
-    <input type="time" id="birthTime" formControlName="birthTime" required />
-  </div>
-
-  <div class="form-group">
-    <label for="country">Country</label>
-    <select id="country" formControlName="country" (change)="onCountryChange()" required>
-      <option value="" disabled selected>Select Country</option>
-      <option value="India">India</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
-
-  <div class="form-group" *ngIf="signupForm.get('country')?.value === 'Other'">
-    <label for="otherCountry">Please specify your country</label>
-    <input type="text" id="otherCountry" formControlName="otherCountry" />
-    <div
-      *ngIf="signupForm.get('otherCountry')?.invalid && (signupForm.get('otherCountry')?.dirty || signupForm.get('otherCountry')?.touched)"
-      class="error-message">
-      <b *ngIf="signupForm.get('otherCountry')?.errors?.['required']">Country name is required</b>
-    </div>
-  </div>
-
-  <!-- <div class="form-group">
-    <label for="state">State</label>
-    <select id="state" formControlName="state" (change)="onStateChange()" required>
-      <option value="" disabled selected>Select State</option>
-      <option value="Maharashtra">Maharashtra</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
-
-  <div class="form-group" *ngIf="signupForm.get('state')?.value === 'Other'">
-    <label for="otherState">Please specify your state</label>
-    <input type="text" id="otherState" formControlName="otherState" />
-    <div *ngIf="signupForm.get('otherState')?.invalid && (signupForm.get('otherState')?.dirty || signupForm.get('otherState')?.touched)" class="error-message">
-      <b *ngIf="signupForm.get('otherState')?.errors?.['required']">State name is required</b>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label for="district">District</label>
-    <select id="district" formControlName="district" required>
-      <option value="" disabled selected>Select District</option>
-      <option *ngFor="let district of districts" [value]="district.districtName">{{district.districtName}}</option>
-    </select>
-  </div> -->
-
-  <div class="form-group">
-    <label for="state">State</label>
-    <select id="state" formControlName="state" (change)="onStateChange()" required>
-      <option value="" disabled selected>Select State</option>
-      <option value="Maharashtra">Maharashtra</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
-
-  <!-- District Dropdown: Displayed only if the selected state is Maharashtra -->
-  <div class="form-group" *ngIf="signupForm.get('state')?.value === 'Maharashtra'">
-    <label for="district">District</label>
-    <select id="district" formControlName="district" required>
-      <option value="" disabled selected>Select District</option>
-      <option *ngFor="let district of districts" [value]="district.districtName">{{district.districtName}}</option>
-    </select>
-  </div>
-
-  <!-- Other State Input: Displayed only if the selected state is "Other" -->
-  <div class="form-group" *ngIf="signupForm.get('state')?.value === 'Other'">
-    <label for="otherState">Please specify your state</label>
-    <input type="text" id="otherState" formControlName="otherState" />
-    <div
-      *ngIf="signupForm.get('otherState')?.invalid && (signupForm.get('otherState')?.dirty || signupForm.get('otherState')?.touched)"
-      class="error-message">
-      <b *ngIf="signupForm.get('otherState')?.errors?.['required']">State name is required</b>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="city">City</label>
-    <input type="text" id="city" formControlName="city" required />
-  </div>
-
-  <div class="form-group">
-    <label for="pinCode">Pin Code</label>
-    <input type="text" id="pinCode" formControlName="pinCode" required />
-  </div>
-
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" id="email" formControlName="email" required />
-    <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-message">
-      <b *ngIf="email?.errors?.['required']">Email is required</b>
-      <b *ngIf="email?.errors?.['email']">Invalid email address</b>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label for="password">Password</label>
-    <div class="password-container">
-      <input [type]="hidePassword ? 'password' : 'text'" id="password" formControlName="password" required />
-      <span class="eye-icon" (click)="togglePasswordVisibility()">{{ hidePassword ? '👁️' : '👁️‍🗨️' }}</span>
-    </div>
-    <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error-message">
-      <b *ngIf="password?.errors?.['required']">Password is required</b>
-      <b *ngIf="password?.errors?.['minlength']">Password must be at least 8 characters long</b>
-    </div>
-  </div>
-
-  <button type="submit">Sign Up</button>
-  <p class="login-link">Already have an account? <a routerLink="/login">Login</a></p>
-</form>
-
-{{signupForm.value | json}}
+<app-footer></app-footer>

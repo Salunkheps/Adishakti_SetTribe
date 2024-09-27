@@ -1,0 +1,80 @@
+<div class="dashboard-container">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>Home</h2>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a routerLink="/astrodash"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
+      <!-- <li><a routerLink="/astroprofile">Profile</a></li> -->
+      <li><a routerLink="/astroclient"><i ><img src="clientlist.png" width="30px"></i> Clients Report</a></li>
+      <!-- <li><a routerLink="/astroreport">Reports</a></li> -->
+      <li><a routerLink="/insert-blog"><i ><img src="createblog.png" width="30px"></i> Create Blogs</a></li>
+      <li><a routerLink="/consultation-price"><i ><img src="consultprice.png" width="30px"></i> Consultation Price</a></li>
+      <li><a href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="main-content">
+    <header class="topbar">
+      <h1>Dashboard</h1>
+      <div class="user-info">
+        <p>Welcome, <strong>Username</strong></p>
+        <a href="#">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+      </div>
+    </header>
+
+    <div class="one">
+      <h3>Consultation Price</h3>
+    </div>
+    
+    <div class="form-container">
+      <h2 *ngIf="currentEditId; else createPriceTemplate">Update Consultation Price</h2>
+      <ng-template #createPriceTemplate>
+        <h2>Set Consultation Price</h2>
+      </ng-template>
+      <form [formGroup]="consultationForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="ratePerMinute">Rate per Minute (in currency):</label>
+          <input
+            type="number"
+            id="ratePerMinute"
+            formControlName="ratePerMinute"
+            class="form-control"
+            placeholder="Enter rate per minute"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <div class="table-container">
+      <div class="one">
+        <h3>Price Lists</h3>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Rate per Minute</th>
+            <th>Actions</th> <!-- New Actions column -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let price of consultationPrices">
+            <td>{{ price.id }}</td>
+            <td>{{ price.ratePerMinute }}</td>
+            <td>
+              <button (click)="editPrice(price)" class="btn btn-warning btn-small">
+                <i class="fa fa-pencil" aria-hidden="true"></i> 
+              </button>
+              <button (click)="deletePrice(price.id!)" class="btn btn-danger btn-small">
+                <i class="fa fa-trash" aria-hidden="true"></i> 
+              </button>
+            </td>
+            
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

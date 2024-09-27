@@ -1,0 +1,62 @@
+/* Reuse styles from the main blog CSS */
+.latestblog {
+    margin-top: 2%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .latest-blogs {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .blog {
+    background-color: #ffffff;
+    border-radius: 15px;
+    width: 30%;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .blog:hover {
+    transform: translateY(-5px);
+  }
+  
+  .blog-image-container {
+    width: 100%;
+    height: 180px;
+  }
+  
+  .blog-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .blog-content {
+    padding: 15px;
+  }
+  
+  .blog h3 {
+    font-size: 22px;
+    margin: 10px 0;
+  }
+  
+  .blog p {
+    font-size: 14px;
+    color: #888888;
+  }
+  
+  .blog button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

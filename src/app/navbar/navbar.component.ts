@@ -20,6 +20,8 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     // Check login state on initialization
     this.isLoggedIn = this.authService.isLoggedIn();
+    const currentUser = sessionStorage.getItem('currentUser');
+    this.isLoggedIn = !!currentUser;  // If currentUser exists, isLoggedIn becomes true
   }
 
   onClickHome() {
@@ -65,6 +67,10 @@ export class NavbarComponent implements OnInit {
     this.authService.logout();
     this.isLoggedIn = false;
     this.showDropdown = false;
+     // Clear session and reload page
+     sessionStorage.removeItem('currentUser');
+     this.isLoggedIn = false;
+     // Optionally reload or navigate
   }
 
   setActiveTab(tabName: string) {

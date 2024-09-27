@@ -1,46 +1,50 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-interface Customer {
+
+interface Astrologer {
   email: string;
   password: string;
+  regId: string; // Add regId to the interface
 }
+
 @Component({
   selector: 'app-astrologer-login',
   templateUrl: './astrologer-login.component.html',
-  styleUrl: './astrologer-login.component.css'
+  styleUrls: ['./astrologer-login.component.css']
 })
 export class AstrologerLoginComponent {
   email: string = '';
   password: string = '';
-  customer: Customer | null = null;
+  astrologer: Astrologer | null = null; // Update to use Astrologer
   errorMessage: string = '';
 
-  apiUrl = 'http://localhost:8081/';
+  apiUrl = 'http://localhost:8075/';
 
   constructor(private http: HttpClient, private router: Router) { }
 
   validateCredentials() {
     this.errorMessage = '';
-    this.http.get<Customer>(this.apiUrl + "api/astrologers/email/" + this.email).subscribe(
+    this.http.get<Astrologer>(this.apiUrl + "api/astrologers/email/" + this.email).subscribe(
       success => {
-        this.customer = success;
-        if (this.customer) {
-          if (this.customer.password === this.password) {
-            // Store customer data in localStorage
-            localStorage.setItem('currentUser', JSON.stringify(this.customer));
+        this.astrologer = success; // Update to use astrologer
+        if (this.astrologer) {
+          if (this.astrologer.password === this.password) {
+            // Store astrologer data in localStorage
+            localStorage.setItem('currentUser', JSON.stringify(this.astrologer));
+            // Store regId in sessionStorage
+            sessionStorage.setItem('regId', this.astrologer.regId);
             this.router.navigateByUrl("/astrodash");
           } else {
             this.errorMessage = 'Password does not match.';
           }
         } else {
-          this.errorMessage = 'Customer with this email not found.';
+          this.errorMessage = 'Astrologer with this email not found.';
         }
       },
       error => {
-        console.error('Error fetching customer:', error);
-        this.errorMessage = 'Error fetching customer data.';
+        console.error('Error fetching astrologer:', error);
+        this.errorMessage = 'Error fetching astrologer data.';
       }
     );
   }

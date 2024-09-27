@@ -1,4 +1,4 @@
-
+// astrologer service .ts
 
 // getAstrologers(): Observable<Astrologer[]> 
   // return this.http.get<Astrologer[]>(this.apiUrl);
@@ -11,7 +11,7 @@
     providedIn: 'root'
   })
   export class AstrologerService {
-    private apiUrl = 'http://localhost:8080/api/astrologers';
+    private apiUrl = 'http://localhost:8075/api/astrologers';
   
     constructor(private http: HttpClient) {}
   
@@ -22,19 +22,19 @@
     }
   
     getAllAstrologers(): Observable<any[]> {
-      return this.http.get<any[]>(`${this.apiUrl}/all`);
+      return this.http.get<any[]>(`${this.apiUrl}/get-astrologers`);
     }
   
-    approveAstrologer(id: number): Observable<void> {
-      return this.http.put<void>(`${this.apiUrl}/approve/${id}`, {});
+    approveAstrologer(regId: string): Observable<void> {
+      return this.http.put<void>(`${this.apiUrl}/approve/${regId}`, {});
     }
   
-    rejectAstrologer(id: number): Observable<void> {
-      return this.http.put<void>(`${this.apiUrl}/reject/${id}`, {});
+    rejectAstrologer(regId: string): Observable<void> {
+      return this.http.put<void>(`${this.apiUrl}/reject/${regId}`, {});
     }
   
-    deleteAstrologer(id: number): Observable<void> {
-      return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    deleteAstrologer(regId: number): Observable<void> {
+      return this.http.delete<void>(`${this.apiUrl}/${regId}`);
     }
   
     searchAstrologers(searchTerm: string): Observable<any[]> {

@@ -30,7 +30,7 @@ export class BlogsComponent implements OnInit {
  }
   gerData(){
     
-   this.http.get("http://localhost:8081/api/blogs").subscribe(
+   this.http.get("http://localhost:8075/api/blogs").subscribe(
     (data)=>{
       this.data=data
 
@@ -43,7 +43,7 @@ export class BlogsComponent implements OnInit {
   }
   getEducation(){
     
-    this.http.get("http://localhost:8081/api/blogs/education").subscribe(
+    this.http.get("http://localhost:8075/api/blogs/education").subscribe(
      (data)=>{
        this.data=data
       // const objectURL = URL.createObjectURL(data);
@@ -59,7 +59,7 @@ export class BlogsComponent implements OnInit {
    
    getLifeStyle(){
     
-    this.http.get("http://localhost:8081/api/blogs/lifestyle").subscribe(
+    this.http.get("http://localhost:8075/api/blogs/lifestyle").subscribe(
      (data)=>{
        this.data=data
       // const objectURL = URL.createObjectURL(data);
@@ -74,7 +74,7 @@ export class BlogsComponent implements OnInit {
    }
    getTec(){
     
-    this.http.get("http://localhost:8081/api/blogs/tecnology").subscribe(
+    this.http.get("http://localhost:8075/api/blogs/tecnology").subscribe(
      (data)=>{
        this.data=data
       // const objectURL = URL.createObjectURL(data);
@@ -89,7 +89,7 @@ export class BlogsComponent implements OnInit {
    }
    getHelth(){
     
-    this.http.get("http://localhost:8081/api/blogs/helth").subscribe(
+    this.http.get("http://localhost:8075/api/blogs/helth").subscribe(
      (data)=>{
        this.data=data
       // const objectURL = URL.createObjectURL(data);

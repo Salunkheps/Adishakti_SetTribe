@@ -27,7 +27,9 @@ import { ManageBlogsComponent } from './manage-blogs/manage-blogs.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { PaymentComponent } from './payment/payment.component';
 import { AuthService } from './auth.guard';
-
+import { HealthcareComponent } from './healthcare/healthcare.component';
+import { ChatComponent } from './chat/chat.component';
+import { ConsultationPriceComponent } from './consultation-price/consultation-price.component';
 
 // import { NavbarComponent } from './navbar/navbar.component';
 
@@ -42,7 +44,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'feedback', component: FeedbackFormComponent },
   { path: 'astrologer-signup', component: AstrologerSignupComponent },
-  { path: 'chatwithastro/:id', component: ChatWithAstrologerComponent, canActivate: [AuthService] },
+  { path: 'chatwithastro/:reg_id', component: ChatWithAstrologerComponent, canActivate: [AuthService] },
   { path: 'astrodash', component: AstrologerDashboardComponent },
   { path: 'astroprofile', component: AstroProfileComponent },
   { path: 'astroclient', component: ClientListComponent },
@@ -66,7 +68,9 @@ const routes: Routes = [
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'admin-dashbord', component: AdminDashboardComponent },
   { path: 'payment', component: PaymentComponent },
-
+  { path: 'healthcare', component: HealthcareComponent },
+  { path: 'chat', component: ChatComponent },
+  { path: 'consultation-price', component: ConsultationPriceComponent },
 ];
 
 @NgModule({

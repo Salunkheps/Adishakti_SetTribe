@@ -1,3 +1,4 @@
+
 body, html {
   margin: 0;
   padding: 0;
@@ -11,16 +12,27 @@ body, html {
 
 .sidebar {
   width: 250px;
-  background-color: #333;
-  color: #fff;
+  background-color: #34495e; /* Darker navy */
+  color: #ecf0f1;
   display: flex;
   flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .sidebar-header {
-  padding: 20px;
+  padding: 25px 20px;
   text-align: center;
-  background-color: #444;
+  background-color: #3b5998; /* Modern blue tone */
+  font-size: 1.5em;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #1abc9c;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-header:hover {
+  background-color: #3b5998;
 }
 
 .sidebar-menu {
@@ -36,32 +48,49 @@ body, html {
 .sidebar-menu li a {
   display: block;
   padding: 15px 20px;
-  color: #fff;
+  color: #ecf0f1;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  font-size: 1.1em;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
 .sidebar-menu li a:hover {
-  background-color: #555;
+  background-color: #3b5998; /* Bright accent color */
+  color: #fff;
+  transform: translateX(10px);
 }
 
 .main-content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  background-color: #ffffff; /* White content area */
+  padding: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.main-content:hover {
+  background-color: #f8f8f8;
 }
 
 .topbar {
-  background-color: #420E57;
-  color: #fff;
-  padding: 15px 20px;
+  background-color: #3b5998; /* Modern blue tone */
+  color: #ffffff;
+  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  animation: fadeIn 0.5s ease;
 }
 
 .topbar h1 {
   margin: 0;
+  font-size: 1.8em;
+  font-weight: 700;
 }
 
 .user-info {
@@ -97,6 +126,12 @@ body, html {
   text-align: center;
   margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .stat h3 {
@@ -112,6 +147,7 @@ body, html {
   display: flex;
   flex-direction: column;
   max-width: 400px;
+  animation: slideIn 0.5s ease;
 }
 
 .availability-form label {
@@ -126,6 +162,12 @@ body, html {
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+.availability-form select:hover, 
+.availability-form input:hover {
+  border-color: #3b5998;
 }
 
 .availability-form button {
@@ -133,12 +175,13 @@ body, html {
   color: #fff;
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .availability-form button:hover {
-  background-color: #420E57;
+  background-color: #661f83;
+  transform: scale(1.05);
 }
-
 
 .report-container {
   width: 80%;
@@ -149,6 +192,7 @@ body, html {
 .report-header {
   text-align: center;
   margin-bottom: 20px;
+  animation: fadeIn 0.5s ease;
 }
 
 .report-header h1 {
@@ -180,10 +224,12 @@ body, html {
 .table-of-contents a {
   text-decoration: none;
   color: #007bff;
+  transition: color 0.3s ease;
 }
 
 .table-of-contents a:hover {
   text-decoration: underline;
+  color: #0056b3;
 }
 
 .report-main {
@@ -199,6 +245,7 @@ body, html {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin-bottom: 20px;
+  animation: slideIn 0.5s ease;
 }
 
 .report-section h2 {
@@ -213,4 +260,14 @@ body, html {
   text-align: center;
   font-size: 0.9em;
   color: #666;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }

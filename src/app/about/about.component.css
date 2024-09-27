@@ -1,0 +1,122 @@
+.about {
+  margin-top: 0%;
+  padding-top: 50px; /* Adjust padding to give space for heading */
+  text-align: center; /* Center content inside the about section */
+}
+
+/* Center the heading at the top of the page */
+h2 {
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  color: #080808;
+  text-align: center; /* Center the text */
+  margin: 20px auto; /* Ensure the heading is centered */
+  position: relative;
+  transition: all 0.4s ease 0s;
+}
+
+/* Decorative elements for the heading */
+.one h2 {
+  text-transform: uppercase;
+  padding-bottom: 5px;
+  margin-bottom: 5%; /* Adjust the bottom margin */
+  position: relative;
+}
+
+.one h2:before,
+.one h2:after {
+  content: "";
+  position: absolute;
+  background-color: #b80000;
+  left: 50%; /* Center the pseudo-elements */
+  transform: translateX(-50%);
+}
+
+.one h2:before {
+  width: 28px;
+  height: 5px;
+  bottom: -10px; /* Adjust the distance from the heading */
+}
+
+.one h2:after {
+  width: 100px;
+  height: 1px;
+  top: 100%; /* Place below the heading */
+  margin-top: 7px;
+}
+
+/* About section styling remains unchanged */
+.shadowed-img {
+  box-shadow: 0px 6px 12px rgba(150, 54, 174, 0.2); /* Soft purple shadow */
+  border-radius: 12px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.shadowed-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(150, 54, 174, 0.3);
+}
+
+img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.hs_about_img_main_wrapper img:hover {
+  transform: scale(1.07);
+  transition: transform 0.5s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-shadow: 0 10px 20px rgba(150, 54, 174, 0.3);
+}
+
+/* Button styles remain unchanged */
+.btn {
+  background-color: #9636ae;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 10px rgba(150, 54, 174, 0.2);
+}
+
+.btn:hover {
+  background-color: #0088ff;
+  box-shadow: 0 6px 12px rgba(0, 136, 255, 0.3);
+  transform: translateY(-3px);
+}
+
+.btn:active {
+  background-color: #0057a3;
+  transform: translateY(1px);
+}
+
+/* Responsive adjustments for mobile screens */
+@media screen and (max-width: 768px) {
+  .about {
+      padding: 30px;
+  }
+
+  img {
+      height: auto;
+  }
+
+  .btn {
+      padding: 10px 20px;
+      font-size: 14px;
+  }
+}
+
+.one h2 span {
+  color: #420E57;
+}
+
+/* Justify the paragraph text */
+.hs_about_us_cont_main_wrapper p {
+  text-align: justify; /* Justify the paragraph text */
+  margin: 15px 0; /* Add some margin for spacing */
+}

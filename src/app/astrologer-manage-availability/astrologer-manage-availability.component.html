@@ -1,0 +1,49 @@
+<!-- Dashboard Section -->
+<section class="dashboard-section">
+    <div class="stat">
+      <h3>Total Clients</h3>
+      <p>{{ totalClients }}</p>
+    </div>
+    <div class="stat">
+      <h3>Reviews Received</h3>
+      <p>{{ reviewsCount }}</p>
+    </div>
+    <div class="stat">
+      <h3>Total Revenue</h3>
+      <p>{{ totalRevenue | currency }}</p>
+    </div>
+    <div class="stat">
+      <h3>Ratings Received</h3>
+      <p>{{ ratingsCount }}</p>
+    </div>
+  </section>
+
+  <!-- Manage Availability Section -->
+  <section class="availability-section">
+    <h2>Manage Availability</h2>
+    <div class="availability-form">
+      <label for="status">Availability Status:</label>
+      <select id="status" [(ngModel)]="availabilityStatus">
+        <option value="available">Available</option>
+        <option value="unavailable">Unavailable</option>
+      </select>
+
+      <label for="rates">Consultation Rates:</label>
+      <input
+        type="number"
+        id="rates"
+        [(ngModel)]="consultationRates"
+        placeholder="Enter rate"
+      />
+
+      <label for="working-hours">Working Hours:</label>
+      <input
+        type="text"
+        id="working-hours"
+        [(ngModel)]="workingHours"
+        placeholder="Enter working hours"
+      />
+
+      <button (click)="updateAvailability()">Update</button>
+    </div>
+  </section>

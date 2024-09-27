@@ -1,41 +1,166 @@
+// manage skill component . ts
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Config } from 'datatables.net';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-skills',
   templateUrl: './manage-skills.component.html',
-  styleUrl: './manage-skills.component.css'
+  styleUrls: ['./manage-skills.component.css']
 })
 export class ManageSkillsComponent implements OnInit {
-  skillscntain: string[] = []; // Array to hold skill items
+  newSkillName: string = ''; // Model for skill name input
+  skills: any[] = []; // Array to hold the skills
+  editIndex: number = -1; // Keep track of the index of the skill being edited
+  apiUrl: string = 'http://localhost:8075/api/manage-skills'; // Spring Boot API URL
+  dtOptions: Config = {};
 
-  constructor() {}
+  // Font Awesome icons
+  faEdit = faEdit;
+  faTrash = faTrash;
+
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.loadSkills();
+    this.dtOptions = {
+      ajax: (dataTablesParameters: any, callback) => {
+        this.http
+          .get<any[]>(this.apiUrl) // Fetch skills from your API
+          .subscribe((data) => {
+            callback({
+              recordsTotal: data.length,
+              recordsFiltered: data.length,
+              data: data // Pass the fetched skills data to DataTables
+            });
+          }, (error) => {
+            console.error("Error fetching skills:", error);
+            alert("Error fetching skills");
+          });
+      },
+      columns: [
+        {
+          title: 'Sr. No.',
+          data: null,
+          render: (data: any, type: any, row: any, meta: any) => {
+            return meta.row + 1; // This generates the serial number
+          }
+        },
+        {
+          title: 'Skill Name',
+          data: 'skillname' // Ensure this matches the skill name field in your backend data
+        },
+        {
+          title: 'Actions',
+          render: (data: any, type: any, row: any, meta: any) => {
+            return `
+                <button class="edit-btn" data-index="${meta.row}">
+                  <fa-icon [icon]="faEdit"></fa-icon> Edit
+                </button>
+                <button class="delete-btn" data-index="${meta.row}">
+                  <fa-icon [icon]="faTrash"></fa-icon> Delete
+                </button>`;
+          },
+          orderable: false
+        }
+      ]
+    };
+
+    // Fetch the initial skill list
+    this.getAllSkills();
   }
 
-  addSkills(): void {
-    const newSkill = prompt('Enter new skill:');
-    if (newSkill) {
-      this.skillscntain.push(newSkill);
-    }
+  ngAfterViewInit(): void {
+    // Attach event listeners after the DataTable has been initialized
+    $(document).on('click', '.edit-btn', (event) => {
+      const index = $(event.currentTarget).data('index');
+      this.editSkill(index);
+    });
+
+    $(document).on('click', '.delete-btn', (event) => {
+      const index = $(event.currentTarget).data('index');
+      this.deleteSkill(index);
+    });
+  }
+  // Fetch all skills from API
+  getAllSkills(): void {
+    this.http.get<any[]>(this.apiUrl).subscribe((data) => {
+      this.skills = data;
+    });
   }
 
-  editSkill(index: number): void {
-    const newSkill = prompt('Enter new skill:', this.skillscntain[index]);
-    if (newSkill) {
-      this.skillscntain[index] = newSkill;
+  // Add a new skill and immediately update the skills array
+  addSkill(): void {
+    if (this.newSkillName) {
+      const skill = { skillname: this.newSkillName }; // Create skill object
+      this.http.post<any>(this.apiUrl, skill).subscribe((createdSkill) => {
+        // Push the new skill into the local array for immediate update in the UI
+        this.skills.push(createdSkill);
+        this.resetForm(); // Reset the form after adding the skill
+      });
     }
+    Swal.fire("Skill added!");
+    window.location.reload(); // Reload the page after approval
   }
+
 
   deleteSkill(index: number): void {
-    if (confirm('Are you sure you want to delete this skill?')) {
-      this.skillscntain.splice(index, 1);
+    if (index >= 0 && index < this.skills.length) {
+      const skill = this.skills[index];
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.http.delete(`${this.apiUrl}/${skill.id}`).subscribe(() => {
+            this.getAllSkills(); // Reload the skills after deleting
+            Swal.fire({
+              title: "Deleted!",
+              text: "The skill has been deleted.",
+              icon: "success"
+            });
+          }, (error) => {
+            console.error("Error deleting skill:", error);
+          });
+          window.location.reload(); // Reload the page after skill update
+        }
+      });
+    } else {
+      console.error("Invalid index for deleteSkill:", index);
     }
   }
 
-  private loadSkills(): void {
-    // Simulate loading initial skill items
-    this.skillscntain = ['Example Skill 1', 'Example Skill 2', 'Example Skill 3'];
+
+  // Edit an existing skill
+  editSkill(index: number): void {
+    const skill = this.skills[index];
+    this.newSkillName = skill.skillname;
+    this.editIndex = index;
+  }
+
+  // Update the skill via API
+  updateSkill(): void {
+    if (this.newSkillName && this.editIndex !== -1) {
+      const skill = { id: this.skills[this.editIndex].id, skillname: this.newSkillName };
+      this.http.put(`${this.apiUrl}/${skill.id}`, skill).subscribe(() => {
+        Swal.fire("Skill has been updated!");
+        window.location.reload(); // Reload the page after skill update
+        this.getAllSkills(); // Reload the skills after updating
+        this.resetForm();
+      });
+    }
+  }
+
+  // Reset form fields
+  resetForm(): void {
+    this.newSkillName = '';
+    this.editIndex = -1; // Reset edit mode
   }
 }

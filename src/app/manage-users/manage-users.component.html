@@ -1,71 +1,62 @@
+<!-- Manage user component.html -->
 <div class="dashboard-container">
-    <nav class="sidebar">
-      <div class="sidebar-header">
-        <h2>Menu</h2>
-      </div>
-      <ul class="sidebar-menu">
-        <li><a routerLink="/admin" routerLinkActive="active">Dashboard</a></li>
-        <li><a routerLink="/manageusers" routerLinkActive="active">Manage Users</a></li>
-        <li><a routerLink="/manageastrologer" routerLinkActive="active">Manage Astrologers</a></li>
-        <li><a routerLink="/manageblog" routerLinkActive="active">Manage Blog</a></li>
-        <li><a routerLink="/manageskills" routerLinkActive="active">Manage Skills</a></li>
-      </ul>
-    </nav>
-  
-    <div class="main-content">
-      <section class="user-management">
-        <h2>Manage Users</h2>
-        <button class="btn btn-primary mb-3" (click)="addUser()">Add User</button>
-        
-        <!-- Search Field -->
-        <div class="mb-3">
-          <input type="text" [(ngModel)]="searchTerm" (input)="searchUsers()" placeholder="Search Users..." class="form-control">
-        </div>
-  
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let user of filteredUsers; let i = index">
-              <td>
-                <input type="text" [(ngModel)]="user.id" [disabled]="!isEditable[i]">
-              </td>
-              <td>
-                <input type="text" [(ngModel)]="user.name" [disabled]="!isEditable[i]">
-              </td>
-              <td>
-                <input type="email" [(ngModel)]="user.email" [disabled]="!isEditable[i]">
-              </td>
-              <td>
-                <button class="btn btn-warning" (click)="toggleEdit(i)">Edit</button>
-                <button class="btn btn-danger" (click)="deleteUser(i)">Delete</button>
-                <button class="btn btn-success" (click)="saveUser(user)" [hidden]="!isEditable[i]">Save</button>
-              </td>
-            </tr>
-            <tr [hidden]="!isNewUser">
-              <td>
-                <input type="text" [(ngModel)]="newUser.id">
-              </td>
-              <td>
-                <input type="text" [(ngModel)]="newUser.name">
-              </td>
-              <td>
-                <input type="email" [(ngModel)]="newUser.email">
-              </td>
-              <td>
-                <button class="btn btn-success" (click)="saveNewUser()">Save</button>
-                <button class="btn btn-danger" (click)="cancelNewUser()">Cancel</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>Adishkati</h2>
     </div>
+    <ul class="sidebar-menu">
+      <li><a routerLink="/admin" routerLinkActive="active"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
+      <li><a routerLink="/manageusers" routerLinkActive="active"><i ><img src="manageuser.png" width="30px"></i> Manage Users</a></li>
+      <li><a routerLink="/manageastrologer" routerLinkActive="active"><i ><img src="manageastro.png" width="30px"></i> Manage Astrologers</a></li>
+      <li><a routerLink="/manageblog" routerLinkActive="active"><i ><img src="manageblog.png" width="30px"></i> Manage Blog</a></li>
+      <li><a routerLink="/manageskills" routerLinkActive="active"><i ><img src="manageskills.png" width="30px"></i> Manage Skills</a></li>
+      <li><a  href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
+
+    </ul>
+  </nav>
+
+  <div class="main-content">
+    <header class="topbar">
+      <!-- <h1>Dashboard</h1> -->
+      <div class="user-info">
+        <p>Welcome,</p>
+        <a href="#" >Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+      </div>
+    </header>
+
+
+
+
+    <section class="user-management">
+      <div class="one">
+        <h3>Manage User</h3>
+        <!-- <h4><span>&nbsp;</span></h4> -->
+      </div>
+      <!-- Search Field -->
+
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Sr. No.</th> <!-- Add this for serial number -->
+            <th>First Name</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of filteredUsers;">
+            <td> {{ user.regId }} </td>
+            <td> {{ user.firstName }} + {{ user.lastName }} </td>
+            <td> {{ user.email }} </td>
+            <td>
+              <button class="edit-btn" (click)="deactivateUser(user.regId)">
+                <fa-icon [icon]="faEdit"></fa-icon> Deactivate
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
   </div>
-  
+</div>

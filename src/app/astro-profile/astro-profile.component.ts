@@ -10,7 +10,7 @@ import { throwError } from 'rxjs';
 })
 export class AstroProfileComponent implements OnInit {
   user: any = {};
-  private apiUrl = 'http://localhost:8081/';
+  private apiUrl = 'http://localhost:8075/';
 
   constructor(private http: HttpClient) { }
 

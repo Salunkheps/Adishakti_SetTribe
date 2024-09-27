@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
-interface Astrologer {
+interface astrologerImages {
   id: number;
+  name: string | null;
+  type: string | null;
+  imageData: string | null;
+}
+interface Astrologer {
+  regId: string;
   firstName: string;
   lastName: string;
   skills: string;
@@ -27,40 +32,73 @@ export class FindAstrologersComponent implements OnInit {
 
   constructor(private http: HttpClient, private router: Router) {
     this.getAllData();
+    this.filteredAstrologers = this.data;
+
   }
 
   ngOnInit(): void {
     this.filteredAstrologers = this.data;
   }
 
+  // filterAstrologers(): void {
+  //   const searchTerm = this.searchTerm.toLowerCase().trim();
+
+  //   if (searchTerm === '') {
+  //     this.getAllData();
+  //     return;
+  //   }
+
+  //   this.getSearchData();
+  //   this.filteredAstrologers = this.data.filter(
+  //     (astrologer: Astrologer) =>
+  //       astrologer.firstName.toLowerCase().includes(searchTerm) ||
+  //       astrologer.skills.toLowerCase().includes(searchTerm)
+  //   );
+  // }
   filterAstrologers(): void {
     const searchTerm = this.searchTerm.toLowerCase().trim();
-
     if (searchTerm === '') {
-      this.getAllData();
-      return;
+      this.filteredAstrologers = [...this.data];
+    } else {
+      this.filteredAstrologers = this.data.filter(
+        (astrologer: Astrologer) =>
+          astrologer.firstName.toLowerCase().includes(searchTerm) ||
+          astrologer.skills.toLowerCase().includes(searchTerm)
+      );
     }
-
-    this.getSearchData();
-    this.filteredAstrologers = this.data.filter(
-      (astrologer: Astrologer) =>
-        astrologer.firstName.toLowerCase().includes(searchTerm) ||
-        astrologer.skills.toLowerCase().includes(searchTerm)
-    );
   }
 
-  navigateToCall(astrologer: Astrologer): void {
-    this.router.navigate(['/callwithastro', astrologer.id]);
+  navigateToCall(astrologer: any) {
+    // Store astrologer details in session storage
+    sessionStorage.setItem('selectedAstrologer', JSON.stringify({
+      regId: astrologer.regId,
+      firstName: astrologer.firstName,
+      lastName: astrologer.lastName,
+      imageData: astrologer.astrologerImages ? astrologer.astrologerImages.imageData : null
+    }));
+
+    // Navigate to the call page
+    this.router.navigate(['/call']); // Update this route as needed
   }
 
-  navigateToChat(astrologer: Astrologer): void {
-    this.router.navigate(['/chatwithastro', astrologer.id]);
+
+  navigateToChat(astrologer: any) {
+    // Store astrologer details in session storage
+    sessionStorage.setItem('selectedAstrologer', JSON.stringify({
+      regId: astrologer.regId,
+      firstName: astrologer.firstName,
+      lastName: astrologer.lastName,
+      imageData: astrologer.astrologerImages ? astrologer.astrologerImages.imageData : null
+    }));
+        
+    // Navigate to the chat page
+    this.router.navigate(['/chatwithastro', astrologer.regId]); // Update this route as needed
   }
 
   getAllData(): void {
     this.http
       .get<Astrologer[]>(
-        'http://localhost:8081/api/astrologers/get-astrologers'
+        'http://localhost:8075/api/astrologers/get-astrologers'
       )
       .subscribe(
         (data) => {
@@ -76,7 +114,7 @@ export class FindAstrologersComponent implements OnInit {
   getSearchData(): void {
     this.http
       .get<Astrologer[]>(
-        `http://localhost:8081/api/astrologers/get-data/${this.searchTerm}`
+        `http://localhost:8075/api/astrologers/get-data/${this.searchTerm}`
       )
       .subscribe(
         (data) => {

@@ -1,104 +1,111 @@
+/* Styling for background image */
+.background-image {
+  position: fixed; /* Makes the background image fixed and fills the viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  object-fit: cover;
+  opacity: 0.8; /* Adjust transparency for better readability */
+}
+
+/* Overall body style */
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f7f7f7;
   margin: 0;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #000; /* Black text color */
+  overflow: hidden; /* Prevent scrolling */
 }
 
+/* Main signup container */
+.signup-container {
+  display: flex;
+  justify-content: center; /* Center align */
+  align-items: center; /* Center vertically */
+  width: 100%; /* Full width */
+  padding: 50px; /* Reduced padding */
+}
+
+/* Sign Up Form Container */
+.signup-form-container {
+  width: 800px; /* Set a fixed width for the form */
+}
+
+/* Sign Up Form */
 .signup-form {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 30px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(135deg, #f0f0f0, #d9d9d9);
-  box-sizing: border-box; /* Ensure padding is included in width */
+  background-color: rgba(234, 228, 221, 0.9); /* Make form background semi-transparent */
+  border-radius: 20px;
+  padding: 20px; /* Reduced padding */
+  box-shadow: 0 20px 40px rgba(134, 70, 156, 0.4);
 }
 
+/* Sign Up Form Heading */
 .signup-form h2 {
+  font-size: 24px; /* Adjusted font size */
+  font-weight: bold;
+  margin-bottom: 20px;
   text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+  color: #000;
 }
 
-.form-group {
-  margin-bottom: 20px;
+/* Form content */
+.form-content {
+  display: flex;
+  justify-content: space-between;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  color: #333;
-  font-weight: 500;
+/* Form columns */
+.form-column {
+  width: 48%; /* Adjusted to keep two columns */
 }
 
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 10px;
+/* Form fields */
+.signup-form input, .signup-form select {
+  padding: 10px; /* Adjusted padding */
   border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-  color: #333;
-  box-sizing: border-box; /* Ensure padding is included in width */
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  outline: none;
-  border-color: #5e72e4;
-  box-shadow: 0 0 5px rgba(94, 114, 228, 0.5);
-}
-
-.password-container {
-  position: relative;
-}
-
-.password-container input {
+  border-radius: 5px; /* Slightly smaller border radius */
+  font-size: 14px; /* Adjusted font size */
+  margin-bottom: 10px; /* Adjusted margin */
   width: 100%;
-  padding-right: 40px;
-  box-sizing: border-box; /* Ensure padding is included in width */
 }
 
-.eye-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+/* Submit button */
+.signup-button {
+  padding: 10px; /* Smaller button */
+  background-color: #6a1b9a;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 14px; /* Smaller font size */
+  font-weight: bold;
   cursor: pointer;
-  font-size: 20px;
-  color: #333;
+  width: 100%; /* Full width */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.signup-button:hover {
+  background-color: #4a148c;
+  transform: translateY(-2px);
 }
 
 button[type="submit"] {
-  width: 100%;
-  padding: 15px;
-  background-color: #5e72e4;
-  border: none;
-  border-radius: 4px;
+  background-color: #3b5998;
   color: #ffffff;
-  font-size: 18px;
+  padding: 10px 10px; /* Reduced padding for a smaller button */
+  border: none;
+  border-radius: 3px;
+  font-size: 0.9em; /* Slightly smaller font size */
   cursor: pointer;
   transition: background-color 0.3s ease;
-  box-sizing: border-box; /* Ensure padding is included in width */
-}
-
-button[type="submit"]:hover {
-  background-color: #4a60d0;
-}
-
-.login-link {
-  text-align: center;
-  margin-top: 20px;
-  color: #333;
-}
-
-.login-link a {
-  color: #5e72e4;
-  text-decoration: none;
-}
-
-.login-link a:hover {
-  text-decoration: underline;
+  margin-top: 15px; /* Reduced margin above the button */
+  width: 100px; /* Fixed width for the button */
+  display: block; /* Make the button a block element */
+  /* margin-left: auto; /* Center the button horizontally 
+  margin-right: auto; Center the button horizontally */
 }
