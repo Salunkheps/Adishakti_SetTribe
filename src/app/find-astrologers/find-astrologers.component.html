@@ -2,47 +2,49 @@
 <div class="outside">
   <div class="find-astrologers">
     <div class="search-bar">
-      <input
-        type="text"
-        placeholder="Search for astrologers..."
-        [(ngModel)]="searchTerm"
-        (input)="filterAstrologers()"
-      />
+      <h1 class="heading">Find your Astrologer</h1>
+      <input type="text" placeholder="Search for astrologers..." [(ngModel)]="searchTerm"
+        (input)="filterAstrologers()" />
     </div>
     <div class="astrologer-list">
       <div class="astrologer" *ngFor="let astrologer of filteredAstrologers">
-        <img
-          [src]="
-            'data:image/png;base64,' + astrologer.astrologerImages.imageData
-          "
-          alt="Astrologer Image"
-          class="astrologer-image"
-        />
+        <ng-container *ngIf="astrologer.astrologerImages && astrologer.astrologerImages.imageData">
+          <img [src]="'data:image/png;base64,' + astrologer.astrologerImages.imageData" alt="Astrologer Image"
+            class="astrologer-image" />
+        </ng-container>
+
         <div class="astrologer-details">
-          <h3>
-            {{ astrologer.firstName | uppercase }}
-            {{ astrologer.lastName | uppercase }}
-          </h3>
+          <!-- <div class="astrologer-wrapper">
+            <span class="astrologername">
+              {{ astrologer.firstName | uppercase }} {{ astrologer.lastName | uppercase }}
+            </span>
+            <span class="checkbox-wrapper-35">
+              <input value="private" name="switch" id="switch" type="checkbox" class="switch" disabled>
+              <label for="switch">
+                <span class="switch-x-text">Astrologer is </span>
+                <span class="switch-x-toggletext">
+                  <span class="switch-x-unchecked"><span class="switch-x-hiddenlabel">Offline: </span>Offline</span>
+                  <span class="switch-x-checked"><span class="switch-x-hiddenlabel">Online: </span>Online</span>
+                </span>
+              </label>
+            </span>
+          </div> -->
+          
           <p>Skills: {{ astrologer.skills }}</p>
           <p>ratePerMinute: {{ astrologer.ratePerMinute }}</p>
           <p>
             Languages Known:
-            <span *ngFor="let language of astrologer.languagesKnown"
-              >{{ language }},
+            <span *ngFor="let language of astrologer.languagesKnown">{{ language }},
             </span>
           </p>
           <p>
             Rating:
             <span class="star-rating">
-              <span
-                *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
-                (mouseover)="hoverRating = i + 1"
-                (mouseleave)="hoverRating = null"
-                [class.filled]="
+              <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" (mouseover)="hoverRating = i + 1"
+                (mouseleave)="hoverRating = null" [class.filled]="
                   astrologer.rating >= i + 1 ||
                   (hoverRating && hoverRating >= i + 1)
-                "
-              >
+                ">
                 &#9733;
               </span>
             </span>
@@ -50,9 +52,9 @@
           </p>
         </div>
         <div class="astrologer-actions">
-          <button class="btn-chat" (click)="navigateToCall(astrologer)">
+          <!-- <button class="btn-chat" (click)="navigateToCall(astrologer)">
             Call
-          </button>
+          </button> -->
           <button class="btn-call" (click)="navigateToChat(astrologer)">
             Chat
           </button>
@@ -61,4 +63,5 @@
     </div>
   </div>
 </div>
-<app-footer></app-footer>
+<!-- <app-footer></app-footer> -->
+<app-footer2></app-footer2>

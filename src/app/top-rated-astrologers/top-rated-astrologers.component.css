@@ -1,78 +1,103 @@
 /* Style for the main heading */
-h1 {
-  text-align: center; /* Center the text */
-  font-size: 2.5em; /* Adjust font size for prominence */
-  color: #333; /* Set a dark color for the text */
-  margin-bottom: 20px; /* Space below the heading */
-  font-family: 'Arial', sans-serif; /* Use a clean, sans-serif font */
-  font-weight: bold; /* Make the font bold */
-}
+/* h1 {
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 10px;
+  letter-spacing: 1.2px; /* Add letter spacing *
+  text-shadow: 2px 2px 5px rgba(134, 70, 156, 0.4);
+  text-align: center;
+} */
+
 
 /* Container for the astrologer list */
-.outside {
-  padding: 20px;
-}
+/* .outside {
+  padding: 90px;
+  /* background: linear-gradient(135deg, rgba(150, 54, 174, 0.2), rgba(255, 205, 234, 0.4)); Interesting gradient background 
+  background:  #e1e6d8;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(150, 54, 174, 0.3); /* Soft purple shadow 
+} */
 
+/* Ensure the cards are in a single row 
 .find-astrologers {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px; /* Space between cards */
-  justify-content: center; /* Center cards horizontally */
+  flex-wrap: nowrap; /* Prevent wrapping to the next line 
+  overflow-x: auto; /* Allow horizontal scrolling if there are too many cards 
+  gap: 20px; /* Gap between cards 
+  justify-content: flex-start; /* Align items to the start 
+  padding: 20px;
+  background-color: #f2f5fa; /* Light background for contrast 
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(150, 54, 174, 0.2); /* Soft purple shadow for the card row 
 }
 
-/* Individual card styling */
+/* List of astrologers to ensure horizontal alignment */
 .astrologer-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  flex-direction: row;
+  transition: transform 0.3s ease; /* Smooth sliding effect */
+  gap: 100px; /* Gap between cards */
 }
+
 
 /* Card styling */
 .astrologer {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background-color: #ffffff;
+  border-radius: 20px; /* Rounded corners for modern look */
   overflow: hidden;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: calc(25% - 20px); /* 4 cards per row with space between */
-  aspect-ratio: 3 / 2; /* Aspect ratio of 3:2 */
+  box-shadow: 0 6px 12px ; /* Soft purple shadow */
+  width: 300px; /* Fixed width for cards */
   display: flex;
   flex-direction: column;
-  height: 400px; /* Increased height for more content space */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
+/* Hover effect to lift the card and highlight */
+.astrologer:hover {
+  transform: translateY(-12px); /* Slight lift on hover */
+  box-shadow: 0 12px 24px rgba(150, 54, 174, 0.4); /* More prominent shadow on hover */
+  background-color: #f8f8ff; /* Subtle off-white background on hover */
+}
+
+/* Image styling */
 .astrologer-image {
   width: 100%;
-  height: 50%; /* Adjust height to maintain aspect ratio */
+  height: 200px;
   object-fit: cover;
+  border-bottom: 4px solid #007bff; /* Blue accent at the bottom of the image */
 }
 
 /* Details section styling */
 .astrologer-details {
-  padding: 15px;
+  padding: 20px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between; /* Ensure space between content and button */
+  background-color: #f9f9fb; /* Light background inside the card */
+  border-radius: 10px;
 }
 
 .astrologer-details h3 {
-  font-size: 1.2em;
+  font-size: 1.5em; /* Slightly larger font */
   margin: 0;
+  color: #333;
   font-weight: bold;
+  text-transform: uppercase; /* Modern look */
+  letter-spacing: 1px; /* Slight letter spacing for readability */
 }
 
 .astrologer-details p {
   margin: 5px 0;
-  font-size: 1em; /* Adjust font size for readability */
+  font-size: 1em;
+  color: #777; /* Softer text color */
 }
 
+/* Star rating styling */
 .star-rating {
-  color: #ffd700; /* Gold color for stars */
-}
-
-.star-rating span {
-  cursor: pointer;
-  font-size: 1.2em; /* Adjust font size of stars */
+  color: #ffd700; /* Gold stars */
+  font-size: 1.3em;
 }
 
 /* Action buttons styling */
@@ -84,20 +109,113 @@ h1 {
 }
 
 .btn-chat, .btn-call {
-  background-color: #007bff;
-  color: #fff;
+  background-color: #9636ae; /* Purple for the button */
+  color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 12px 25px;
+  border-radius: 30px; /* Rounded buttons */
   cursor: pointer;
-  font-size: 0.9em; /* Adjust font size */
-  transition: background-color 0.3s;
+  font-size: 14px;
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  margin-top: auto; /* Push the button to the bottom of the card */
+  align-self: center; /* Center-align the button horizontally */
+  box-shadow: 0 4px 8px rgba(150, 54, 174, 0.3); /* Soft purple shadow for the button */
 }
 
+/* Button hover effect */
 .btn-chat:hover, .btn-call:hover {
-  background-color: #0056b3;
+  background-color: #0088ff; /* Blue color on hover */
+  box-shadow: 0 6px 12px rgba(0, 136, 255, 0.4); /* Stronger shadow */
+  transform: translateY(-3px); /* Slight lift on hover */
 }
 
+/* Footer styling */
 .app-footer {
   margin-top: 20px;
+  text-align: center;
+  padding: 20px;
+  background-color: #9636ae;
+  color: white;
+  box-shadow: 0 -5px 15px rgba(150, 54, 174, 0.3); /* Purple shadow for footer */
+}
+
+/* Overall page styling */
+.toprated {
+  margin-top: 2%;
+}
+.astrologer-list {
+  display: flex;
+  transition: transform 0.3s ease; /* Smooth sliding effect */
+}
+
+.nav-button {
+  background-color: #9636ae; /* Purple background */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.nav-button:first-child {
+  left: 10px; /* Position for previous button */
+}
+
+.nav-button:last-child {
+  right: 10px; /* Position for next button */
+}
+
+/* === HEADING STYLE #1 === */
+.one h1 {
+  text-align: center;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+}
+.one h1:before {
+  width: 28px;
+  height: 5px;
+  display: block;
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  margin-left: -14px;
+  background-color: #b80000;
+}
+.one h1:after {
+  width: 100px;
+  height: 1px;
+  display: block;
+  content: "";
+  position: relative;
+  margin-top: 25px;
+  left: 50%;
+  margin-left: -50px;
+  background-color: #b80000;
+}
+
+h1 {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  color: #080808;
+  -webkit-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
+/* Container for the astrologer list */
+.outside {
+  padding: 90px;
+  background: white;
+  border-radius: 15px;
+  /* box-shadow: 0 10px 30px rgba(150, 54, 174, 0.3); Soft purple shadow */
+  overflow: hidden; /* Ensure no scroll bars are shown */
 }

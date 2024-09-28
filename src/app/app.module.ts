@@ -37,6 +37,16 @@ import { ManageBlogsComponent } from './manage-blogs/manage-blogs.component';
 import { AdminastrologerComponent } from './adminastrologer/adminastrologer.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { PaymentComponent } from './payment/payment.component';
+import { CommonModule } from '@angular/common';
+import { AboutComponent } from './about/about.component';
+import { Footer2Component } from './footer2/footer2.component';
+import { HealthcareComponent } from './healthcare/healthcare.component';
+import { DataTablesModule } from "angular-datatables";
+import { ChatComponent } from './chat/chat.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; // Import FontAwesomeModule
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { ConsultationPriceComponent } from './consultation-price/consultation-price.component';
+
 
 
 
@@ -66,7 +76,7 @@ import { PaymentComponent } from './payment/payment.component';
     AstroProfileComponent,
     ClientListComponent,
     AstroReportComponent,
-
+    
     InsertblogComponent,
 
     CallWithAstrologerComponent,
@@ -79,17 +89,26 @@ import { PaymentComponent } from './payment/payment.component';
     AdminastrologerComponent,
     AdminDashboardComponent,
     PaymentComponent,
+    AboutComponent,
+    Footer2Component,
+    HealthcareComponent,
+    ChatComponent,
+    ConsultationPriceComponent,
 
 
 
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    // UsersRoutingModule,
     HttpClientModule,
-
+    DataTablesModule,
+    FontAwesomeModule,
+    SweetAlert2Module,
   ],
   providers: [],
   bootstrap: [AppComponent]

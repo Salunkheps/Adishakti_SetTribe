@@ -1,72 +1,81 @@
-
-<!-- <div class="manageSkills">
+<div class="dashboard-container">
   <nav class="sidebar">
     <div class="sidebar-header">
-      <h2>Menu</h2>
+      <h2>Adishkati</h2>
     </div>
     <ul class="sidebar-menu">
-      <li><a href="admin">Dashboard</a></li>
-      <li><a href="manageusers">Manage Users</a></li>
-      <li><a href="manageastrologer">Manage Astrologers</a></li>
-      <li><a href="#">Manage Blog</a></li>
-      <li><a href="manageskills">Manage Skills</a></li>
+      <li><a routerLink="/admin" routerLinkActive="active"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
+  <li><a routerLink="/manageusers" routerLinkActive="active"><i ><img src="manageuser.png" width="30px"></i> Manage Users</a></li>
+  <li><a routerLink="/manageastrologer" routerLinkActive="active"><i ><img src="manageastro.png" width="30px"></i> Manage Astrologers</a></li>
+  <li><a routerLink="/manageblog" routerLinkActive="active"><i ><img src="manageblog.png" width="30px"></i> Manage Blog</a></li>
+  <li><a routerLink="/manageskills" routerLinkActive="active"><i ><img src="manageskills.png" width="30px"></i> Manage Skills</a></li>
+  <li><a  href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
     </ul>
   </nav>
 
-
-
-    <h2>Manage Skills</h2>
-   
-    <div class="manage-actions">
-      <button (click)="addSkills()">Add New Skills</button>
-    </div>
-   
-    <div class="skill-list">
-      <h3>List of Skills</h3>
-      <!-- Display a list of Skills -->
-      <!-- <ul>
-        <li *ngFor="let item of skillscntain; let i = index">
-          {{ item }}
-          <div class="button-group">
-            <button (click)="editSkill(i)">Edit</button>
-            <button (click)="deleteSkill(i)">Delete</button>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-   --> 
-  <!-- code2 -->
-  <div class="manageSkills">
-    <nav class="sidebar">
-      <div class="sidebar-header">
-        <h2>Menu</h2>
+  <div class="main-content">
+    <header class="topbar">
+      <!-- <h1>Dashboard</h1> -->
+      <div class="user-info">
+        <p>Welcome,</p>
+        <a href="#" >Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
       </div>
-      <ul class="sidebar-menu">
-        <li><a href="admin">Dashboard</a></li>
-        <li><a href="manageusers">Manage Users</a></li>
-        <li><a href="manageastrologer">Manage Astrologers</a></li>
-        <li><a href="#">Manage Blog</a></li>
-        <li><a href="manageskills">Manage Skills</a></li>
-      </ul>
-    </nav>
+    </header>
+
+    <div class="manage-skills-container">
+      <div class="one">
+        <h3>Manage Skills</h3>
+        <!-- <h4><span>&nbsp;</span></h4> -->
+      </div>
+
+      <!-- Add/Edit Skill Form -->
+      <div class="skill-form">
+        <div class="form-group">
+          <label for="skillName">Skill Name</label>
+          <input
+            type="text"
+            id="skillName"
+            [(ngModel)]="newSkillName"
+            placeholder="Enter skill name"
+            required
+          />
+        </div>
+
+        <button class="add-skill-btn" (click)="editIndex === -1 ? addSkill() : updateSkill()">
+          {{ editIndex === -1 ? 'Add Skill' : 'Update Skill' }}
+        </button>
+      </div>
+
+      <div class="skill-table">
+        <div class="one">
+          <h3>Skills Report</h3>
+          <!-- <h4><span>&nbsp;</span></h4> -->
+        </div>
   
-    <div class="main-content">
-      <h2>Manage Skills</h2>
-      <div class="manage-actions">
-        <button (click)="addSkills()">Add New Skills</button>
-      </div>
-      <div class="skill-list">
-        <h3>List of Skills</h3>
-        <ul>
-          <li *ngFor="let item of skillscntain; let i = index">
-            {{ item }}
-            <div class="button-group">
-              <button (click)="editSkill(i)">Edit</button>
-              <button (click)="deleteSkill(i)">Delete</button>
-            </div>
-          </li>
-        </ul>
+        <table datatable [dtOptions]="dtOptions">
+          <thead>
+            <tr>
+              <th>Sr. No.</th>
+              <th>Skill Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let skill of skills; let i = index">
+              <td>{{ i + 1 }}</td> <!-- Serial number added -->
+              <td>{{ skill.skillname }}</td>
+              <td>
+                <button class="edit-btn" (click)="editSkill(i)">
+                  Edit
+                </button>
+                <button class="delete-btn" (click)="deleteSkill(i)">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
+</div>

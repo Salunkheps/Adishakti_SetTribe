@@ -1,51 +1,65 @@
 <div class="dashboard-container">
+  <!-- Sidebar -->
   <nav class="sidebar">
-      <div class="sidebar-header">
-          <h2>Home</h2>
-      </div>
-      <ul class="sidebar-menu">
-          <li><a routerLink="/astrodash">Dashboard</a></li>
-          <!-- <li><a routerLink="/astroprofile">Profile</a></li> -->
-          <li><a routerLink="/astroclient">Client Lists</a></li>
-          <li><a routerLink="/astroreport">Reports</a></li>
-          <li><a routerLink="/insert-blog">Add Blogs</a></li>
-      </ul>
+    <div class="sidebar-header">
+      <h2>Home</h2>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a routerLink="/astrodash"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
+    <!-- <li><a routerLink="/astroprofile">Profile</a></li> -->
+    <li><a routerLink="/astroclient"><i ><img src="clientlist.png" width="30px"></i> Clients Report</a></li>
+    <!-- <li><a routerLink="/astroreport">Reports</a></li> -->
+    <li><a routerLink="/insert-blog"><i ><img src="createblog.png" width="30px"></i> Create Blogs</a></li>
+    <li><a routerLink="/consultation-price"><i ><img src="consultprice.png" width="30px"></i> Consultation Price</a></li>
+    <li><a href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
+    </ul>
   </nav>
+
+  <!-- Main Content -->
   <div class="main-content">
-      <header class="topbar">
-          <h1>Dashboard</h1>
-          <div class="user-info">
-              <p>Welcome, <strong>Username</strong></p>
-              <a href="#">Logout</a>
-          </div>
-      </header>
-      <div class="client-list-section">
-          <h2>Client List</h2>
-          <table class="client-list-table">
-              <thead>
-                  <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Status</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td>John Doe</td>
-                      <td>john.doeexample.com</td>
-                      <td>(123) 456-7890</td>
-                      <td>Active</td>
-                  </tr>
-                  <tr>
-                      <td>Jane Smith</td>
-                      <td>jane.smithexample.com</td>
-                      <td>(987) 654-3210</td>
-                      <td>Inactive</td>
-                  </tr>
-                  <!-- Add more rows as needed -->
-              </tbody>
-          </table>
+    <!-- Topbar -->
+    <header class="topbar">
+      <h1>Dashboard</h1>
+      <div class="user-info">
+        <p>Welcome, <strong>Username</strong></p>
+        <a href="#" >Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+        <!-- <a href="#" class="logout-topbar">Logout</a> Optional: Logout in Topbar -->
       </div>
+    </header>
+<!-- 
+    <div class="one">
+      <h1>Why <span>Adishakti</span></h1>
+      <h4><span>&nbsp;</span></h4>
+    </div> -->
+
+    <!-- Client List Section -->
+    <section class="client-list-section">
+
+      <div class="one">
+        <h3>Clients Report</h3>
+        <!-- <h4><span>&nbsp;</span></h4> -->
+      </div>
+
+      <!-- <--<h2>Client List</h2> --> 
+
+      <table datatable [dtOptions]="dtOptions" class="client-list-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Email</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.firstName }} {{ user.lastName }}</td>
+            <td>{{ user.dob }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.mobileNumber }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
   </div>
 </div>

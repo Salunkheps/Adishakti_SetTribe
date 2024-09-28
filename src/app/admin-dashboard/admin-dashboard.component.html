@@ -1,45 +1,39 @@
-
+<!-- Admin dashboard .html -->
 <div class="dashboard-container">
-    <nav class="sidebar">
-      <div class="sidebar-header">
-        <h2>Menu</h2>
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>Adishkati</h2>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a routerLink="/admin" routerLinkActive="active"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
+  <li><a routerLink="/manageusers" routerLinkActive="active"><i ><img src="manageuser.png" width="30px"></i> Manage Users</a></li>
+  <li><a routerLink="/manageastrologer" routerLinkActive="active"><i ><img src="manageastro.png" width="30px"></i> Manage Astrologers</a></li>
+  <li><a routerLink="/manageblog" routerLinkActive="active"><i ><img src="manageblog.png" width="30px"></i> Manage Blog</a></li>
+  <li><a routerLink="/manageskills" routerLinkActive="active"><i ><img src="manageskills.png" width="30px"></i> Manage Skills</a></li>
+  <li><a  href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
+
+    </ul>
+  </nav>
+
+  <div class="main-content">
+    <header class="topbar">
+      <!-- <h1>Dashboard</h1> -->
+      <div class="user-info">
+        <p>Welcome,</p>
+        <a href="#" >Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
       </div>
-      <ul class="sidebar-menu">
-        <!-- <li><a href="admin">Dashboard</a></li>
-        <li><a href="manageusers">Manage Users</a></li>
-        <li><a href="manageastrologer">Manage Astrologers</a></li>
-        <li><a href="#">Manage Blog</a></li>
-        <li><a href="manageskills">Manage Skills</a></li> -->
+    </header>
 
-        <li><a routerLink="/admin" routerLinkActive="active">Dashboard</a></li>
-    <li><a routerLink="/manageusers" routerLinkActive="active">Manage Users</a></li>
-    <li><a routerLink="/manageastrologer" routerLinkActive="active">Manage Astrologers</a></li>
-    <li><a routerLink="/manageblog" routerLinkActive="active">Manage Blog</a></li>
-    <li><a routerLink="/manageskills" routerLinkActive="active">Manage Skills</a></li>
-
-      </ul>
-    </nav>
+    <section class="dashboard-section">
+      <div class="stat">
+        <h3>Total Customers</h3>
+        <p>{{ totalClients }}</p>
+      </div>
+      <div class="stat">
+        <h3>Total Astrologers</h3> 
+        <p>{{ totalAstrologers }}</p>
+      </div>
+    </section>
+  <router-outlet></router-outlet>
   
-    <div class="main-content">
-      <header class="topbar">
-        <h1>Dashboard</h1>
-        <div class="user-info">
-          <p>Welcome,</p>
-          <a href="#">Logout</a>
-        </div>
-      </header>
-  
-      <section class="dashboard-section">
-        <div class="stat">
-          <h3>Total Customers</h3>
-          <p>{{ totalClients }}</p>
-        </div>
-        <div class="stat">
-          <h3>Total Astrologers</h3> 
-          <p>{{ totalAstrologers }}</p>
-        </div>
-      </section>
-    <router-outlet></router-outlet>
-    
-  </div>
-  
+</div>

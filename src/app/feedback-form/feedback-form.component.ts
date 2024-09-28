@@ -16,7 +16,7 @@ interface Astrologer {
 export class FeedbackFormComponent implements OnInit {
   feedbackForm: FormGroup;
   astrologers: Astrologer[] = [];
-  private apiUrl = 'http://localhost:8080/api/feedbacks';
+  private apiUrl = 'http://localhost:8081/api/feedbacks';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.feedbackForm = this.fb.group({
@@ -56,6 +56,6 @@ export class FeedbackFormComponent implements OnInit {
   }
 
   getAstrologers(): Observable<Astrologer[]> {
-    return this.http.get<Astrologer[]>('http://localhost:8080/api/astrologers'); // Adjust the URL as needed
+    return this.http.get<Astrologer[]>('http://localhost:8010/api/astrologers'); // Adjust the URL as needed
   }
 }

@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="notifications">
+    <h2>Astrologer Information</h2>
+
+    <div class="astrologer-details" *ngIf="selectedAstrologerData" class="notification-item">
+      <img *ngIf="selectedAstrologerData.imageData" [src]="'data:image/jpeg;base64,' + selectedAstrologerData.imageData"
+        alt="Astrologer Image" width="150" height="150">
+      <span>{{ selectedAstrologerData.firstName }} {{ selectedAstrologerData.lastName }}</span>
+    </div>
+  </div>
+
+  <div class="messages">
+    <h2>Messages</h2>
+    <div class="timer">{{ getFormattedTime() }}</div>
+    <div *ngIf="!canSendMessage" class="back-button">
+      <button (click)="navigateToFindAstrologers()">Back</button>
+    </div>
+    <div class="message-list">
+      <div *ngFor="let message of messages" class="message-item" [ngClass]="message.sender">
+        <span>{{ message.content }}</span>
+        <span class="status">
+          {{ message.seen ? 'Seen ' + message.seenTime : message.time }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Typing Indicator -->
+    <div *ngIf="isTyping" class="typing-indicator">
+      typing...
+    </div>
+
+    <div class="message-input" *ngIf="canSendMessage && selectedAstrologerData">
+      <input type="text" [(ngModel)]="newMessage" [disabled]="!canSendMessage" placeholder="Type your message here..."
+        (keyup)="simulateAstrologerTyping()" />
+      <button [disabled]="!canSendMessage" (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- Popup for online astrologers -->
+  <div class="popup" *ngIf="showPopup">
+    <div class="popup-content">
+      <h3>Astrologers Online</h3>
+      <ul>
+        <li *ngFor="let astrologer of onlineAstrologers" (click)="selectAstrologer({type: astrologer})">
+          {{ astrologer }}
+        </li>
+      </ul>
+      <button (click)="closePopup()">Close</button>
+    </div>
+  </div>
+</div>

@@ -1,74 +1,76 @@
+<!-- Manage astrologer component .html -->
 <div class="dashboard-container">
-    <nav class="sidebar">
-      <div class="sidebar-header">
-        <h2>Menu</h2>
-      </div>
-      <ul class="sidebar-menu">
-        <li><a routerLink="/admin" routerLinkActive="active">Dashboard</a></li>
-        <li><a routerLink="/manageusers" routerLinkActive="active">Manage Users</a></li>
-        <li><a routerLink="/manageastrologer" routerLinkActive="active">Manage Astrologers</a></li>
-        <li><a routerLink="/manageblog" routerLinkActive="active">Manage Blog</a></li>
-        <li><a routerLink="/manageskills" routerLinkActive="active">Manage Skills</a></li>
-      </ul>
-    </nav>
-    
-    <div class="main-content">
-      <h1>Manage Astrologers</h1>
-      
-      <!-- Search Form -->
-      <form [formGroup]="searchForm" (ngSubmit)="search()" class="search-form">
-        <input formControlName="searchTerm" placeholder="Search by name or email">
-        <button type="submit">Search</button>
-      </form>
-      
-      <!-- Tab Navigation -->
-      <div class="tab-navigation">
-        <button (click)="showAddAstrologerForm()">Add Astrologer</button>
-      </div>
-  
-      <!-- Conditional Rendering of Add Astrologer Form -->
-      <div *ngIf="displayAddForm" class="add-astrologer-section">
-        <h2>Add New Astrologer</h2>
-        <form [formGroup]="newAstrologerForm" (ngSubmit)="addAstrologer()" class="new-astrologer-form">
-          <div class="form-row">
-            <div *ngFor="let field of formFields; let i = index" [ngClass]="{'form-field': true, 'field-left': i % 2 === 0, 'field-right': i % 2 !== 0}">
-              <label [for]="field.name">{{ field.label }}</label>
-              <input *ngIf="field.type === 'text'" [id]="field.name" formControlName="{{field.name}}" [type]="field.type">
-              <input *ngIf="field.type === 'number'" [id]="field.name" formControlName="{{field.name}}" [type]="field.type">
-              <input *ngIf="field.type === 'date'" [id]="field.name" formControlName="{{field.name}}" [type]="field.type">
-              <select *ngIf="field.type === 'select'" [id]="field.name" formControlName="{{field.name}}">
-                <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
-              </select>
-            </div>
-          </div>
-          <button type="submit">Add Astrologer</button>
-        </form>
-      </div>
-  
-      <!-- Astrologer Table -->
-      <table>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let astrologer of astrologers">
-            <td>{{ astrologer.firstName }}</td>
-            <td>{{ astrologer.lastName }}</td>
-            <td>{{ astrologer.email }}</td>
-            <td>
-              <button (click)="approveAstrologer(astrologer.id)">Approve</button>
-              <button (click)="rejectAstrologer(astrologer.id)">Reject</button>
-              <button (click)="deleteAstrologer(astrologer.id)">Delete</button>
-              <button (click)="editAstrologer(astrologer)">Edit</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>Adishkati</h2>
     </div>
-  </div>
+    <ul class="sidebar-menu">
+      <li><a routerLink="/admin" routerLinkActive="active"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
+      <li><a routerLink="/manageusers" routerLinkActive="active"><i ><img src="manageuser.png" width="30px"></i> Manage Users</a></li>
+      <li><a routerLink="/manageastrologer" routerLinkActive="active"><i ><img src="manageastro.png" width="30px"></i> Manage Astrologers</a></li>
+      <li><a routerLink="/manageblog" routerLinkActive="active"><i ><img src="manageblog.png" width="30px"></i> Manage Blog</a></li>
+      <li><a routerLink="/manageskills" routerLinkActive="active"><i ><img src="manageskills.png" width="30px"></i> Manage Skills</a></li>
+      <li><a  href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
+
+    </ul>
+  </nav>
   
+  <div class="main-content">
+    <header class="topbar">
+     
+      <div class="user-info">
+        <p>Welcome,</p>
+        <a href="#" >Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+      </div>
+    </header>
+
+
+
+    <div class="one">
+      <h3>Manage Astrologer</h3>
+      <!-- <h4><span>&nbsp;</span></h4> -->
+    </div>
+    <!-- Conditional Rendering of Add Astrologer Form -->
+    <div *ngIf="displayAddForm" class="add-astrologer-section">
+      <h2>Add New Astrologer</h2>
+      <form [formGroup]="newAstrologerForm" (ngSubmit)="addAstrologer()" class="new-astrologer-form">
+        <div class="form-row">
+          <div *ngFor="let field of formFields; let i = index" [ngClass]="{'form-field': true, 'field-left': i % 2 === 0, 'field-right': i % 2 !== 0}">
+            <label [for]="field.name">{{ field.label }}</label>
+            <input *ngIf="field.type === 'text'" [id]="field.name" formControlName="{{field.name}}" [type]="field.type">
+            <input *ngIf="field.type === 'number'" [id]="field.name" formControlName="{{field.name}}" [type]="field.type">
+            <input *ngIf="field.type === 'date'" [id]="field.name" formControlName="{{field.name}}" [type]="field.type">
+            <select *ngIf="field.type === 'select'" [id]="field.name" formControlName="{{field.name}}">
+              <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit">Add Astrologer</button>
+      </form>
+    </div>
+
+    <!-- Astrologer Table -->
+    <table datatable [dtOptions]="dtOptions" >
+      <thead>
+        <tr>
+          <th>Sr. No.</th> <!-- Add this for serial number -->
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let astrologer of astrologers">
+          <td>{{ astrologer.firstName }} {{ astrologer.lastName }}</td>
+          <td> {{astrologer.email}}</td>
+          <td>{{ astrologer.mobile }}</td>
+          <td>
+            <button (click)="approveAstrologer(astrologer)" class="accept">Approve</button>
+            <button (click)="rejectAstrologer(astrologer)" class="reject">Reject</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

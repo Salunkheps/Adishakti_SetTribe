@@ -1,3 +1,4 @@
+// Admin Dashboard .ts
 import { Component } from '@angular/core';
 interface User {
   id: number;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+
 interface Astrologer {
   id: number;
   firstName: string;
@@ -9,9 +10,10 @@ interface Astrologer {
   languagesKnown: string[];
   rating: number;
   astrologerImages: { imageData: string };
-  mobileNumber: string; // Make sure this field exists in your backend response
+  mobileNumber: string;
   ratePerMinute: number;
 }
+
 @Component({
   selector: 'app-top-rated-astrologers',
   templateUrl: './top-rated-astrologers.component.html',
@@ -23,67 +25,48 @@ export class TopRatedAstrologersComponent implements OnInit {
   searchTerm: string = '';
   hoverRating: number | null = null;
 
-  constructor(private http: HttpClient, private router: Router) {
-    this.getAllData();
-  }
+  currentIndex: number = 0;
+  cardWidth: number = 300;
+  visibleCards: number = 3;
+
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-    this.filteredAstrologers = this.data;
+    this.getAllData();
+    
+  }
+
+  getAllData(): void {
+    this.http.get<Astrologer[]>('http://localhost:8075/api/astrologers/get-astrologers').subscribe(
+      (data) => {
+        this.data = data;
+        this.filteredAstrologers = data; 
+      },
+      (error) => {
+        console.error('Error fetching data', error);
+      }
+    );
   }
 
   filterAstrologers(): void {
     const searchTerm = this.searchTerm.toLowerCase().trim();
-
     if (searchTerm === '') {
-      this.getAllData();
+      this.filteredAstrologers = this.data;
       return;
     }
-
-    this.getSearchData();
     this.filteredAstrologers = this.data.filter(
-      (astrologer: Astrologer) =>
+      (astrologer) =>
         astrologer.firstName.toLowerCase().includes(searchTerm) ||
         astrologer.skills.toLowerCase().includes(searchTerm)
     );
   }
 
+ 
   navigateToCall(astrologer: Astrologer): void {
     this.router.navigate(['/callwithastro', astrologer.id]);
   }
 
   navigateToChat(astrologer: Astrologer): void {
     this.router.navigate(['/chatwithastro', astrologer.id]);
-  }
-
-  getAllData(): void {
-    this.http
-      .get<Astrologer[]>(
-        'http://localhost:8080/api/astrologers/get-astrologers'
-      )
-      .subscribe(
-        (data) => {
-          this.data = data;
-          this.filteredAstrologers = data;
-        },
-        (error) => {
-          console.error('Error fetching data', error);
-        }
-      );
-  }
-
-  getSearchData(): void {
-    this.http
-      .get<Astrologer[]>(
-        `http://localhost:8080/api/astrologers/get-data/${this.searchTerm}`
-      )
-      .subscribe(
-        (data) => {
-          this.data = data;
-          this.filteredAstrologers = data;
-        },
-        (error) => {
-          console.error('Error fetching search data', error);
-        }
-      );
   }
 }

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 interface Astrologer {
-  id: number;
+  reg_id: number;
   firstName: string;
   lastName: string;
   mobile: string;
@@ -40,10 +40,10 @@ export class ChatWithAstrologerComponent implements OnInit {
   }
 
   getAstrologerData(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    const reg_id = this.route.snapshot.paramMap.get('reg_id');
+    if (reg_id) {
       this.http
-        .get<Astrologer>(`http://localhost:8080/api/astrologers/${id}`)
+        .get<Astrologer>(`http://localhost:8075/api/astrologers/${reg_id}`)
         .subscribe(
           (data) => {
             this.astrologer = data;
@@ -67,6 +67,21 @@ export class ChatWithAstrologerComponent implements OnInit {
         queryParams: {
           mobile: this.astrologer.mobile,
           amount: this.totalAmount
+        },
+      });
+    }
+  }
+  goToChat(): void {
+    if (this.totalAmount !== null && this.astrologer && this.minutes !== null) {
+      // console.log('Navigating to Payment with totalAmount:', this.totalAmount, 'and minutes:', this.minutes);
+      console.log('Reg ID received:', this.astrologer.reg_id); // Print reg_id to the console
+
+      this.router.navigate(['/payment'], {
+        queryParams: {
+          reg_id: this.astrologer.reg_id,
+          mobile: this.astrologer.mobile,
+          amount: this.totalAmount,
+          minutes: this.minutes // Pass minutes to Payment component
         },
       });
     }

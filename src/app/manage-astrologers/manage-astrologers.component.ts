@@ -1,6 +1,12 @@
+//  Manage Astrologer component .ts 
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AstrologerService } from '../astrologer.service';
+import { Config } from 'datatables.net';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'; // Import your icons
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-astrologers',
@@ -11,6 +17,14 @@ export class ManageAstrologersComponent implements OnInit {
   astrologers: any[] = [];
   searchForm: FormGroup;
   newAstrologerForm: FormGroup;
+  dtOptions: Config = {};
+  displayAddForm: boolean = false;
+  selectedAstrologer: any = null;
+
+  // Font Awesome icons
+  faEdit = faEdit;
+  faTrash = faTrash;
+
   formFields = [
     { name: 'firstName', label: 'First Name', type: 'text' },
     { name: 'lastName', label: 'Last Name', type: 'text' },
@@ -32,10 +46,7 @@ export class ManageAstrologersComponent implements OnInit {
     { name: 'certification', label: 'Certification', type: 'text' },
     { name: 'degree', label: 'Degree', type: 'text' }
   ];
-  displayAddForm: boolean = false;
-  selectedAstrologer: any = null;
-
-  constructor(private astrologerService: AstrologerService, private fb: FormBuilder) {
+  constructor(private astrologerService: AstrologerService, private fb: FormBuilder, private http: HttpClient) {
     this.searchForm = this.fb.group({
       searchTerm: ['']
     });
@@ -44,32 +55,107 @@ export class ManageAstrologersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.dtOptions = {
+      ajax: (dataTablesParameters: any, callback) => {
+        this.astrologerService.getAllAstrologers().subscribe(data => {
+          callback({
+            recordsTotal: data.length,
+            recordsFiltered: data.length,
+            data: data
+          });
+        }, error => {
+          console.error("Error fetching astrologers:", error);
+          alert("Error fetching astrologers");
+        });
+      },
+      columns: [
+        {
+          title: 'Sr. No.',
+          data: null,
+          render: (data: any, type: any, row: any, meta: any) => {
+            return meta.row + 1; // This generates the serial number
+          }
+        },
+        { title: 'First Name', data: 'firstName' },
+        { title: 'Last Name', data: 'lastName' },
+        { title: 'Email', data: 'email' },
+        { title: 'Mobile Number', data: 'mobile' },
+        { title: 'Status', data: 'status' },
+        {
+          title: 'Actions',
+          render: (data: any, type: any, row: any, meta: any) => {
+            let buttons = '';
+            if (row.status === 'Pending') {
+              buttons = `
+                <button class="edit-btn" data-index="${row.regId}">
+                  Approve
+                </button>
+                <button class="delete-btn" data-index="${row.regId}">
+                  Reject
+                </button>`;
+            } else if (row.status === 'Approved') {
+              buttons = `
+                <button class="delete-btn" data-index="${row.regId}">
+                  Reject
+                </button>`;
+            } else if (row.status === 'Rejected') {
+              buttons = `
+                <button class="edit-btn" data-index="${row.regId}">
+                  Approve
+                </button>`;
+            }
+            return buttons;
+          },
+          orderable: false
+        }  
+      ]
+    };
     this.loadAstrologers();
+
   }
 
+  ngAfterViewInit(): void {
+    // Attach event listeners after the DataTable has been initialized
+    $(document).on('click', '.edit-btn', (event) => {
+      const index = $(event.currentTarget).data('index');
+      this.approveAstrologer(index);
+    });
+  
+    $(document).on('click', '.delete-btn', (event) => {
+      const index = $(event.currentTarget).data('index');
+      this.rejectAstrologer(index);
+    });
+  }
   loadAstrologers(): void {
     this.astrologerService.getAllAstrologers().subscribe((data: any[]) => {
-      this.astrologers = data;
+      this.astrologers = data; // Store astrologers for rendering via Angular
     });
   }
 
-  approveAstrologer(id: number): void {
-    this.astrologerService.approveAstrologer(id).subscribe(() => {
+  approveAstrologer(regId: string): void {
+    console.log(regId);
+    this.astrologerService.approveAstrologer(regId).subscribe(() => {
       this.loadAstrologers();
+      Swal.fire(`Astrologer has been approved!`);
+      window.location.reload(); // Reload the page after approval
+
     });
   }
 
-  rejectAstrologer(id: number): void {
-    this.astrologerService.rejectAstrologer(id).subscribe(() => {
+  rejectAstrologer(regId: string): void {
+    this.astrologerService.rejectAstrologer(regId).subscribe(() => {
       this.loadAstrologers();
+      Swal.fire(`Astrologer has been rejected!`);
+      window.location.reload(); // Reload the page after approval
+
     });
   }
 
-  deleteAstrologer(id: number): void {
-    this.astrologerService.deleteAstrologer(id).subscribe(() => {
-      this.loadAstrologers();
-    });
-  }
+  // deleteAstrologer(id: number): void {
+  //   this.astrologerService.deleteAstrologer(id).subscribe(() => {
+  //     this.loadAstrologers();
+  //   });
+  // }
 
   search(): void {
     const searchTerm = this.searchForm.value.searchTerm;

@@ -1,0 +1,30 @@
+
+   <div class="blog-form-container">
+    <form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input id="title" formControlName="title" type="text" />
+        </div>
+        <div class="form-group">
+          <label for="featuredImage">Featured Image:</label>
+          <input id="featuredImage" type="file" (change)="onFileChange($event)" />
+        </div>
+        <div class="form-group">
+          <label for="blogCatagory">Blog Category:</label>
+          <select id="blogCatagory" formControlName="blogCatagory">
+            <option value="HEALTH">Health</option>
+            <option value="TECHNOLOGY">Technology</option>
+            <option value="LIFESTYLE">Lifestyle</option>
+            <option value="EDUCATION">Education</option>
+          </select>
+        </div>
+      </div>
+  
+      <label for="content">Content:</label>
+      <textarea id="content" formControlName="content"></textarea>
+  
+      <button type="submit" [disabled]="!blogForm.valid">Submit</button>
+    </form>
+  </div>
+  

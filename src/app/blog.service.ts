@@ -7,6 +7,8 @@ export interface Blog {
   title: string;
   featuredImage: string;
   content: string;
+  blogCatagory?:string;
+  status?:string;
   astrologer: {
     name: string;
     
@@ -17,7 +19,7 @@ export interface Blog {
   providedIn: 'root',
 })
 export class BlogService {
-  private apiUrl = 'http://localhost:8080/api/blogs';
+  private apiUrl = 'http://localhost:8075/api/blogs';
 
   constructor(private http: HttpClient) {}
 
@@ -36,10 +38,10 @@ export class BlogService {
 
 //for manage blogs section
   approveBlog(blogId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/blogs/${blogId}/approve`, {});
+    return this.http.put(`${this.apiUrl}/approve/${blogId}`, {});
   }
 
-  rejectBlog(blogId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/blogs/${blogId}/reject`, {});
+  rejectBlog(blogId: number, reason: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/reject/${blogId}`, { reason });
   }
 }

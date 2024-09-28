@@ -169,7 +169,7 @@ body {
 }
 
 /* Dropdown menu styling */
-.dropdown {
+/* .dropdown {
   position: relative;
 }
 
@@ -177,17 +177,17 @@ body {
   background: none;
   border: none;
   color: #ffffff;
-  font-size: 14px; /* Reduced font size */
+  font-size: 14px; /* Reduced font size 
   cursor: pointer;
   transition: color 0.3s ease;
-  padding: 8px 15px; /* Reduced padding for smaller height */
+  padding: 8px 15px; /* Reduced padding for smaller height 
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #ffffff; /* White */
-  min-width: 200px; /* Width for better visibility */
+  background-color: #ffffff; /* White 
+  min-width: 200px; /* Width for better visibility 
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   top: 100%;
@@ -203,22 +203,65 @@ body {
 
 .dropdown-content app-login {
   padding: 10px;
-  color: #420E57; /* Dark Purple */
+  color: #420E57; /* Dark Purple 
 }
 
 .dropdown-content a {
-  padding: 8px 15px; /* Reduced padding for smaller height */
+  padding: 8px 15px; /* Reduced padding for smaller height 
   text-decoration: none;
   display: block;
-  font-size: 12px; /* Smaller font size */
-  color: #420E57; /* Dark Purple */
+  font-size: 12px; /* Smaller font size 
+  color: #420E57; /* Dark Purple 
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .dropdown-content a:hover {
+  background-color: #F9DA82; /* Light Yellow 
+  color: #420E57; /* Dark Purple 
+} */
+
+/* Dropdown container */
+.nav-item .dropdown {
+  position: relative;
+}
+
+/* Trigger button styling */
+.dropdown .dropbtn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 20px; /* Adjusted font size */
+  cursor: pointer;
+  padding: 8px 15px; /* Adjusted padding */
+  transition: color 0.3s ease;
+}
+
+/* Basic dropdown styling */
+.dropdown .nav-link {
+  color: #ffffff;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  background-color: #420E57;
+  min-width: 200px;
+  border-radius: 5px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+  color: #420E57; /* Dark Purple */
+  font-size: 14px;
+  padding: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-item:hover {
   background-color: #F9DA82; /* Light Yellow */
   color: #420E57; /* Dark Purple */
 }
+
 
 /* Animations */
 @keyframes glow {

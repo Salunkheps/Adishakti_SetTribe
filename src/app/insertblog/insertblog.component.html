@@ -1,53 +1,91 @@
-<!-- <app-navbar></app-navbar> -->
- <div class="dashboard-container">
-    <nav class="sidebar">
-      <div class="sidebar-header">
-        <h2>Home</h2>
-      </div>
-      <ul class="sidebar-menu">
-        <li><a routerLink="/astrodash">Dashboard</a></li>
-        <!-- <li><a routerLink="/astroprofile">Profile</a></li> -->
-        <li><a routerLink="/astroclient">Client Lists</a></li>
-        <li><a routerLink="/astroreport">Reports</a></li>
-        <li><a routerLink="/insert-blog">Add Blogs</a></li>
-      </ul>
-    </nav>
-    <div class="main-content">
-      <header class="topbar">
-        <h1>Dashboard</h1>
-        <div class="user-info">
-          <p>Welcome, <strong>Username</strong></p>
-          <a href="#">Logout</a>
-        </div>
-      </header>
-  <form [formGroup]="myData" (submit)="sub()">
-    <label>Title</label>
-    <input type="text" placeholder="Enter Title" formControlName="title">
-    <br>
-    <img *ngIf="image!=''"  [src]="'data:image/png;base64,'+image.body.imageData" alt="Norway" [width]="50" >
-   <br> <label>Upload Images</label>
-    <input type="file"  id="" (change)="onImageUpload($event)" accept="image/png, image/gif, image/jpeg">
-    <br>
-    <label>Blog Catagory</label>
-    <select formControlName="blogCatagory">
-        <option>HEALTH</option>
-        <option>TECNOLOGY</option>
-        <option>LIFESTYLE</option>
-        <option>EDUCATION</option>
-    </select>
-    <br>
-    <label>Astrologer</label>
-    <select formControlName="astrologer">
-        <option *ngFor="let i Of data" [ngValue]="i">{{i.firstName}}  {{i.lastName}}</option>
-        
-    </select>
-    <br>
-    <label>Blog</label>
-    <textarea cols="30" rows="3" formControlName="content"></textarea><br>
-    <input type="submit" value="Post Blog">
-</form>
-
+<div class="dashboard-container">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>Home</h2>
     </div>
-  </div>
+    <ul class="sidebar-menu">
+      <li><a routerLink="/astrodash"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
+      <!-- <li><a routerLink="/astroprofile">Profile</a></li> -->
+      <li><a routerLink="/astroclient"><i ><img src="clientlist.png" width="30px"></i> Clients Report</a></li>
+      <!-- <li><a routerLink="/astroreport">Reports</a></li> -->
+      <li><a routerLink="/insert-blog"><i ><img src="createblog.png" width="30px"></i> Create Blogs</a></li>
+      <li><a routerLink="/consultation-price"><i ><img src="consultprice.png" width="30px"></i> Consultation Price</a></li>
+      <li><a href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
+    </ul>
+  </nav>
   
+  <div class="main-content">
+    <header class="topbar">
+      <h1>Dashboard</h1>
+      <div class="user-info">
+        <p>Welcome, <strong>Username</strong></p>
+        <a href="#" >Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+        <!-- <a href="#" class="logout-topbar">Logout</a> -->
+      </div>
+    </header>
+   
+    <div class="Blogs-form-container">
+      <div class="one">
+        <h3>Create Blogs</h3>
+        <!-- <h4><span>&nbsp;</span></h4> -->
+      </div>
+      <form [formGroup]="myData" (ngSubmit)="sub()" class="two-column-form">
+     
+        <div class="form-row">
+          
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input id="title" type="text" placeholder="Enter Title" formControlName="title" />
+          </div>
+          <div class="form-group">
+            <label for="featuredImage">Blog Photo</label>
+            <input id="featuredImage" type="file" (change)="onImageUpload($event)" accept="image/png, image/gif, image/jpeg" />
+            <img *ngIf="image.body?.imageData" [src]="'data:image/png;base64,' + image.body.imageData" alt="Preview" [width]="50" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="blogCatagory">Category</label>
+            <select id="blogCatagory" formControlName="blogCatagory">
+              <option value="">Select Blog Category</option>
+              <option value="HEALTH">Health</option>
+              <option value="TECHNOLOGY">Technology</option>
+              <option value="LIFESTYLE">Lifestyle</option>
+              <option value="EDUCATION">Education</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="content">Description</label>
+            <textarea id="content" formControlName="content" placeholder="Enter description"></textarea>
+          </div>
+        </div>
+        <button type="submit">Create</button>
+      </form>
+    </div>
 
+    <div class="heading">
+      <div class="one">
+        <h3>Blogs Report</h3>
+        <!-- <h4><span>&nbsp;</span></h4> -->
+      </div>
+    </div>
+    <table datatable [dtOptions]="dtOptions" class="row-border hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Blog Description</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let blog of Blogs">
+          <td>{{ blog.id }}</td>
+          <td>{{ blog.title }}</td>
+          <td>{{ blog.content }}</td>
+          <td>{{ blog.blogCatagory }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

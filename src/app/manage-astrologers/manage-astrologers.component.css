@@ -1,263 +1,306 @@
+/* Manage Astrologer component .css */
 /* Global Styles */
 body, html {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Dashboard Container */
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 250px;
+    background-color: #4c70ba;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 20px;
+  text-align: center;
+  background-color: #4c70ba;
+  border-bottom: 1px solid #1abc9c;
+}
+
+.sidebar-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  width: 100%;
+}
+
+.sidebar-menu li a {
+  display: block;
+  padding: 15px 20px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar-menu li a:hover {
+  background-color: #555;
+}
+.sidebar-menu li a.active {
+  background-color: #555; /* Highlight active menu item */
+}
+
+/* Main Content Styling */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.topbar {
+  background-color: #4c70ba;
+  color: #fff;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar h1 {
+  margin: 0;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-left: 85%;
+}
+
+.user-info p {
+  margin: 0 10px 0 0;
+}
+
+.user-info a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Manage Astrologers Container */
+.container {
+  flex-grow: 1; /* Take up remaining space */
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative; /* For overlay positioning */
+}
+
+/* Heading Styling */
+h1 {
+  text-align: center;
+  color: white; /* Dark gray */
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: white; /* Blue color for sub-headings */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Search Form Styling */
+.search-form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-form input {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  border: 1px solid #ced4da; /* Light gray border */
+  border-radius: 4px;
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.search-form button {
+  background: #007bff; /* Blue background */
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.search-form button:hover {
+  background: #0056b3; /* Darker blue on hover */
+}
+
+/* Add New Astrologer Form */
+.new-astrologer-form {
+  background: #ffffff; /* White background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.form-field {
+  flex: 1 1 calc(50% - 20px);
+  box-sizing: border-box;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #495057; /* Dark gray */
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da; /* Light gray border */
+  border-radius: 4px;
+  font-size: 14px;
+  background: #ffffff; /* White background */
+}
+
+button {
+  background: #007bff; /* Blue background */
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #0056b3; /* Darker blue on hover */
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: #ffffff; /* White background */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6; /* Light gray border */
+}
+
+th {
+  background: #f1f1f1; /* Light gray header background */
+  color: #343a40; /* Dark gray text */
+}
+
+tr:nth-child(even) {
+  background: #f9f9f9; /* Very light gray for even rows */
+}
+
+button {
+  background: #007bff; /* Blue background */
+  color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #0056b3; /* Darker blue on hover */
+}
+
+button.reject {
+  background: #dc3545; /* Red for reject */
+}
+
+button.reject:hover {
+  background: #c82333; /* Darker red on hover */
+}
+
+button.edit {
+  background: #ffc107; /* Yellow for edit */
+}
+
+button.edit:hover {
+  background: #e0a800; /* Darker yellow on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .dashboard-container {
-    display: flex;
-    height: 100vh;
+      flex-direction: column;
   }
-  
-  /* Sidebar Styling */
+
   .sidebar {
-    width: 250px;
-    background-color: #333;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
+      width: 100%;
+      height: auto; /* Adjust height to content */
   }
-  
-  .sidebar-header {
-    padding: 20px;
-    text-align: center;
-    background-color: #444;
-  }
-  
-  .sidebar-menu {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar-menu li {
-    width: 100%;
-  }
-  
-  .sidebar-menu li a {
-    display: block;
-    padding: 15px 20px;
-    color: #fff;
-    text-decoration: none;
-  }
-  
-  .sidebar-menu li a:hover {
-    background-color: #555;
-  }
-  
-  /* Main Content Styling */
+
   .main-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    background-color:#c4b6c9;
-  
+      padding: 10px;
   }
-  
-  /* Topbar Styling */
-  .topbar {
-    background-color: #420E57;
-    color: #fff;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .topbar h1 {
-    margin: 0;
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .user-info p {
-    margin: 0 10px 0 0;
-  }
-  
-  .user-info a {
-    color: #fff;
-    text-decoration: none;
-  }
-  
-  /* Manage Astrologers Container */
-  .container {
-    flex-grow: 1; /* Take up remaining space */
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative; /* For overlay positioning */
-  }
-  
-  /* Heading Styling */
-  h1 {
-    text-align: center;
-    color: #343a40; /* Dark gray */
-    margin-bottom: 20px;
-  }
-  
-  h2 {
-    color: #007bff; /* Blue color for sub-headings */
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  /* Search Form Styling */
-  .search-form {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .search-form input {
-    width: 100%;
-    max-width: 300px;
-    padding: 10px;
-    border: 1px solid #ced4da; /* Light gray border */
-    border-radius: 4px;
-    font-size: 14px;
-    margin-right: 8px;
-  }
-  
-  .search-form button {
-    background: #007bff; /* Blue background */
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .search-form button:hover {
-    background: #0056b3; /* Darker blue on hover */
-  }
-  
-  /* Add New Astrologer Form */
-  .new-astrologer-form {
-    background: #ffffff; /* White background */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-  }
-  
-  .form-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  .form-field {
-    flex: 1 1 calc(50% - 20px);
-    box-sizing: border-box;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    color: #495057; /* Dark gray */
-  }
-  
-  input,
-  select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ced4da; /* Light gray border */
-    border-radius: 4px;
-    font-size: 14px;
-    background: #ffffff; /* White background */
-  }
-  
-  button {
-    background: #007bff; /* Blue background */
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-  }
-  
-  button:hover {
-    background: #0056b3; /* Darker blue on hover */
-  }
-  
-  /* Table Styles */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background: #ffffff; /* White background */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  th,
-  td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6; /* Light gray border */
-  }
-  
-  th {
-    background: #f1f1f1; /* Light gray header background */
-    color: #343a40; /* Dark gray text */
-  }
-  
-  tr:nth-child(even) {
-    background: #f9f9f9; /* Very light gray for even rows */
-  }
-  
-  button {
-    background: #007bff; /* Blue background */
-    color: #ffffff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  button:hover {
-    background: #0056b3; /* Darker blue on hover */
-  }
-  
-  button.reject {
-    background: #dc3545; /* Red for reject */
-  }
-  
-  button.reject:hover {
-    background: #c82333; /* Darker red on hover */
-  }
-  
-  button.edit {
-    background: #ffc107; /* Yellow for edit */
-  }
-  
-  button.edit:hover {
-    background: #e0a800; /* Darker yellow on hover */
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .dashboard-container {
-        flex-direction: column;
-    }
-  
-    .sidebar {
-        width: 100%;
-        height: auto; /* Adjust height to content */
-    }
-  
-    .main-content {
-        padding: 10px;
-    }
-  }
-  
+}
+h3 {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  color: #080808;
+  -webkit-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
+/* === HEADING STYLE #1 === */
+.one h3 {
+text-align: center;
+text-transform: uppercase;
+padding-bottom: 5px;
+}
+.one h3:before {
+width: 28px;
+height: 5px;
+display: block;
+content: "";
+position: absolute;
+bottom: 3px;
+left: 50%;
+margin-left: -14px;
+background-color: #b80000;
+}
+ .one h3:after {
+width: 100px;
+height: 1px;
+display: block;
+content: "";
+position: relative;
+margin-top: 25px;
+left: 50%;
+margin-left: -50px;
+background-color: #b80000;
+}

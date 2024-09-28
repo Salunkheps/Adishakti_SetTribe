@@ -1,63 +1,121 @@
+/* Statistics Section */
+.count {
+  margin-top: 2%;
+}
+
 .statistics-section {
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin: 50px 0;
   padding: 20px;
-  background-color: #f0f0f0; /* Background color for the container */
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  color: #fff; /* Text color for contrast */
+  /* background-color: #f9f9f9; Light background for contrast */
+  /* border-radius: 12px; */
+  /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(135, 0, 255, 0.2); Purple shadow */
+  color: #333; /* Dark text color for contrast */
   position: relative;
   overflow: hidden;
 }
 
-.statistics-section::before {
+/* .statistics-section::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.3); /* Dark overlay for better text visibility */
-  border-radius: 10px;
+  background: rgba(135, 0, 255, 0.1); /* Purple overlay 
+  border-radius: 12px;
   z-index: 1;
-}
+} */
 
 .stat-item {
   text-align: center;
   padding: 20px;
-  background: #420E57; /* Background color for all items */
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  background: #fff; /* White background for items */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s, color 0.3s;
   position: relative;
   z-index: 2;
-  color: #F9DA82; /* Text color for contrast */
+  color: #333; /* Dark text color for items */
 }
 
 .stat-item:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
-  background-color: #df05cc5c; /* Background color on hover */
-  color: #420E57; /* Text color on hover */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(135, 0, 255, 0.3); /* Darker shadow on hover with purple tint */
+  background-color: #e1d6e1; /* Light purple background on hover */
+  color: #420e57; /* Dark purple text color on hover */
 }
 
 .stat-item i {
   font-size: 40px;
-  color: #fff; /* Icon color */
+  color: #420e57; /* Dark purple icon color */
   margin-bottom: 10px;
 }
 
 .stat-item h2 {
   font-size: 36px;
   margin: 10px 0;
-  color: #fff; /* Heading color */
+  color: #420e57; /* Dark purple heading color */
   font-family: 'Poppins', sans-serif;
 }
 
 .stat-item p {
   font-size: 18px;
-  color: #fff; /* Paragraph color */
+  color: #666; /* Dark grey paragraph color */
   font-family: 'Poppins', sans-serif;
+}
+
+.fa {
+  color: #420e57; /* Dark purple for icons */
+}
+/* h1 {
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 10px;
+  letter-spacing: 1.2px; /* Add letter spacing 
+  text-shadow: 2px 2px 5px rgba(134, 70, 156, 0.4);
+  text-align: center;
+} */
+
+h1 {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  color: #080808;
+  -webkit-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
+/* === HEADING STYLE #1 === */
+.one h1 {
+  text-align: center;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+}
+.one h1:before {
+  width: 28px;
+  height: 5px;
+  display: block;
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  margin-left: -14px;
+  background-color: #b80000;
+}
+.one h1:after {
+  width: 100px;
+  height: 1px;
+  display: block;
+  content: "";
+  position: relative;
+  margin-top: 25px;
+  left: 50%;
+  margin-left: -50px;
+  background-color: #b80000;
 }
