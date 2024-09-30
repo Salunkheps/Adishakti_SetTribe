@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -12,9 +12,8 @@ import Swal from 'sweetalert2';
 export class SignupComponent implements OnInit {
   signupForm!: FormGroup;
   hidePassword: boolean = true;
-  uploadedImage!: File;
-  image: any = []
-  backEndUrl: string = 'http://localhost:8075/api/users';
+  profilePhoto!: File;
+  backEndUrl: string = 'http://localhost:8075/api/users/sk';
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -29,107 +28,219 @@ export class SignupComponent implements OnInit {
       birthPlace: new FormControl('', Validators.required),
       birthTime: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
-      profile_img: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8)])
-    });
-    console.log('Form Controls:', this.signupForm.controls);
+      // profilePhoto: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      confirmpass: new FormControl('', Validators.required) // New confirm password field
+    }, { validators: this.passwordsMatchValidator });
   }
-  
+  // Validator to check if password and confirm password are the same
+  passwordsMatchValidator: ValidatorFn = (formGroup: AbstractControl): ValidationErrors | null => {
+    const password = formGroup.get('password')?.value;
+    const confirmpass = formGroup.get('confirmpass')?.value;
+    return password === confirmpass ? null : { passwordsMismatch: true };
+  }
+
+
+  // Capture the file input
+  onFileSelected(event: any): void {
+    this.profilePhoto = event.target.files[0]; // Store the selected file
+  }
 
   get firstName() { return this.signupForm.get('firstName'); }
   get lastName() { return this.signupForm.get('lastName'); }
   get email() { return this.signupForm.get('email'); }
+  get dob() { return this.signupForm.get('dob'); }
+  get city() { return this.signupForm.get('city'); }
+  get gender() { return this.signupForm.get('gender'); }
+  get birthPlace() { return this.signupForm.get('birthPlace'); }
+  get birthTime() { return this.signupForm.get('birthTime'); }
   get password() { return this.signupForm.get('password'); }
   get mobileNumber() { return this.signupForm.get('mobileNumber'); }
-  get imageInsert() { return this.signupForm.get('profile_img'); }
+  get confirmpass() { return this.signupForm.get('confirmpass'); }
 
   togglePasswordVisibility() {
     this.hidePassword = !this.hidePassword;
   }
-  public onImageUpload(event: any) {
-    this.uploadedImage = event.target.files[0];
-    alert("insert image")
-    this.imageUploadAction()
+
+  checkIfAllFieldsEmpty(): boolean {
+    return !this.firstName?.value &&
+      !this.lastName?.value &&
+      !this.email?.value &&
+      !this.dob?.value &&
+      !this.city?.value &&
+      !this.gender?.value &&
+      !this.birthPlace?.value &&
+      !this.birthTime?.value &&
+      !this.password?.value &&
+      !this.confirmpass?.value &&
+      !this.mobileNumber?.value;
   }
 
-  imageUploadAction() {
-    const imageFormData = new FormData();
-    imageFormData.append('image', this.uploadedImage, this.uploadedImage.name);
-
-    this.http.post('http://localhost:8075/api/astrologers/convert-image', imageFormData, { observe: 'response' })
-      .subscribe(
-        (response: any) => {
-          console.log('Full response received from server:', response);
-
-          // Check if response has a body and imageData
-          if (response && response.body && response.body.imageData) {
-            console.log('Image data received:', response.body.imageData);
-
-            // Set the form control value
-            this.imageInsert?.setValue(response.body.imageData);
-            this.image = response;  // Save the response in the component's image property
-
-          } else {
-            console.error('Response does not contain expected imageData:', response);
-            alert('Unexpected response format.');
-          }
-        },
-        (error) => {
-          console.error('Error during image upload:', error);
-
-          // Provide detailed error feedback
-          if (error.status === 500) {
-            alert('Server error: Please check the server logs.');
-          } else if (error.status === 404) {
-            alert('API endpoint not found: Please check the URL.');
-          } else {
-            alert('Something went wrong during the image upload.');
-          }
-        }
-      );
-  }
   signup() {
+    if (this.checkIfAllFieldsEmpty()) {
+      // Show SweetAlert if all fields are empty
+      Swal.fire({
+        title: 'Error!',
+        text: 'All fields are empty! Please fill out the form.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+
     if (this.signupForm.invalid) {
       this.showValidationErrors();
       return;
     }
-    const formData = { ...this.signupForm.value}; // Update the form data with the correct country
+
+    const formData = new FormData();
+    formData.append('firstName', this.signupForm.get('firstName')?.value);
+    formData.append('lastName', this.signupForm.get('lastName')?.value);
+    formData.append('email', this.signupForm.get('email')?.value);
+    formData.append('dob', this.signupForm.get('dob')?.value);
+    formData.append('city', this.signupForm.get('city')?.value);
+    formData.append('gender', this.signupForm.get('gender')?.value);
+    formData.append('birthPlace', this.signupForm.get('birthPlace')?.value);
+    formData.append('birthTime', this.signupForm.get('birthTime')?.value);
+    formData.append('password', this.signupForm.get('password')?.value);
+    formData.append('mobileNumber', this.signupForm.get('mobileNumber')?.value);
+    formData.append('profilePhoto', this.profilePhoto); // Append the file
+
+    // Log the data for debugging purposes
+    console.log('Form Data:', formData);
 
     this.http.post(this.backEndUrl, formData).subscribe(
       response => {
-       Swal.fire("SweetAlert2 is working!");
+        // Debug response for success
+        console.log('Success Response:', response);
 
-        // Signup successful! You can now log in.
-        this.router.navigate(['/login']);
+        // Display success SweetAlert
+        Swal.fire({
+          title: 'Success!',
+          text: 'Signup successful!',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['/login']); // Redirect to login after success
+        });
       },
       error => {
-        console.error('Signup failed:', error);
-        alert('Signup failed! Please try again later.');
+
+        // Check for conflict error (user with same email already exists)
+        if (error.status === 409) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'User with this email already exists. Please try a different email.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+          return;
+        }
+
+        // Debug error for more clarity
+        console.error('Error Response:', error);
+
+        // Display error SweetAlert only for actual errors
+        Swal.fire({
+          title: 'Error!',
+          text: error.error?.message || 'Signup failed! Please try again later.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       }
     );
   }
 
 
+
+
+
   showValidationErrors() {
-    if (this.firstName?.errors?.['required']) {
-      alert('First Name is required');
-    }
-    if (this.lastName?.errors?.['required']) {
-      alert('Last Name is required');
-    }
-    if (this.email?.errors?.['required'] || this.email?.errors?.['email']) {
-      alert('Email is required and must be in a valid format');
-    }
-    if (this.password?.errors?.['minlength']) {
-      alert('Password should be at least 8 characters long');
-    } else if (this.password?.errors?.['required']) {
-      alert('Password is required');
-    }
-    if (this.mobileNumber?.errors?.['required']) {
-      alert('Mobile Number is required');
-    } else if (this.mobileNumber?.errors?.['pattern']) {
-      alert('Mobile Number must be numeric and 10 digits long');
+    if (this.signupForm.errors?.['passwordsMismatch']) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Password and Confirm Password do not match',
+        confirmButtonText: 'OK'
+      });
+      return;
     }
 
+    if (this.firstName?.errors?.['required']) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'First Name is required',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+
+    if (this.lastName?.errors?.['required']) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Last Name is required',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+
+    if (this.email?.errors?.['required'] || this.email?.errors?.['email']) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Email is required and must be in a valid format',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+
+    if (this.password?.errors?.['minlength']) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Password should be at least 8 characters long',
+        confirmButtonText: 'OK'
+      });
+      return;
+    } else if (this.password?.errors?.['required']) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Password is required',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+
+    if (this.confirmpass?.errors?.['required']) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Confirm Password is required',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+
+    if (this.mobileNumber?.errors?.['required']) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Mobile Number is required',
+        confirmButtonText: 'OK'
+      });
+      return;
+    } else if (this.mobileNumber?.errors?.['pattern']) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Mobile Number must be numeric and 10 digits long',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
   }
 }
+

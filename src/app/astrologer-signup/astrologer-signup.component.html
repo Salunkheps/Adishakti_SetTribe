@@ -1,11 +1,12 @@
+
 <app-navbar></app-navbar>
 
 
 <!-- Background image using HTML -->
-<img src="astro10.jpg" alt="Background" class="background-image">
+<!-- <img src="astro10.jpg" alt="Background" class="background-image"> -->
 
 <div class="card-container">
-  <form [formGroup]="signupForm" (ngSubmit)="signup(signupForm)" class="signup-form">
+  <form [formGroup]="signupForm" (ngSubmit)="signup()" class="signup-form">
     <h2>Astrologer Sign Up</h2>
 
     <div class="form-grid">
@@ -92,11 +93,11 @@
 
       <div class="form-group">
         <label for="languages">Languages Known</label>
-        <select id="languages" formControlName="languages">
+        <select id="languages" formControlName="languages" multiple required>
           <option value="" disabled>Select Your Languages</option>
-          <option value="english">English</option>
-          <option value="hindi">Hindi</option>
-          <option value="marathi">Marathi</option>
+          <option value="English">English</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Marathi">Marathi</option>
           <option value="others">Others</option>
         </select>
       </div>
@@ -129,8 +130,8 @@
       </div>
 
       <div class="form-group">
-        <label for="profilePhoto">Profile Photo</label>
-        <input type="file" formControlName="profilePhoto" accept="image/png, image/gif, image/jpeg" (change)="onImageUpload($event)">
+        <label for="file">Profile Photo</label>
+        <input type="file" accept="image/png, image/gif, image/jpeg" (change)="onFileSelected($event)">
       </div>
 
       <div class="form-group">

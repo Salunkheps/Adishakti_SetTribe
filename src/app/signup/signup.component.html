@@ -73,7 +73,7 @@
       <!-- Additional Fields -->
       <div class="form-group">
         <label for="file">Profile Photo</label>
-        <input type="file" accept="image/png, image/gif, image/jpeg" (change)="onImageUpload($event)" />
+        <input type="file" accept="image/png, image/gif, image/jpeg" (change)="onFileSelected($event)">
       </div>
 
       <div class="form-group">
@@ -95,8 +95,8 @@
       </div>
 
       <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" formControlName="confirmpass" required placeholder="Confirm Your Password" />
+        <label for="confirmpass">Confirm Password</label>
+        <input type="password" id="confirmpass" formControlName="confirmpass" required placeholder="Confirm Your Password" />
       </div>
 
       <button type="submit" class="signup-button">Sign Up</button>

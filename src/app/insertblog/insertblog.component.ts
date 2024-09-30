@@ -30,7 +30,7 @@ export class InsertblogComponent implements OnInit {
   Astrologer: Astrologer[] = [];
   Blogs: Blog[] = [];
   data: any = []
-  uploadedImage!: File;
+  featuredImage!: File;
   image: any = []
   dtOptions: Config = {};
 
@@ -81,10 +81,14 @@ export class InsertblogComponent implements OnInit {
     };
     this.getAllAstrologers();
   }
-  public onImageUpload(event: any) {
-    this.uploadedImage = event.target.files[0];
-    this.imageUploadAction()
+  onImageUpload(event: any) {
+    // Capture the uploaded image file
+    const file = event.target.files[0];
+    if (file) {
+      this.featuredImage = file;
+    }
   }
+  
   getBlogs() {
     // Add a timestamp to avoid caching issues
     this.http.get<Blog[]>(`http://localhost:8075/api/blogs`)
@@ -137,43 +141,39 @@ export class InsertblogComponent implements OnInit {
   // }
   sub() {
     const formData = new FormData();
-
-
-    const reg_id = sessionStorage.getItem('regId'); // Assuming 'reg_id' is stored in session storage
-
-    // Append form values
+  
+    // Get values from the form and session storage
     const title = this.myData.get('title')?.value;
     const content = this.myData.get('content')?.value;
     const blogCatagory = this.myData.get('blogCatagory')?.value;
-    // const astrologer = this.myData.get('astrologer')?.value; // Assuming this is the astrologer reg_id
-
-    // Log to check if values are not empty
+    const reg_id = sessionStorage.getItem('regId'); // Assuming 'regId' is stored in session storage
+  
+    // Log to check if values are correct
     console.log('Title:', title);
     console.log('Content:', content);
     console.log('Blog Category:', blogCatagory);
-    // console.log('Astrologer (reg_id):', astrologer);
-    console.log(reg_id);
-    
-    if (!title || !content || !blogCatagory || !this.uploadedImage || !reg_id) {
+    console.log('Astrologer (reg_id):', reg_id);
+  
+    // Validation to ensure required fields are filled
+    if (!title || !content || !blogCatagory || !this.featuredImage || !reg_id) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Please fill out all fields, upload an image, and ensure you are logged inn peroerly!',
+        text: 'Please fill out all fields, upload an image, and ensure you are logged in properly!',
       });
       return;
     }
   
-
-
+    // Append the form data to be sent to the backend
     formData.append('title', title);
     formData.append('content', content);
     formData.append('blogCatagory', blogCatagory);
-    formData.append('reg_id', reg_id);  // Append the astrologer reg_id
-    formData.append('featuredImage', this.uploadedImage, this.uploadedImage.name);
-
+    formData.append('reg_id', reg_id);  // Append the astrologer's reg_id from session storage
+    formData.append('featuredImage', this.featuredImage, this.featuredImage.name); // Append the uploaded image
+  
     console.log('Form Data to be sent:', formData);
-
-    // Make POST request to backend
+  
+    // Make the POST request to the backend's /create API
     this.http.post('http://localhost:8075/api/blogs/upload', formData)
       .subscribe((response) => {
         Swal.fire({
@@ -181,11 +181,8 @@ export class InsertblogComponent implements OnInit {
           title: 'Success!',
           text: 'Blog added successfully, please wait for admin approval!',
         });
-
-        // Refresh blog list
-        this.getBlogs();
+          this.getBlogs();
       }, (error) => {
-        // Error: Show a SweetAlert error notification
         Swal.fire({
           icon: 'error',
           title: 'Error!',
@@ -194,23 +191,13 @@ export class InsertblogComponent implements OnInit {
         console.error('Error:', error);
       });
   }
+  
 
-
-  imageUploadAction() {
-
-    const imageFormData = new FormData();
-    imageFormData.append('image', this.uploadedImage, this.uploadedImage.name);
-    this.http.post('http://localhost:8075/api/astrologers/convert-image', imageFormData, { observe: 'response' })
-      .subscribe((response) => {
-        //alert("insert") 
-        this.image = response;
-        this.myData.get('featuredImage')?.setValue(this.image.body.imageData);
-      }
-        , (error) => {
-          alert("Something Went Wrong")
-        }
-      );
+  // Capture the file input
+  onFileSelected(event: any): void {
+    this.featuredImage = event.target.files[0]; // Store the selected file
   }
+
   logout(event: MouseEvent): void {
     // Prevent the default behavior of the button click (in case it's a form submission or link)
     event.preventDefault();
