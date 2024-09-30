@@ -4,13 +4,14 @@
       <h2>Home</h2>
     </div>
     <ul class="sidebar-menu">
-      <li><a routerLink="/astrodash"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
+      <li><a routerLink="/astrodash"><i><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
       <!-- <li><a routerLink="/astroprofile">Profile</a></li> -->
-      <li><a routerLink="/astroclient"><i ><img src="clientlist.png" width="30px"></i> Clients Report</a></li>
+      <li><a routerLink="/astroclient"><i><img src="clientlist.png" width="30px"></i> Clients Report</a></li>
       <!-- <li><a routerLink="/astroreport">Reports</a></li> -->
-      <li><a routerLink="/insert-blog"><i ><img src="createblog.png" width="30px"></i> Create Blogs</a></li>
-      <li><a routerLink="/consultation-price"><i ><img src="consultprice.png" width="30px"></i> Consultation Price</a></li>
-      <li><a href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
+      <li><a routerLink="/insert-blog"><i><img src="createblog.png" width="30px"></i> Create Blogs</a></li>
+      <li><a routerLink="/consultation-price"><i><img src="consultprice.png" width="30px"></i> Consultation Price</a>
+      </li>
+      <li><a href="#"><i><img src="logout.png" width="30px"></i> Logout</a></li>
     </ul>
   </nav>
   <div class="main-content">
@@ -18,7 +19,7 @@
       <h1>Dashboard</h1>
       <div class="user-info">
         <p>Welcome, <strong>Username</strong></p>
-         <a href="#" >Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+        <a href="#">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
       </div>
     </header>
 
@@ -71,7 +72,8 @@
         <button (click)="updateAvailability()">Update</button>
       </div> -->
       <div class="checkbox-wrapper-35">
-        <input value="private" name="switch" id="switch" type="checkbox" class="switch">
+        <input value="private" name="switch" id="switch" type="checkbox" class="switch" (change)="toggleOnlineStatus()"
+          [checked]="isOnline">
         <label for="switch">
           <span class="switch-x-text">You are</span>
           <span class="switch-x-toggletext">

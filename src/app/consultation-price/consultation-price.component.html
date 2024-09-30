@@ -27,7 +27,7 @@
       <h3>Consultation Price</h3>
     </div>
     
-    <div class="form-container">
+    <div class="form-container" *ngIf="consultationPrices.length === 0">
       <h2 *ngIf="currentEditId; else createPriceTemplate">Update Consultation Price</h2>
       <ng-template #createPriceTemplate>
         <h2>Set Consultation Price</h2>
@@ -47,21 +47,20 @@
       </form>
     </div>
 
-    <div class="table-container">
+    <div class="table-container"  *ngIf="consultationPrices.length > 0">
       <div class="one">
         <h3>Price Lists</h3>
       </div>
       <table class="table">
         <thead>
           <tr>
-            <th>ID</th>
+            
             <th>Rate per Minute</th>
             <th>Actions</th> <!-- New Actions column -->
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let price of consultationPrices">
-            <td>{{ price.id }}</td>
             <td>{{ price.ratePerMinute }}</td>
             <td>
               <button (click)="editPrice(price)" class="btn btn-warning btn-small">
