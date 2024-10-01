@@ -8,19 +8,18 @@
     </div>
     <div class="astrologer-list">
       <div class="astrologer" *ngFor="let astrologer of filteredAstrologers">
-        <ng-container *ngIf="astrologer.astrologerImages && astrologer.astrologerImages.imageData">
-          <img [src]="'data:image/png;base64,' + astrologer.astrologerImages.imageData" alt="Astrologer Image"
-            class="astrologer-image" />
+        <ng-container *ngIf="astrologer.regId">
+          <img [src]="fetchAstrologerImage(astrologer.regId)" alt="Astrologer Image" class="astrologer-image" />
         </ng-container>
-
         <div class="astrologer-details">
-          <!-- <div class="astrologer-wrapper">
+          <div class="astrologer-wrapper">
             <span class="astrologername">
               {{ astrologer.firstName | uppercase }} {{ astrologer.lastName | uppercase }}
             </span>
             <span class="checkbox-wrapper-35">
-              <input value="private" name="switch" id="switch" type="checkbox" class="switch" disabled>
-              <label for="switch">
+              <input value="private" [checked]="astrologer.isOnline" name="switch" id="switch" type="checkbox"
+                class="switch" disabled>
+              <label for="switch{{ astrologer.regId }}">
                 <span class="switch-x-text">Astrologer is </span>
                 <span class="switch-x-toggletext">
                   <span class="switch-x-unchecked"><span class="switch-x-hiddenlabel">Offline: </span>Offline</span>
@@ -28,8 +27,8 @@
                 </span>
               </label>
             </span>
-          </div> -->
-          
+          </div>
+
           <p>Skills: {{ astrologer.skills }}</p>
           <p>ratePerMinute: {{ astrologer.ratePerMinute }}</p>
           <p>
@@ -42,9 +41,9 @@
             <span class="star-rating">
               <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" (mouseover)="hoverRating = i + 1"
                 (mouseleave)="hoverRating = null" [class.filled]="
-                  astrologer.rating >= i + 1 ||
-                  (hoverRating && hoverRating >= i + 1)
-                ">
+                    astrologer.rating >= i + 1 ||
+                    (hoverRating && hoverRating >= i + 1)
+                  ">
                 &#9733;
               </span>
             </span>
@@ -53,9 +52,9 @@
         </div>
         <div class="astrologer-actions">
           <!-- <button class="btn-chat" (click)="navigateToCall(astrologer)">
-            Call
-          </button> -->
-          <button class="btn-call" (click)="navigateToChat(astrologer)">
+              Call
+            </button> -->
+          <button class="btn-call" *ngIf="astrologer.isOnline" (click)="navigateToChat(astrologer)">
             Chat
           </button>
         </div>

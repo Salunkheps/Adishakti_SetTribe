@@ -14,9 +14,10 @@ interface Astrologer {
   skills: string;
   languagesKnown: string[];
   rating: number;
-  astrologerImages: { imageData: string };
   mobileNumber: string; // Make sure this field exists in your backend response
   ratePerMinute: number;
+  isOnline?: boolean; // Add this field
+
 }
 
 @Component({
@@ -38,6 +39,13 @@ export class FindAstrologersComponent implements OnInit {
 
   ngOnInit(): void {
     this.filteredAstrologers = this.data;
+    this.getAllData();
+
+  }
+
+  fetchAstrologerImage(regId: string): string {
+    // This will return the API endpoint URL for the image
+    return `http://localhost:8075/api/astrologers/${regId}/profile-photo`;
   }
 
   // filterAstrologers(): void {
@@ -90,16 +98,15 @@ export class FindAstrologersComponent implements OnInit {
       lastName: astrologer.lastName,
       imageData: astrologer.astrologerImages ? astrologer.astrologerImages.imageData : null
     }));
-        
+
     // Navigate to the chat page
     this.router.navigate(['/chatwithastro', astrologer.regId]); // Update this route as needed
   }
 
+  
   getAllData(): void {
     this.http
-      .get<Astrologer[]>(
-        'http://localhost:8075/api/astrologers/get-astrologers'
-      )
+      .get<Astrologer[]>('http://localhost:8075/api/astrologers/get-astrologers')
       .subscribe(
         (data) => {
           this.data = data;
@@ -111,6 +118,19 @@ export class FindAstrologersComponent implements OnInit {
       );
   }
 
+  // Function to get astrologer's online status
+  getAstrologerOnlineStatus(astrologer: Astrologer): void {
+    this.http
+      .get<boolean>(`http://localhost:8075/api/astrologers/${astrologer.regId}/isOnline`)
+      .subscribe(
+        (isOnline) => {
+          astrologer.isOnline = isOnline;
+        },
+        (error) => {
+          console.error(`Error fetching online status for ${astrologer.regId}`, error);
+        }
+      );
+  }
   getSearchData(): void {
     this.http
       .get<Astrologer[]>(
