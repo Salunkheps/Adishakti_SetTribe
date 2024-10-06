@@ -5,6 +5,7 @@ import { Config } from 'datatables.net';
 import { HttpClient } from '@angular/common/http';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'; // Import your icons
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-blogs',
@@ -21,7 +22,7 @@ export class ManageBlogsComponent implements OnInit {
   faEdit = faEdit;
   faTrash = faTrash;
 
-  constructor(private blogService: BlogService, private http: HttpClient) { }
+  constructor(private blogService: BlogService, private http: HttpClient,private router: Router) { }
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -59,14 +60,15 @@ export class ManageBlogsComponent implements OnInit {
           title: 'Actions',
           render: (data: any, type: any, row: any, meta: any) => {
             const approveButton = row.status === 'Pending' || row.status === 'Rejected'
-              ? `<button class="edit-btn" data-index="${row.id}"><fa-icon [icon]="faEdit"></fa-icon> Approve</button>`
+              ? `<button class="edit-btn btn btn-success" data-index="${row.id}"><fa-icon [icon]="faEdit"></fa-icon> Approve</button>`
               : '';
 
             const rejectButton = row.status === 'Pending' || row.status === 'Approved'
-              ? `<button class="delete-btn" data-index="${row.id}"><fa-icon [icon]="faTrash"></fa-icon> Reject</button>`
+              ? `<button class="delete-btn btn btn-danger" data-index="${row.id}"><fa-icon [icon]="faTrash"></fa-icon> Reject</button>`
               : '';
 
             return `${approveButton} ${rejectButton}`;
+
           },
           orderable: false
         }
@@ -166,6 +168,25 @@ export class ManageBlogsComponent implements OnInit {
           this.fetchBlogs(); // Refresh the list after rejection
           window.location.reload(); // Reload the page after rejection
         });
+      }
+    });
+  }
+  logout(event: MouseEvent) {
+    event.preventDefault(); // Prevent default link behavior
+    Swal.fire({
+      title: 'Are you sure you want to logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Logout',
+      cancelButtonText: 'Cancel',
+      backdrop: true,
+      allowOutsideClick: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('User logged out');
+        this.router.navigate(['/Home']);
       }
     });
   }

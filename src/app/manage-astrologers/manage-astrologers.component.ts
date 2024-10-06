@@ -7,6 +7,7 @@ import { Config } from 'datatables.net';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'; // Import your icons
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-astrologers',
@@ -46,7 +47,7 @@ export class ManageAstrologersComponent implements OnInit {
     { name: 'certification', label: 'Certification', type: 'text' },
     { name: 'degree', label: 'Degree', type: 'text' }
   ];
-  constructor(private astrologerService: AstrologerService, private fb: FormBuilder, private http: HttpClient) {
+  constructor(private astrologerService: AstrologerService, private fb: FormBuilder, private http: HttpClient,private router: Router) {
     this.searchForm = this.fb.group({
       searchTerm: ['']
     });
@@ -87,18 +88,20 @@ export class ManageAstrologersComponent implements OnInit {
             let buttons = '';
             if (row.status === 'Pending') {
               buttons = `
-                <button class="edit-btn" data-index="${row.regId}">
+                <button class="edit-btn btn btn-success" data-index="${row.regId}">
                   Approve
                 </button>
-                <button class="delete-btn" data-index="${row.regId}">
+                <button class="delete-btn btn btn-danger" data-index="${row.regId}">
                   Reject
                 </button>`;
+
             } else if (row.status === 'Approved') {
               buttons = `
-                <button class="delete-btn" data-index="${row.regId}">
-                  Reject
-                </button>`;
-            } else if (row.status === 'Rejected') {
+              <button class="edit-btn btn btn-success" data-index="${row.regId}">
+                Approve
+              </button>`;
+            }
+            else if (row.status === 'Rejected') {
               buttons = `
                 <button class="edit-btn" data-index="${row.regId}">
                   Approve
@@ -107,7 +110,7 @@ export class ManageAstrologersComponent implements OnInit {
             return buttons;
           },
           orderable: false
-        }  
+        }
       ]
     };
     this.loadAstrologers();
@@ -120,7 +123,7 @@ export class ManageAstrologersComponent implements OnInit {
       const index = $(event.currentTarget).data('index');
       this.approveAstrologer(index);
     });
-  
+
     $(document).on('click', '.delete-btn', (event) => {
       const index = $(event.currentTarget).data('index');
       this.rejectAstrologer(index);
@@ -196,5 +199,24 @@ export class ManageAstrologersComponent implements OnInit {
       this.newAstrologerForm.reset(); // Reset form if hiding
       this.selectedAstrologer = null; // Clear selected astrologer
     }
+  }
+  logout(event: MouseEvent) {
+    event.preventDefault(); // Prevent default link behavior
+    Swal.fire({
+      title: 'Are you sure you want to logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Logout',
+      cancelButtonText: 'Cancel',
+      backdrop: true,
+      allowOutsideClick: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('User logged out');
+        this.router.navigate(['/Home']);
+      }
+    });
   }
 }

@@ -2,38 +2,73 @@
 <div class="dashboard-container">
   <nav class="sidebar">
     <div class="sidebar-header">
-      <h2>Adishkati</h2>
+      <h2 class="logo-text">Adishkati</h2>
     </div>
     <ul class="sidebar-menu">
-      <li><a routerLink="/admin" routerLinkActive="active"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
-  <li><a routerLink="/manageusers" routerLinkActive="active"><i ><img src="manageuser.png" width="30px"></i> Manage Users</a></li>
-  <li><a routerLink="/manageastrologer" routerLinkActive="active"><i ><img src="manageastro.png" width="30px"></i> Manage Astrologers</a></li>
-  <li><a routerLink="/manageblog" routerLinkActive="active"><i ><img src="manageblog.png" width="30px"></i> Manage Blog</a></li>
-  <li><a routerLink="/manageskills" routerLinkActive="active"><i ><img src="manageskills.png" width="30px"></i> Manage Skills</a></li>
-  <li><a  href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
-
+      <li><a routerLink="/admin" routerLinkActive="active"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+      <li><a routerLink="/manageusers" routerLinkActive="active"><i class="bi bi-people-fill"></i> Manage Users</a></li>
+      <li><a routerLink="/manageastrologer" routerLinkActive="active"><i class="bi bi-person-check-fill"></i> Manage Astrologers</a></li>
+      <li><a routerLink="/manageblog" routerLinkActive="active"><i class="bi bi-vector-pen"></i> Manage Blog</a></li>
+      <li><a routerLink="/manageskills" routerLinkActive="active"><i class="bi bi-award-fill"></i> Manage Skills</a></li>
+      <li><a routerLink="/manage-payment" routerLinkActive="active"><i class="bi bi-credit-card-fill"></i> Manage Payment</a></li>
+      <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
     </ul>
   </nav>
 
   <div class="main-content">
-    <header class="topbar">
-      <!-- <h1>Dashboard</h1> -->
-      <div class="user-info">
-        <p>Welcome,</p>
-        <a href="#" >Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+    <div class="row">
+      <div class="col-md-12 one">
+        <h2 class="text-center mt-4">Dashboard</h2>
       </div>
-    </header>
+    </div>
+    
+    <div class="row">
+      <div class="col-lg-1 ml-5"></div>
+      <div class="col-lg-3 col-md-6">
+          <div class="card bg-white rounded-4 p-2 mb-lg-0 mb-3" data-tor="inview:bg(primary), hover:bg(danger)">
+              <div class="hstack gap-3">
+                <div class="p-2 ms-auto rounded-circle bg-primary badge">
+                  <i class="fa-brands fa-btc color-white fs-5 d-inline-block w-16"></i>
+              </div>
+                <div class="p-2">
+                    <h3 class="fs-6 text-dark-50 text-center lh-1">TODAY'S MONEY</h3>
+                    <strong class="fs-5 lh-1">$53,000</strong>
+                </div>
+              </div>
+              <p class="text-black-50 fw-semibold fs-6 ps-2"><a href="#" class="link-info text-decoration-none fw-bold">+55%</a> since yesterday</p>
+          </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+          <div class="card bg-white rounded-4 p-2 mb-lg-0 mb-3">
+              <div class="hstack gap-3">
+                  <div class="p-2">
+                      <h3 class="fs-6 text-black-50 lh-1">TODAY'S USERS</h3>
+                      <strong class="fs-5 lh-1">2,300</strong>
+                  </div>
+                  <div class="p-2 ms-auto rounded-circle bg-danger badge ">
+                      <i class="fa-solid fa-earth-asia color-white fs-5"></i>
+                  </div>
+              </div>
+              <p class="text-black-50 fw-semibold fs-6 ps-2"><a href="#" class="link-info text-decoration-none fw-bold">+3%</a> since week</p>
+          </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+          <div class="card bg-white rounded-4 p-2 mb-lg-0 mb-3">
+              <div class="hstack gap-3">
+                  <div class="p-2">
+                      <h3 class="fs-6 text-black-50 lh-1">NEW CLIENTS</h3>
+                      <strong class="fs-5 lh-1">+3,462</strong>
+                  </div>
+                  <div class="p-2 ms-auto rounded-circle bg-info badge ">
+                      <i class="fa-solid fa-file-invoice color-white fs-5"></i>
+                  </div>
+              </div>
+              <p class="text-black-50 fw-semibold fs-6 ps-2"><a href="#" class="link-danger text-decoration-none fw-bold">-2%</a> last quarter</p>
+          </div>
+      </div>
+      <div class="col-lg-1 mr-2"></div>
+    </div>
 
-    <section class="dashboard-section">
-      <div class="stat">
-        <h3>Total Customers</h3>
-        <p>{{ totalClients }}</p>
-      </div>
-      <div class="stat">
-        <h3>Total Astrologers</h3> 
-        <p>{{ totalAstrologers }}</p>
-      </div>
-    </section>
-  <router-outlet></router-outlet>
-  
+    <router-outlet></router-outlet>
+  </div>
 </div>

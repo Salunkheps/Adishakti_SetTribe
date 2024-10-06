@@ -1,76 +1,74 @@
-<div class="dashboard-container">
+<div class="d-flex">
   <nav class="sidebar">
     <div class="sidebar-header">
-      <h2>Home</h2>
+      <div class="logo">
+        <h2 class="logo-text">Adishkati</h2>
+      </div>
     </div>
     <ul class="sidebar-menu">
-      <li><a routerLink="/astrodash"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
-      <!-- <li><a routerLink="/astroprofile">Profile</a></li> -->
-      <li><a routerLink="/astroclient"><i ><img src="clientlist.png" width="30px"></i> Clients Report</a></li>
-      <!-- <li><a routerLink="/astroreport">Reports</a></li> -->
-      <li><a routerLink="/insert-blog"><i ><img src="createblog.png" width="30px"></i> Create Blogs</a></li>
-      <li><a routerLink="/consultation-price"><i ><img src="consultprice.png" width="30px"></i> Consultation Price</a></li>
-      <li><a href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
+      <li><a routerLink="/astrodash" routerLinkActive="active"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+      <li><a routerLink="/astroclient" routerLinkActive="active"><i class="fa-solid fa-pen-to-square"></i> Clients Report</a></li>
+      <li><a routerLink="/insert-blog" routerLinkActive="active"><i class="fa-solid fa-blog"></i> Create Blogs</a></li>
+      <li><a routerLink="/consultation-price" routerLinkActive="active"><i class="fa-solid fa-money-check-dollar"></i> Consultation Price</a></li>
+      <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
     </ul>
   </nav>
   
-  <div class="main-content">
-    <header class="topbar">
-      <h1>Dashboard</h1>
-      <div class="user-info">
-        <p>Welcome, <strong>Username</strong></p>
-        <a href="#" >Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
-        <!-- <a href="#" class="logout-topbar">Logout</a> -->
+  <div class="main-content col-md-9 col-lg-10 p-4">
+    <div class="row">
+      <div class="col-12 one">
+        <h2 class="text-center mt-4">Create Blogs</h2>
       </div>
-    </header>
-   
-    <div class="Blogs-form-container">
-      <div class="one">
-        <h3>Create Blogs</h3>
-        <!-- <h4><span>&nbsp;</span></h4> -->
-      </div>
-      <form [formGroup]="myData" (ngSubmit)="sub()" class="two-column-form">
-     
-        <div class="form-row">
-          
-          <div class="form-group">
-            <label for="title">Title</label>
-            <input id="title" type="text" placeholder="Enter Title" formControlName="title" />
-          </div>
-          <div class="form-group">
-            <label for="featuredImage">Blog Photo</label>
-            <input id="featuredImage" type="file" (change)="onImageUpload($event)" accept="image/png, image/gif, image/jpeg" />
-            <img *ngIf="image.body?.imageData" [src]="'data:image/png;base64,' + image.body.imageData" alt="Preview" [width]="50" />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="blogCatagory">Category</label>
-            <select id="blogCatagory" formControlName="blogCatagory">
-              <option value="">Select Blog Category</option>
-              <option value="HEALTH">Health</option>
-              <option value="TECHNOLOGY">Technology</option>
-              <option value="LIFESTYLE">Lifestyle</option>
-              <option value="EDUCATION">Education</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="content">Description</label>
-            <textarea id="content" formControlName="content" placeholder="Enter description"></textarea>
-          </div>
-        </div>
-        <button type="submit">Create</button>
-      </form>
     </div>
 
-    <div class="heading">
-      <div class="one">
-        <h3>Blogs Report</h3>
-        <!-- <h4><span>&nbsp;</span></h4> -->
+    <form [formGroup]="myData" (ngSubmit)="sub()" class="form">
+      <div class="row">
+        <div class="col-md-6">
+      
+          <div class="col-md-10 mb-3">
+          <label for="title">Title</label>
+          <input id="title" type="text" placeholder="Enter Title" class="form-control" formControlName="title" />
+        </div>
+
+        <div class="col-md-10 mb-3">
+          <label for="featuredImage">Blog Photo</label>
+          <input id="featuredImage" type="file" (change)="onFileSelected($event)" accept="image/png, image/gif, image/jpeg" class="form-control" />
+          <img *ngIf="image.body?.imageData" [src]="'data:image/png;base64,' + image.body.imageData" alt="Preview" class="img-fluid mt-2" width="50" />
+        </div>
+     
+        <div class="col-md-10">
+          <label for="blogCatagory">Category</label>
+          <select id="blogCatagory" formControlName="blogCatagory" class="form-select">
+            <option value="">Select Blog Category</option>
+            <option value="HEALTH">Health</option>
+            <option value="TECHNOLOGY">Technology</option>
+            <option value="LIFESTYLE">Lifestyle</option>
+            <option value="EDUCATION">Education</option>
+          </select>
+        </div>
+        <div class="col-md-10">
+          <label for="content">Description</label>
+          <textarea id="content" formControlName="content" placeholder="Enter description" class="form-control"></textarea>
+        </div>
+        <div class="col-md-2 mt-3">
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <img src="writing_1.png" class="img-fluid">
+      </div>
+      </div>
+     
+    </form> 
+
+    <div class="heading mt-5">
+      <div class="col-12 one">
+        <h2 class="text-center">Blogs Report</h2>
       </div>
     </div>
-    <table datatable [dtOptions]="dtOptions" class="row-border hover">
-      <thead>
+    <table datatable [dtOptions]="dtOptions" class="table-bordered table-hover table-striped mt-3">
+      <thead class="text-white" style="background: #4c70ba;">
         <tr>
           <th>ID</th>
           <th>Title</th>

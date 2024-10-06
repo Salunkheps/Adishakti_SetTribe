@@ -113,6 +113,7 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+
 .logo {
   display: flex;
   align-items: center;
@@ -146,6 +147,13 @@ body {
   margin-left: 15px; /* Space between links */
   position: relative;
 }
+
+.nav-link:hover{
+  color: #F9DA82 !important;
+    animation: glow 1.5s ease-in-out infinite; /* Apply glow animation */
+
+
+}
 .col a{
   color: #f4f4f4;
 }
@@ -161,11 +169,6 @@ body {
   padding: 8px 15px; /* Reduced padding for smaller height */
   transition: color 0.3s ease, background-color 0.3s ease;
   border-radius: 5px; /* Rounded corners for modern look */
-}
-
-.nav-links a:hover {
-  color: #420E57; /* Dark Purple */
-  background-color: #F9DA82; /* Light Yellow */
 }
 
 /* Dropdown menu styling */

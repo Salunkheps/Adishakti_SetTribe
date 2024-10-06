@@ -46,7 +46,9 @@ import { ChatComponent } from './chat/chat.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; // Import FontAwesomeModule
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ConsultationPriceComponent } from './consultation-price/consultation-price.component';
-
+import { ChatAppForAstrologerComponent } from './chat-app-for-astrolgoer/chat-app-for-astrologer.component';
+import { ManagePaymentsComponent } from './manage-payments/manage-payments.component';
+import { WebSocketService } from './web-socket.service';
 
 
 
@@ -94,6 +96,8 @@ import { ConsultationPriceComponent } from './consultation-price/consultation-pr
     HealthcareComponent,
     ChatComponent,
     ConsultationPriceComponent,
+    ChatAppForAstrologerComponent,
+    ManagePaymentsComponent,
 
 
 
@@ -110,7 +114,8 @@ import { ConsultationPriceComponent } from './consultation-price/consultation-pr
     FontAwesomeModule,
     SweetAlert2Module,
   ],
-  providers: [],
+  providers: [    WebSocketService // Ensure WebSocketService is provided here
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

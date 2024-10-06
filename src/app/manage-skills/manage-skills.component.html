@@ -1,80 +1,75 @@
-<div class="dashboard-container">
+<div class="dashboard-container d-flex flex-column flex-md-row">
   <nav class="sidebar">
     <div class="sidebar-header">
-      <h2>Adishkati</h2>
+      <h2 class="logo-text">Adishkati</h2>
     </div>
     <ul class="sidebar-menu">
-      <li><a routerLink="/admin" routerLinkActive="active"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
-  <li><a routerLink="/manageusers" routerLinkActive="active"><i ><img src="manageuser.png" width="30px"></i> Manage Users</a></li>
-  <li><a routerLink="/manageastrologer" routerLinkActive="active"><i ><img src="manageastro.png" width="30px"></i> Manage Astrologers</a></li>
-  <li><a routerLink="/manageblog" routerLinkActive="active"><i ><img src="manageblog.png" width="30px"></i> Manage Blog</a></li>
-  <li><a routerLink="/manageskills" routerLinkActive="active"><i ><img src="manageskills.png" width="30px"></i> Manage Skills</a></li>
-  <li><a  href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
+      <li><a routerLink="/admin" routerLinkActive="active"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+      <li><a routerLink="/manageusers" routerLinkActive="active"><i class="bi bi-people-fill"></i> Manage Users</a></li>
+      <li><a routerLink="/manageastrologer" routerLinkActive="active"><i class="bi bi-person-check-fill"></i> Manage Astrologers</a></li>
+      <li><a routerLink="/manageblog" routerLinkActive="active"><i class="bi bi-vector-pen"></i> Manage Blog</a></li>
+      <li><a routerLink="/manageskills" routerLinkActive="active"><i class="bi bi-award-fill"></i> Manage Skills</a></li>
+      <li><a routerLink="/manage-payment" routerLinkActive="active"><i class="bi bi-credit-card-fill"></i> Manage Payment</a></li>
+      <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
     </ul>
   </nav>
 
-  <div class="main-content">
-    <header class="topbar">
-      <!-- <h1>Dashboard</h1> -->
-      <div class="user-info">
-        <p>Welcome,</p>
-        <a href="#" >Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+  <div class="main-content flex-grow-1 p-4">
+    <div class="row mb-4">
+      <div class="col-12 one">
+        <h2 class="text-center">Manage Skills</h2>
       </div>
-    </header>
+    </div>
 
     <div class="manage-skills-container">
-      <div class="one">
-        <h3>Manage Skills</h3>
-        <!-- <h4><span>&nbsp;</span></h4> -->
-      </div>
-
       <!-- Add/Edit Skill Form -->
-      <div class="skill-form">
+      <div class="skill-form mb-4">
         <div class="form-group">
           <label for="skillName">Skill Name</label>
           <input
             type="text"
             id="skillName"
+            class="form-control"
             [(ngModel)]="newSkillName"
             placeholder="Enter skill name"
             required
           />
         </div>
-
-        <button class="add-skill-btn" (click)="editIndex === -1 ? addSkill() : updateSkill()">
+        <button class="add-skill-btn btn btn-primary" (click)="editIndex === -1 ? addSkill() : updateSkill()">
           {{ editIndex === -1 ? 'Add Skill' : 'Update Skill' }}
         </button>
       </div>
 
       <div class="skill-table">
-        <div class="one">
-          <h3>Skills Report</h3>
-          <!-- <h4><span>&nbsp;</span></h4> -->
+        <div class="one mb-2">
+          <h2>Skills Report</h2>
         </div>
   
-        <table datatable [dtOptions]="dtOptions">
-          <thead>
-            <tr>
-              <th>Sr. No.</th>
-              <th>Skill Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let skill of skills; let i = index">
-              <td>{{ i + 1 }}</td> <!-- Serial number added -->
-              <td>{{ skill.skillname }}</td>
-              <td>
-                <button class="edit-btn" (click)="editSkill(i)">
-                  Edit
-                </button>
-                <button class="delete-btn" (click)="deleteSkill(i)">
-                  Delete
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table datatable [dtOptions]="dtOptions" class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Sr. No.</th>
+                <th>Skill Name</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let skill of skills; let i = index">
+                <td>{{ i + 1 }}</td> <!-- Serial number added -->
+                <td>{{ skill.skillname }}</td>
+                <td>
+                  <button class="btn btn-warning btn-sm" (click)="editSkill(i)">
+                    Edit
+                  </button>
+                  <button class="btn btn-danger btn-sm" (click)="deleteSkill(i)">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

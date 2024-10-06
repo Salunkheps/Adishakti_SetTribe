@@ -1,7 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Route, Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { WebSocketService } from '../web-socket.service';
 
 @Component({
   selector: 'app-chat',
@@ -9,256 +11,222 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  reg_id: string | null = null;
-  minutes: number | null = null;
-  seconds: number = 0;
-  countdownInterval: any;
-  routeSubscription: Subscription = new Subscription();
-  session_id: number | null = null; // Add session_id field
-
-  selectedAstrologerData: any = null;
-
-  notifications: any[] = [
-    { type: 'Astrologer1', time: this.getCurrentTime(), isOnline: true, profileImage: 'back1.jpg' },
+  clients = [
+    { id: 1, firstName: 'Alice', lastName: 'Smith', image: 'path/to/alice.png', lastMessage: 'Hello!' },
   ];
 
-  constructor(private chatService: ChatService, private route: ActivatedRoute, private router: Router) { }
-  canSendMessage: boolean = true;
-  onlineAstrologers: string[] = [];
-  showPopup = false;
+  selectedClient: any = this.clients[0];
+  messages: any[] = [];
   newMessage: string = '';
-  selectedAstrologer: string = '';
   isTyping: boolean = false;
-  searchTerm: string = '';
-  filteredNotifications: any[] = [...this.notifications];
-  messages = [
-    { content: 'Hi there!', time: '3:40 pm', sender: 'sender', seen: true, seenTime: '' },
-    { content: 'Hey, how are you?', time: '3:41 pm', sender: 'receiver', seen: false, seenTime: '' }
-  ];
+  astrologerDetails: any; // Property to hold astrologer details
 
-  ngOnInit() {
-    this.showPopup = true;
-    this.updateOnlineAstrologers();
 
-    this.routeSubscription = this.route.queryParams.subscribe(params => {
-      const minutesFromParams = +params['minutes'] || null;
-      this.minutes = minutesFromParams;
-      this.reg_id = params['reg_id'] || null;
-      console.log('Minutes received from query params:', minutesFromParams);
-      console.log('Reg ID received:', this.reg_id);
+  sessionId: number | null = null; // Store sessionId once it's created
+  currentUserRegId: string = ''; // User's regId
+  astrologerRegId: string = ''; // Astrologer's regId
+  countdown: number = 0; // Timer in seconds
+  countdownInterval: any; // Interval for countdown
 
-      if (this.minutes !== null) {
-        const storedTime = localStorage.getItem('chatTimer');
-        if (storedTime) {
-          this.seconds = +storedTime;
-          this.startCountdownFromSeconds();
-        } else {
-          this.startCountdown(this.minutes);
+  constructor(private chatService: ChatService, private http: HttpClient, private router: Router, private webSocketService: WebSocketService,private cdr: ChangeDetectorRef) { }
+
+
+  ngOnInit(): void {
+    this.sessionId = sessionStorage.getItem('chatSessionId') ? Number(sessionStorage.getItem('chatSessionId')) : null;
+    // Load user and astrologer details from session storage
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser')!);
+    const selectedAstrologer = JSON.parse(sessionStorage.getItem('selectedAstrologer')!);
+    const selectedMinutes = sessionStorage.getItem('selectedMinutes');
+    this.webSocketService.connect(); // Connect to WebSocket on component init
+
+    
+    // Subscribe to message reload events
+    this.webSocketService.getMessageSubject().subscribe(() => {
+      this.loadMessages();  // Reload messages when a new message is received via WebSocket
+    });
+
+    // Load countdown from session storage
+    if (selectedMinutes) {
+      this.countdown = parseInt(selectedMinutes, 10) * 60;
+    }
+
+    // Check if currentSessionId exists in session storage
+    // const existingSessionId = sessionStorage.getItem('currentSessionId');
+
+    if (selectedAstrologer) {
+      this.astrologerDetails = selectedAstrologer; // Store astrologer details
+      // console.log('Astrologer details:', this.astrologerDetails); // Debug log
+    }
+    if (currentUser) {
+      this.startSession();
+    }
+    if (currentUser && selectedAstrologer) {
+      this.currentUserRegId = currentUser.regId;
+      this.astrologerRegId = selectedAstrologer.regId;
+
+      if (this.sessionId) {
+        this.loadMessages(); // Load messages for the existing session
+      } else {
+        // If no existing session, create a new session
+      }
+
+      // Start countdown if it’s greater than zero
+      if (this.countdown > 0) {
+        this.startCountdown();
+      }
+    }
+  }
+
+  startSession() {
+    // const chatSessionId = sessionStorage.getItem('chatSessionId'); // Get chat session ID from session storage
+    const selectedMinutes = sessionStorage.getItem('selectedMinutes'); // Get selected minutes from session storage
+
+    if (this.sessionId && selectedMinutes) {
+      const sessionData = {
+        selectedMinutes: parseInt(selectedMinutes, 10) // Parse selectedMinutes to integer
+      };
+
+      // Use PUT request to update the session
+      this.http.put<any>(`http://localhost:8075/api/chatsessions/update/${this.sessionId}`, sessionData).subscribe(
+        (response) => {
+          // Check if response is as expected 
+          if (response && response.success) { // Assuming 'success' indicates the operation's success
+            console.log('Session updated successfully:', response);
+          } else {
+            console.error('Unexpected response format:', response);
+          }
+        },
+        (error) => {
+          // Log detailed error information
+          console.error('Error updating session:', error);
+          if (error.error && error.error.message) {
+            console.error('Error message from server:', error.error.message);
+          }
         }
+      );
+    } else {
+      console.error('Chat session ID or selected minutes are missing from session storage.');
+    }
+  }
+
+
+
+  startCountdown() {
+    // Save the countdown in session storage every second
+    this.countdownInterval = setInterval(() => {
+      if (this.countdown > 0) {
+        this.countdown--; // Decrease the countdown by 1 second
+        sessionStorage.setItem('countdown', this.countdown.toString()); // Save countdown
+      } else {
+        this.stopCountdown();
+        this.showChatFinishedAlert(); // Call the SweetAlert method when time is up
+      }
+    }, 1000);
+  }
+
+  showChatFinishedAlert() {
+    Swal.fire({
+      title: 'Chat Finished',
+      text: 'Please submit your valuable feedback.',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Feedback',
+      cancelButtonText: 'Close',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Navigate to the feedback route
+        this.router.navigate(['/feedback']);
       }
     });
-    // Fetch the selected astrologer data from session storage
-    const astrologerData = sessionStorage.getItem('selectedAstrologer');
-    if (astrologerData) {
-      this.selectedAstrologerData = JSON.parse(astrologerData);
-    }
-
-    // Make the call to the backend to generate the session_id
-    if (this.selectedAstrologerData && this.reg_id) {
-      this.createChatSession(this.selectedAstrologerData.reg_id, this.reg_id);
-    }
-    // Clean up the timer when the component is destroyed
-    window.addEventListener('beforeunload', () => {
-      localStorage.setItem('chatTimer', this.seconds.toString());
-    });
-  }
-  ngOnDestroy() {
-    // Clean up the interval when the component is destroyed
-    clearInterval(this.countdownInterval);
-    this.routeSubscription.unsubscribe();
   }
 
-  // Call to the backend to create a new chat session
-  createChatSession(astrologerRegId: string, userRegId: string) {
-    const astrologerData = sessionStorage.getItem('selectedAstrologer');
-    const currentUser = sessionStorage.getItem('currentUser');
+  stopCountdown() {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval); // Clear the interval
+      this.countdownInterval = null;
+      sessionStorage.removeItem('countdown'); // Clear countdown from session storage
+    }
+  }
 
-    if (astrologerData && currentUser) {
-      const currentUserData = JSON.parse(currentUser);
-      const selectedAstrologer = JSON.parse(astrologerData);
+  loadMessages() {
+    if (this.sessionId) {
+      this.http.get<any[]>(`http://localhost:8075/api/chatmessages/session/${this.sessionId}`).subscribe(
+        (messages) => {
+          // Sort messages by timestamp in ascending order
+          this.messages = messages
+            .map((msg) => ({
+              content: msg.content,
+              time: new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              isSender: msg.senderRegId === this.currentUserRegId,
+              timestamp: new Date(msg.timestamp) // Store the timestamp for sorting
+            }))
+            .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()); // Sort based on timestamp
+            this.cdr.detectChanges(); // Add this line
 
-      const sessionData = {
-        astrologer_id: selectedAstrologer.reg_id, // Correctly assigning astrologer's ID
-        user_id: currentUserData.reg_id // Correctly assigning user's ID
-      };
-      console.log(sessionData);
-      
-
-      // Make the call using chatService to create a session
-      this.chatService.addChatSession(sessionData).subscribe(
-        (response: any) => {
-          this.session_id = response.session_id; // Store the returned session_id
-          console.log('Session ID created:', this.session_id);
+          this.scrollToBottom(); // Ensure the view is scrolled to the bottom to show the latest message
         },
-        (error: any) => {
-          console.error('Error creating chat session:', error);
+        (error) => {
+          console.error('Error loading messages:', error);
         }
       );
     }
   }
-  getCurrentTime() {
-    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }
-
-  startCountdown(minutes: number) {
-    this.seconds = minutes * 60;
-    this.canSendMessage = true;
-    this.countdownInterval = setInterval(() => {
-      if (this.seconds > 0) {
-        this.seconds--;
-        localStorage.setItem('chatTimer', this.seconds.toString());
-      } else {
-        clearInterval(this.countdownInterval);
-        this.endChatSession();
-      }
-    }, 1000);
-  }
-
-  startCountdownFromSeconds() {
-    this.canSendMessage = true;
-    this.countdownInterval = setInterval(() => {
-      if (this.seconds > 0) {
-        this.seconds--;
-        localStorage.setItem('chatTimer', this.seconds.toString());
-      } else {
-        clearInterval(this.countdownInterval);
-        this.endChatSession();
-      }
-    }, 1000);
-  }
-
-  endChatSession() {
-    console.log('Chat session ended due to timeout.');
-    this.messages.push({
-      content: `The chat session with ${this.selectedAstrologer} has ended.`,
-      time: this.getCurrentTime(),
-      sender: 'system',
-      seen: true,
-      seenTime: ''
-    });
-    this.newMessage = '';
-    this.isTyping = false;
-    this.canSendMessage = false;
-    this.showPopup = false;
-    localStorage.removeItem('chatTimer');
-  }
-
-
-
-  getFormattedTime() {
-    const minutes = Math.floor(this.seconds / 60);
-    const seconds = this.seconds % 60;
-    return `${this.padZero(minutes)}:${this.padZero(seconds)}`;
-  }
-
-  padZero(value: number) {
-    return value < 10 ? '0' + value : value.toString();
-  }
-
-  simulateAstrologerTyping() {
-    this.isTyping = true;
+  scrollToBottom(): void {
     setTimeout(() => {
-      this.isTyping = false;
-    }, 2000);
+      const chatContainer = document.querySelector('.chat-messages'); // Replace with the correct container class or ID
+      if (chatContainer) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+    }, 100); // Delay to allow messages to render before scrolling
   }
 
-  selectAstrologer(notification: any) {
-    this.selectedAstrologer = notification.type;
-    this.showPopup = true;
-    this.chatService.getChatHistory(this.selectedAstrologer).subscribe((history: any[]) => {
-      this.messages = history.map(msg => ({
-        content: msg.content,
-        time: this.getCurrentTime(),
-        sender: msg.sender === 'Receiver_Reg_id' ? 'receiver' : 'sender',
-        seen: msg.seen,
-        seenTime: msg.seenTime
-      }));
-    }, (error: any) => {
-      console.error('Error fetching chat history', error);
-    });
-  }
 
-  onSearch() {
-    this.filteredNotifications = this.notifications.filter(notification =>
-      notification.type.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+  getFormattedTime(): string {
+    const now = new Date();
+    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
   sendMessage() {
-    if (this.newMessage.trim()) {
-      const astrologerData = sessionStorage.getItem('selectedAstrologer');
-      const currentUser = sessionStorage.getItem('currentUser');
+    if (this.newMessage.trim() && this.sessionId) {
+      const messageData = {
+        senderRegId: this.currentUserRegId,
+        receiverRegId: this.astrologerRegId,
+        content: this.newMessage,
+        sessionId: this.sessionId,
+      };
 
-      if (astrologerData && currentUser) {
-        const selectedAstrologer = JSON.parse(astrologerData);
-        const currentUserData = JSON.parse(currentUser);
+      this.http.post<any>('http://localhost:8075/api/chatmessages/create', messageData).subscribe(
+        (message) => {
+          this.messages.push({
+            content: message.content,
+            time: this.getFormattedTime(),
+            isSender: true,
+            timestamp: new Date(), // Add a timestamp to the message
 
-        const messageData = {
-          senderRegId: this.reg_id,
-          receiverRegId: this.selectedAstrologer,
-          content: this.newMessage,
-          timestamp: new Date(),
-          sessionId: 1
-        };
-
-        if (astrologerData) {
-          const selectedAstrologer = JSON.parse(astrologerData);
-
-          // Prepare the message data
-          const messageData = {
-            senderRegId: currentUserData.reg_id, // The current user's reg_id
-            receiverRegId: selectedAstrologer.reg_id, // The selected astrologer's reg_id from session storage
-            content: this.newMessage,
-            timestamp: new Date(),
-            sessionId: 1 // Assuming a session id, you can adjust this logic as per your session tracking
-          };
-
-          // Send the message via the chat service
-          this.chatService.createChatMessage(messageData).subscribe((response: any) => {
-            console.log('Message sent successfully', response);
-            // Update the UI by adding the new message to the messages array
-            this.messages.push({
-              content: this.newMessage,
-              time: this.getCurrentTime(),
-              sender: 'receiver', // You can set this as 'receiver' or 'sender' depending on the UI design
-              seen: false,
-              seenTime: ''
-            });
-            this.newMessage = ''; // Clear the input field
-          }, (error: any) => {
-            console.error('Error sending message', error);
           });
-        } else {
-          console.error('No astrologer selected');
+          this.messages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()); // Sort after adding new message
+          this.newMessage = ''; // Clear input after sending
+          this.scrollToBottom(); // Ensure the view is scrolled to the bottom
+        },
+        (error) => {
+          console.error('Error sending message:', error);
         }
-      }
+      );
     }
   }
-  closePopup() {
-    this.showPopup = false;
+
+  selectClient(client: any) {
+    this.selectedClient = client;
+    this.startSession(); // Start or fetch the session for the selected client
+    this.loadMessages(); // Load messages for the selected client
+  }
+  formatCountdown(): string {
+    const minutes: number = Math.floor(this.countdown / 60);
+    const seconds: number = this.countdown % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
 
-  updateOnlineAstrologers() {
-    setInterval(() => {
-      this.notifications.forEach(notification => {
-        if (notification.isOnline) {
-          notification.time = this.getCurrentTime();
-        }
-      });
-      this.onlineAstrologers = this.notifications.filter(n => n.isOnline).map(n => n.type);
-    }, 60000);
-  }
-  navigateToFindAstrologers() {
-    this.router.navigate(['/find-astrologers']);
+  ngOnDestroy(): void {
+    this.webSocketService.disconnect(); // Disconnect on component destroy
   }
 }

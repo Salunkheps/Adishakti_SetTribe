@@ -1,46 +1,41 @@
 <!-- Manage user component.html -->
 <div class="dashboard-container">
+
   <nav class="sidebar">
     <div class="sidebar-header">
-      <h2>Adishkati</h2>
+      <h2 class="logo-text">Adishkati</h2>
     </div>
     <ul class="sidebar-menu">
-      <li><a routerLink="/admin" routerLinkActive="active"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
-      <li><a routerLink="/manageusers" routerLinkActive="active"><i ><img src="manageuser.png" width="30px"></i> Manage Users</a></li>
-      <li><a routerLink="/manageastrologer" routerLinkActive="active"><i ><img src="manageastro.png" width="30px"></i> Manage Astrologers</a></li>
-      <li><a routerLink="/manageblog" routerLinkActive="active"><i ><img src="manageblog.png" width="30px"></i> Manage Blog</a></li>
-      <li><a routerLink="/manageskills" routerLinkActive="active"><i ><img src="manageskills.png" width="30px"></i> Manage Skills</a></li>
-      <li><a  href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
-
+      <li><a routerLink="/admin" routerLinkActive="active"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+      <li><a routerLink="/manageusers" routerLinkActive="active"><i class="bi bi-people-fill"></i> Manage Users</a></li>
+      <li><a routerLink="/manageastrologer" routerLinkActive="active"><i class="bi bi-person-check-fill"></i> Manage Astrologers</a></li>
+      <li><a routerLink="/manageblog" routerLinkActive="active"><i class="bi bi-vector-pen"></i> Manage Blog</a></li>
+      <li><a routerLink="/manageskills" routerLinkActive="active"><i class="bi bi-award-fill"></i> Manage Skills</a></li>
+      <li><a routerLink="/manage-payment" routerLinkActive="active"><i class="bi bi-credit-card-fill"></i> Manage Payment</a></li>
+      <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
     </ul>
   </nav>
 
   <div class="main-content">
-    <header class="topbar">
-      <!-- <h1>Dashboard</h1> -->
-      <div class="user-info">
-        <p>Welcome,</p>
-        <a href="#" >Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+    <div class="row mt-4 pt-0">
+      <div class="col-md-12 one">
+        <h2 class="text-center mt-4">Manage User</h2>
       </div>
-    </header>
+    </div>
 
-
-
-
-    <section class="user-management">
-      <div class="one">
-        <h3>Manage User</h3>
-        <!-- <h4><span>&nbsp;</span></h4> -->
-      </div>
+    <section class="user-management mt-0 pt-0">
       <!-- Search Field -->
 
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Sr. No.</th> <!-- Add this for serial number -->
+      <table datatable [dtOptions]="dtOptions" class="table-hover table-striped">
+        <thead style="background:#4c70ba;color:white;" >
+          <tr >
+            <th>#</th> <!-- Add this for serial number -->
             <th>First Name</th>
-            <th>Name</th>
+            <th>Last Name</th>
             <th>Email</th>
+            <th>Mobile Number</th>
+            <th>Date Of Birth</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>

@@ -1,19 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Config } from 'datatables.net';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { WebSocketService } from '../web-socket.service';
 
 @Component({
   selector: 'app-client-list',
   templateUrl: './client-list.component.html',
   styleUrl: './client-list.component.css'
 })
-export class ClientListComponent implements OnInit {
+export class ClientListComponent implements OnInit,OnDestroy {
   users: any[] = [];
   dtOptions: Config = {};
 
-  constructor(private http: HttpClient,private router: Router) { }
+  constructor(private http: HttpClient,private router: Router,private webSocketService: WebSocketService) { }
+  ngOnDestroy(): void {
+    this.webSocketService.disconnect();
+  }
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -76,7 +80,7 @@ export class ClientListComponent implements OnInit {
       ]
     };
 
-
+    this.webSocketService.connect();
     this.fetchUsers();
   }
 
@@ -92,35 +96,29 @@ export class ClientListComponent implements OnInit {
       );
   }
   logout(event: MouseEvent): void {
-    // Prevent the default behavior of the button click (in case it's a form submission or link)
-    event.preventDefault(); 
-  
-    // Show SweetAlert confirmation dialog
+    event.preventDefault();
+
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you really want to logout?',
       icon: 'warning',
-      showCancelButton: true,  // Show the "Cancel" button
+      showCancelButton: true,
       confirmButtonText: 'Yes, logout',
       cancelButtonText: 'No, stay logged in'
     }).then((result) => {
       if (result.isConfirmed) {
-        // Only if the user confirms, clear session and redirect
-        sessionStorage.clear(); // Clear session storage
-        localStorage.removeItem('currentUser'); // Optional: clear local storage if you're storing user info
-  
-        // Show another SweetAlert message confirming logout success
+        sessionStorage.clear();
+        localStorage.removeItem('currentUser');
+
         Swal.fire({
           title: 'Logged Out',
           text: 'You have been logged out successfully.',
           icon: 'success',
           confirmButtonText: 'OK'
         }).then(() => {
-          // Redirect to login page after showing success message
           this.router.navigate(['/astrologer-login']);
         });
       }
-      // If the user cancels, do nothing (no redirection)
     });
   }
   

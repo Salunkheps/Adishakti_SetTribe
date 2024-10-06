@@ -191,4 +191,7 @@ background-color: #b80000;
 
 .table td {
   text-align: center; /* Center align text in the action column */
+  vertical-align: middle; /* Center align text vertically (fallback) */
+  font-size: 20px;
+
 }

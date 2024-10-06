@@ -30,7 +30,8 @@ import { AuthService } from './auth.guard';
 import { HealthcareComponent } from './healthcare/healthcare.component';
 import { ChatComponent } from './chat/chat.component';
 import { ConsultationPriceComponent } from './consultation-price/consultation-price.component';
-
+import { ManagePaymentsComponent } from './manage-payments/manage-payments.component';
+import { ChatAppForAstrologerComponent } from './chat-app-for-astrolgoer/chat-app-for-astrologer.component';
 // import { NavbarComponent } from './navbar/navbar.component';
 
 const routes: Routes = [
@@ -44,7 +45,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'feedback', component: FeedbackFormComponent },
   { path: 'astrologer-signup', component: AstrologerSignupComponent },
-  { path: 'chatwithastro/:reg_id', component: ChatWithAstrologerComponent, canActivate: [AuthService] },
+  { path: 'chatwithastro', component: ChatWithAstrologerComponent, canActivate: [AuthService] },
   { path: 'astrodash', component: AstrologerDashboardComponent },
   { path: 'astroprofile', component: AstroProfileComponent },
   { path: 'astroclient', component: ClientListComponent },
@@ -71,6 +72,9 @@ const routes: Routes = [
   { path: 'healthcare', component: HealthcareComponent },
   { path: 'chat', component: ChatComponent },
   { path: 'consultation-price', component: ConsultationPriceComponent },
+  { path: 'manage-payment', component: ManagePaymentsComponent },
+  { path: 'astrologer-chat-app', component: ChatAppForAstrologerComponent },
+
 ];
 
 @NgModule({

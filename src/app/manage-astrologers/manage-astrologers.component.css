@@ -1,31 +1,39 @@
-/* Manage Astrologer component .css */
-/* Global Styles */
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-}
-
-/* Dashboard Container */
 .dashboard-container {
   display: flex;
   height: 100vh;
+  position: fixed !important;
+  width: 100%;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
 }
 
-/* Sidebar Styling */
+.logo img {
+  height: 80px; /* Reduced size */
+  width: 80px; /* Reduced size */
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-size: 1.5rem; /* Reduced font size */
+  font-weight: bold;
+  color: #F9DA82; /* Light Yellow */
+  animation: glow 1.5s ease-in-out infinite; /* Apply glow animation */
+}
+
 .sidebar {
-  width: 250px;
-    background-color: #4c70ba;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
+  background-color: #4c70ba;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-header {
   padding: 20px;
   text-align: center;
   background-color: #4c70ba;
-  border-bottom: 1px solid #1abc9c;
 }
 
 .sidebar-menu {
@@ -46,261 +54,84 @@ body, html {
 }
 
 .sidebar-menu li a:hover {
-  background-color: #555;
+  background-color: #fff;
+  color:black !important;
 }
 .sidebar-menu li a.active {
-  background-color: #555; /* Highlight active menu item */
+ color:#F9DA82 ;
 }
 
-/* Main Content Styling */
+
 .main-content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-
-}
-
-.topbar {
-  background-color: #4c70ba;
-  color: #fff;
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.topbar h1 {
-  margin: 0;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  margin-left: 85%;
-}
-
-.user-info p {
-  margin: 0 10px 0 0;
-}
-
-.user-info a {
-  color: #fff;
-  text-decoration: none;
-}
-
-/* Manage Astrologers Container */
-.container {
-  flex-grow: 1; /* Take up remaining space */
-  padding: 20px;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative; /* For overlay positioning */
-}
-
-/* Heading Styling */
-h1 {
-  text-align: center;
-  color: white; /* Dark gray */
-  margin-bottom: 20px;
+  background-color: #f2edf3;
 }
 
 h2 {
-  color: white; /* Blue color for sub-headings */
-  margin-bottom: 20px;
-  text-align: center;
+  font-size: 30px;
+  color: #0F0F8F;
+  text-align: center; /* Center the text */
 }
 
-/* Search Form Styling */
-.search-form {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+/* Decorative elements for the heading */
+.one h2 {
+  text-transform: uppercase;
+  padding-bottom: 5px;
+  margin-bottom: 5%; /* Adjust the bottom margin */
+  position: relative;
 }
 
-.search-form input {
-  width: 100%;
-  max-width: 300px;
-  padding: 10px;
-  border: 1px solid #ced4da; /* Light gray border */
-  border-radius: 4px;
-  font-size: 14px;
-  margin-right: 8px;
+.one h2:before,
+.one h2:after {
+  content: "";
+  position: absolute;
+  background-color: #b80000;
+  left: 50%; /* Center the pseudo-elements */
+  transform: translateX(-50%);
 }
 
-.search-form button {
-  background: #007bff; /* Blue background */
-  color: #ffffff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
+.one h2:before {
+  width: 28px;
+  height: 5px;
+  bottom: -10px; /* Adjust the distance from the heading */
 }
 
-.search-form button:hover {
-  background: #0056b3; /* Darker blue on hover */
-}
-
-/* Add New Astrologer Form */
-.new-astrologer-form {
-  background: #ffffff; /* White background */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-}
-
-.form-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.form-field {
-  flex: 1 1 calc(50% - 20px);
-  box-sizing: border-box;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  color: #495057; /* Dark gray */
-}
-
-input,
-select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ced4da; /* Light gray border */
-  border-radius: 4px;
-  font-size: 14px;
-  background: #ffffff; /* White background */
-}
-
-button {
-  background: #007bff; /* Blue background */
-  color: #ffffff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 10px;
-}
-
-button:hover {
-  background: #0056b3; /* Darker blue on hover */
-}
-
-/* Table Styles */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  background: #ffffff; /* White background */
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-th,
-td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #dee2e6; /* Light gray border */
+.one h2:after {
+  width: 100px;
+  height: 1px;
+  top: 100%; /* Place below the heading */
+  margin-top: 7px;
 }
 
 th {
-  background: #f1f1f1; /* Light gray header background */
-  color: #343a40; /* Dark gray text */
+  background-color: #4c70ba;
+  color: white;
 }
 
-tr:nth-child(even) {
-  background: #f9f9f9; /* Very light gray for even rows */
+
+
+#sidebarCollapse {
+  display: none;
 }
 
-button {
-  background: #007bff; /* Blue background */
-  color: #ffffff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-button:hover {
-  background: #0056b3; /* Darker blue on hover */
-}
-
-button.reject {
-  background: #dc3545; /* Red for reject */
-}
-
-button.reject:hover {
-  background: #c82333; /* Darker red on hover */
-}
-
-button.edit {
-  background: #ffc107; /* Yellow for edit */
-}
-
-button.edit:hover {
-  background: #e0a800; /* Darker yellow on hover */
-}
-
-/* Responsive Design */
+/* Show the button on mobile view (width < 768px) */
 @media (max-width: 768px) {
-  .dashboard-container {
-      flex-direction: column;
+  #sidebarCollapse {
+      display: inline-block;
   }
+}
 
-  .sidebar {
-      width: 100%;
-      height: auto; /* Adjust height to content */
+/* Animations */
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 10px rgba(249, 218, 130, 0.5);
   }
-
-  .main-content {
-      padding: 10px;
+  50% {
+    text-shadow: 0 0 20px rgba(249, 218, 130, 1);
   }
-}
-h3 {
-  position: relative;
-  padding: 0;
-  margin: 0;
-  font-family: "Raleway", sans-serif;
-  font-weight: 300;
-  font-size: 40px;
-  color: #080808;
-  -webkit-transition: all 0.4s ease 0s;
-  -o-transition: all 0.4s ease 0s;
-  transition: all 0.4s ease 0s;
-}
-/* === HEADING STYLE #1 === */
-.one h3 {
-text-align: center;
-text-transform: uppercase;
-padding-bottom: 5px;
-}
-.one h3:before {
-width: 28px;
-height: 5px;
-display: block;
-content: "";
-position: absolute;
-bottom: 3px;
-left: 50%;
-margin-left: -14px;
-background-color: #b80000;
-}
- .one h3:after {
-width: 100px;
-height: 1px;
-display: block;
-content: "";
-position: relative;
-margin-top: 25px;
-left: 50%;
-margin-left: -50px;
-background-color: #b80000;
+  100% {
+    text-shadow: 0 0 10px rgba(249, 218, 130, 0.5);
+  }
 }

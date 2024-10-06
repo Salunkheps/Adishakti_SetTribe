@@ -6,7 +6,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 interface User {
   email: string;
   password: string;
-  reg_id?: string;  // Optional properties
+  regId?: string;  // Optional properties
   first_name?: string;
   last_name?: string;
 }
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
         if (user) {
           if (user.password === this.getpass.value) {
             sessionStorage.setItem('currentUser', JSON.stringify({
-              reg_id: user.reg_id,
+              regId: user.regId,
               first_name: user.first_name,
               last_name: user.last_name
             }));

@@ -1,5 +1,7 @@
 // Admin Dashboard .ts
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 interface User {
   id: number;
   name: string;
@@ -25,7 +27,7 @@ users: User[] = [
   { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
 ];
 
-constructor() { }
+constructor(private router: Router) { }
   updateAvailability() {
     // Logic to update availability status, consultation rates, and working hours
     console.log('Availability Updated:', {
@@ -52,5 +54,24 @@ constructor() { }
     deleteUser(userId: number): void {
       // Logic to delete a user
       this.users = this.users.filter(user => user.id !== userId);
+    }
+    logout(event: MouseEvent) {
+      event.preventDefault(); // Prevent default link behavior
+      Swal.fire({
+        title: 'Are you sure you want to logout?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Logout',
+        cancelButtonText: 'Cancel',
+        backdrop: true,
+        allowOutsideClick: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log('User logged out');
+          this.router.navigate(['/Home']);
+        }
+      });
     }
   }
