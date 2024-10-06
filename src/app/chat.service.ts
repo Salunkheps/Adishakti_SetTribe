@@ -6,8 +6,21 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ChatService {
-  private baseUrl = 'http://localhost:8081/api/chatmessages'; // Adjust base URL accordingly
+  private baseUrl = 'http://localhost:8075/api/chatmessages'; // Adjust base URL accordingly
   constructor(private http: HttpClient) {}
+
+  createSession(astrologerRegId: string, userRegId: string): Observable<any> {
+    const sessionData = {
+      astrologerRegId,
+      userRegId
+    };
+    return this.http.post(`${this.baseUrl}/create-session`, sessionData);
+  }
+
+  // Send a message
+  sendMessage(messageData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/send-message`, messageData);
+  }
 
 
   // Method to create a new chat message
@@ -20,7 +33,8 @@ export class ChatService {
   // Method to call the add session endpoint
   addChatSession(sessionData: any): Observable<any> {    
     console.log(sessionData);
-    return this.http.post(`http://localhost:8081/api/chatsessions/addsession`, sessionData);
+    return this.http.post(`http://localhost:8075/api/chatsessions/addsession`, sessionData);
   }
+
 
 }

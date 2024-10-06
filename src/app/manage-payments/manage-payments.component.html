@@ -1,0 +1,62 @@
+<!-- Manage Payment Component HTML -->
+<div class="dashboard-container">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2 class="logo-text">Adishkati</h2>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a routerLink="/admin" routerLinkActive="active"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+      <li><a routerLink="/manageusers" routerLinkActive="active"><i class="bi bi-people-fill"></i> Manage Users</a></li>
+      <li><a routerLink="/manageastrologer" routerLinkActive="active"><i class="bi bi-person-check-fill"></i> Manage Astrologers</a></li>
+      <li><a routerLink="/manageblog" routerLinkActive="active"><i class="bi bi-vector-pen"></i> Manage Blog</a></li>
+      <li><a routerLink="/manageskills" routerLinkActive="active"><i class="bi bi-award-fill"></i> Manage Skills</a></li>
+      <li><a routerLink="/manage-payment" routerLinkActive="active"><i class="bi bi-credit-card-fill"></i> Manage Payment</a></li>
+      <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
+    </ul>
+  </nav>
+  <div class="main-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 one">
+          <h2 class="text-center mt-4">Manage Payment</h2>
+        </div>
+      </div>
+
+      <!-- Payments Table -->
+      <div class="table-responsive">
+        <table datatable [dtOptions]="dtOptions" class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Sr. No.</th>
+              <th>Payment ID</th>
+              <th>User ID</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>View Image</th> <!-- New column for viewing the image -->
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let payment of payments; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ payment.paymentId }}</td>
+              <td>{{ payment.userId }}</td>
+              <td>{{ payment.amount | currency }}</td> <!-- Format amount as currency -->
+              <td>{{ payment.status }}</td>
+              <td>
+                <!-- Anchor tag for viewing the image -->
+                <a [href]="'http://localhost:8075/api/payments/getScreenshotByUserId/' + payment.userId" target="_blank" class="btn btn-link p-0">
+                  View Image
+                </a>
+              </td>
+              <td>
+                <button (click)="approvePayment(payment.paymentId)" class="btn btn-success btn-sm">Approve</button>
+                <button (click)="rejectPayment(payment.paymentId)" class="btn btn-danger btn-sm">Reject</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

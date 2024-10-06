@@ -1,14 +1,15 @@
-
 <app-navbar></app-navbar>
 
 
 <!-- Background image using HTML -->
-<!-- <img src="astro10.jpg" alt="Background" class="background-image"> -->
-
+<img src="astro10.jpg" alt="Background" class="background-image">
 <div class="card-container">
   <form [formGroup]="signupForm" (ngSubmit)="signup()" class="signup-form">
-    <h2>Astrologer Sign Up</h2>
-
+    <a routerLink="/astrologer-login"><i class="fa-solid fa-backward"></i></a>
+    <!-- <h2>Astrologer Sign Up</h2> -->
+    <div class="one">
+      <h3>Astrologer Registration</h3>
+    </div>
     <div class="form-grid">
       <div class="form-group">
         <label for="firstName">First Name</label>
@@ -91,9 +92,10 @@
         </select>
       </div>
 
+
       <div class="form-group">
         <label for="languages">Languages Known</label>
-        <select id="languages" formControlName="languages" multiple required>
+        <select id="languages" formControlName="languages" required>
           <option value="" disabled>Select Your Languages</option>
           <option value="English">English</option>
           <option value="Hindi">Hindi</option>
@@ -135,7 +137,7 @@
       </div>
 
       <div class="form-group">
-        <label for="email">Email as Username</label>
+        <label for="email">Email as <span>Username</span></label>
         <input type="email" id="email" formControlName="email" placeholder="Enter your email" required />
         <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-message">
           <b *ngIf="email?.errors?.['required']">Email is required</b>

@@ -1,17 +1,6 @@
-/* General Styles */
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: 'Lato', sans-serif;
-  background-color: #f7f9fc;
-  color: #2c3e50;
-  height: 100%;
-}
-
 .dashboard-container {
   display: flex;
   height: 100vh;
-  position: fixed !important;
   width: 100%;
 }
 .logo {
@@ -115,78 +104,44 @@ h2 {
   margin-top: 7px;
 }
 
-/* Adjust content below the fixed topbar */
-.dashboard-section, .client-list-section, .availability-section {
-  padding: 20px;
-  margin-top: 90px; /* Extra space below fixed topbar */
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .sidebar {
-    width: 200px;
-  }
-
-  .main-content {
-    margin-left: 200px;
-  }
-
-  .topbar {
-    padding: 15px;
-    left: 200px; /* Adjust for narrower sidebar */
-  }
-}
-
-@media (max-width: 480px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-
-  .main-content {
-    margin-left: 0;
-  }
-
-  .topbar {
-    flex-direction: column;
-    align-items: flex-start;
-    left: 0;
-    width: 100%;
-  }
-
-  .dashboard-section, .client-list-section, .availability-section {
-    margin-top: 20px;
-  }
-}
-  
-a .fa{
-  color: white;
-}
-
-.client-list-table{
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-  border-radius: 10px;
-  overflow: hidden;
-  color: black;
-  border-color: black;
-}
-th{
+th {
   background-color: #4c70ba;
   color: white;
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+      flex-direction: column;
+  }
+
+  .sidebar {
+      width: 100%;
+      height: auto; /* Adjust height to content */
+  }
+
+  .main-content {
+      padding: 10px;
+  }
+}
 /* Animations */
 @keyframes glow {
-  0% {
-    text-shadow: 0 0 10px rgba(249, 218, 130, 0.5);
-  }
-  50% {
-    text-shadow: 0 0 20px rgba(249, 218, 130, 1);
-  }
-  100% {
-    text-shadow: 0 0 10px rgba(249, 218, 130, 0.5);
-  }
+0% {
+  text-shadow: 0 0 10px rgba(249, 218, 130, 0.5);
+}
+50% {
+  text-shadow: 0 0 20px rgba(249, 218, 130, 1);
+}
+100% {
+  text-shadow: 0 0 10px rgba(249, 218, 130, 0.5);
+}
+}
+
+@keyframes fadeIn {
+from {
+  opacity: 0;
+}
+to {
+  opacity: 1;
+}
 }

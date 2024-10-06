@@ -1,14 +1,15 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { WebSocketService } from '../web-socket.service';
 
 @Component({
   selector: 'app-astrologer-dashboard',
   templateUrl: './astrologer-dashboard.component.html',
   styleUrls: ['./astrologer-dashboard.component.css'],
 })
-export class AstrologerDashboardComponent implements OnInit {
+export class AstrologerDashboardComponent implements OnInit,OnDestroy {
 
   isOnline: boolean = false; // Set default value
   regId?: string; // Assuming you have the regId from session storage or a service
@@ -28,9 +29,14 @@ export class AstrologerDashboardComponent implements OnInit {
     this.regId = sessionStorage.getItem('regId') || ''; // Adjust as needed
     // You can also fetch current online status from your backend if needed
     this.getOnlineStatus();
+    this.webSocketService.connect();
+
   }
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private webSocketService: WebSocketService) { }
+  ngOnDestroy(): void {
+    this.webSocketService.disconnect();
+  }
 
   getOnlineStatus(): void {
     const apiUrl = `http://localhost:8075/api/astrologers/${this.regId}`;

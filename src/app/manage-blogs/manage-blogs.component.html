@@ -1,61 +1,56 @@
-<!-- Manage blog Component.html -->
-<div class="dashboard-container">
+<div class="dashboard-container d-flex flex-column flex-md-row">
   <nav class="sidebar">
     <div class="sidebar-header">
-      <h2>Adishkati</h2>
+      <h2 class="logo-text">Adishkati</h2>
     </div>
     <ul class="sidebar-menu">
-      <li><a routerLink="/admin" routerLinkActive="active"><i ><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
-      <li><a routerLink="/manageusers" routerLinkActive="active"><i ><img src="manageuser.png" width="30px"></i> Manage Users</a></li>
-      <li><a routerLink="/manageastrologer" routerLinkActive="active"><i ><img src="manageastro.png" width="30px"></i> Manage Astrologers</a></li>
-      <li><a routerLink="/manageblog" routerLinkActive="active"><i ><img src="manageblog.png" width="30px"></i> Manage Blog</a></li>
-      <li><a routerLink="/manageskills" routerLinkActive="active"><i ><img src="manageskills.png" width="30px"></i> Manage Skills</a></li>
-      <li><a  href="#"><i ><img src="logout.png" width="30px"></i> Logout</a></li>
+      <li><a routerLink="/admin" routerLinkActive="active"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+      <li><a routerLink="/manageusers" routerLinkActive="active"><i class="bi bi-people-fill"></i> Manage Users</a></li>
+      <li><a routerLink="/manageastrologer" routerLinkActive="active"><i class="bi bi-person-check-fill"></i> Manage Astrologers</a></li>
+      <li><a routerLink="/manageblog" routerLinkActive="active"><i class="bi bi-vector-pen"></i> Manage Blog</a></li>
+      <li><a routerLink="/manageskills" routerLinkActive="active"><i class="bi bi-award-fill"></i> Manage Skills</a></li>
+      <li><a routerLink="/manage-payment" routerLinkActive="active"><i class="bi bi-credit-card-fill"></i> Manage Payment</a></li>
+      <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
     </ul>
   </nav>
-  <div class="main-content">
-    <header class="topbar">
-      <!-- <h1>Dashboard</h1> -->
-      <div class="user-info">
-        <p>Welcome,</p>
-        <a href="#" >Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+
+  <div class="main-content flex-grow-1 p-4">
+    <div class="row mb-4">
+      <div class="col-12 one">
+        <h2 class="text-center one">Manage Blogs</h2>
       </div>
-    </header>
-
-
-
-    <div class="one">
-      <h3>Manage Blogs</h3>
-      <!-- <h4><span>&nbsp;</span></h4> -->
     </div>
 
     <!-- Blog Table -->
-    <table class="table" datatable [dtOptions]="dtOptions">
-      <thead>
-        <tr>
-          <th>Sr. No.</th> <!-- Add this for serial number -->
-          <th>Title</th>
-          <th>Author</th>
-          <th>Content</th>
-          <th>Category</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let blog of filteredBlogs">
-          <td>{{ blog.title || 'Untitled' }}</td>
-          <td>{{ blog.astrologer.name || 'Unknown' }}</td>
-          <td>{{ blog.content || 'No content available' }}</td>
-          <td>{{ blog.blogCatagory || 'No Category available' }}</td>
-          <td>{{ blog.status || 'No Status available' }}</td>
-          <td>
-            <button (click)="approveBlog(blog)" class="accept">Approve</button>
-            <button (click)="rejectBlog(blog)" class="reject">Reject</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table-hover table-striped">
+        <thead>
+          <tr>
+            <th>#</th> <!-- Serial number -->
+            <th>Title</th>
+            <th>Author</th>
+            <th>Content</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let blog of filteredBlogs">
+            <td>{{ blog.title || 'Untitled' }}</td>
+            <td>{{ blog.astrologer.name || 'Unknown' }}</td>
+            <td>{{ blog.content || 'No content available' }}</td>
+            <td>{{ blog.blogCatagory || 'No Category available' }}</td>
+            <td>{{ blog.status || 'No Status available' }}</td>
+            <td>
+              <button (click)="approveBlog(blog)" class="btn btn-success btn-sm">Approve</button>
+              <button (click)="rejectBlog(blog)" class="btn btn-danger btn-sm">Reject</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <div *ngIf="filteredBlogs.length === 0">No blogs found.</div>
+    <div *ngIf="filteredBlogs.length === 0" class="text-center mt-4">No blogs found.</div>
   </div>
 </div>

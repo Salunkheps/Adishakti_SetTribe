@@ -4,7 +4,6 @@ body {
   margin: 0;
   height: 100vh;
   overflow: hidden;
-  /* color: #ffffff; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -80,7 +79,7 @@ label {
   font-size: 14px;
   box-sizing: border-box;
   background-color: rgba(255, 255, 255, 0.2);
-  color: #FFCDEA;
+  color: white;
   transition: all 0.3s ease;
 }
 
@@ -100,14 +99,17 @@ label {
 }
 
 .btn-primary {
-  background-color: #86469C;
+  background-color: #3b5998;
+  color: #ffffff;
+  padding: 10px 10px; /* Reduced padding for a smaller button */
   border: none;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 3px;
+  font-size: 0.9em; /* Slightly smaller font size */
   cursor: pointer;
-  font-size: 14px;
-  transition: all 0.3s;
+  transition: background-color 0.3s ease;
+  margin-top: 15px; /* Reduced margin above the button */
+  width: 100px; /* Fixed width for the button */
+  display: block; /* Make the button a block element */
 }
 
 .btn-primary:hover {
@@ -141,7 +143,7 @@ label {
 }
 
 .anchor {
-  color: #FFCDEA;
+  color: white;
 }
 
 /* Animations */
@@ -164,6 +166,7 @@ label {
     opacity: 1;
   }
 }
+
 /* Center the login button */
 .buttons-container-centered {
   display: flex;
@@ -175,7 +178,6 @@ label {
 .register-section {
   margin-top: 15px;
   text-align: center; /* Center the "No account" text */
-  
 }
 
 .register-link {
@@ -187,4 +189,56 @@ label {
 
 .register-link:hover {
   color: #FF85B3; /* Hover effect for the Register link */
+}
+
+.form-group span {
+  color: #ff0000;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .container {
+    max-width: 90%; /* Reduce max-width on smaller screens */
+    padding: 10px; /* Adjust padding */
+  }
+
+  .login-container {
+    padding: 30px; /* Adjust padding in the login container */
+  }
+
+  .login-title {
+    font-size: 24px; /* Reduce title size */
+  }
+
+  .form-control {
+    padding: 10px; /* Adjust padding of input fields */
+  }
+
+  .btn-primary {
+    width: 100%; /* Make button full width */
+    margin-right: 0; /* Remove right margin */
+  }
+
+  .buttons-container {
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons */
+  }
+}
+
+@media (max-width: 480px) {
+  .login-title {
+    font-size: 20px; /* Further reduce title size */
+  }
+
+  .form-control {
+    font-size: 12px; /* Reduce input field font size */
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 10px; /* Adjust padding of buttons */
+  }
+
+  .error-message {
+    font-size: 12px; /* Reduce error message font size */
+  }
 }

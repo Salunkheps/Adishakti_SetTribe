@@ -39,7 +39,7 @@ body {
 
 /* Login container */
 .login-container {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(85, 41, 228, 0.0);
   padding: 40px;
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -84,7 +84,7 @@ label {
   border: none;
   border-radius: 5px;
   font-size: 14px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: white;
   color: #fff;
   transition: all 0.3s ease;
 }
@@ -127,15 +127,21 @@ label {
 }
 
 .btn-primary {
-  background-color: #ffdd57;
+  background-color: #3b5998;
+  color: #ffffff;
+  padding: 10px 10px; /* Reduced padding for a smaller button */
   border: none;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 3px;
+  font-size: 0.9em; /* Slightly smaller font size */
   cursor: pointer;
-  font-size: 14px;
-  transition: all 0.3s;
+  transition: background-color 0.3s ease;
+  margin-top: 15px; /* Reduced margin above the button */
+  width: 100px; /* Fixed width for the button */
+  display: block; /* Make the button a block element */
+
+  margin-right: 170px; /* Center the button horizontally */
 }
+
 
 .btn-primary:hover {
   background-color:  #0288d1;
@@ -197,7 +203,7 @@ label {
 }
 
 .register-link {
-  color: #ffdd57;
+  color: #3b5998;
   text-decoration: underline;
   margin-left: 5px;
   cursor: pointer;
@@ -206,4 +212,58 @@ label {
 .register-link:hover {
   color: #0288d1;
 }
+.form-group span{
+  color: #ff0000;
+}
+/* Responsive adjustments */
 
+/* For screens smaller than 600px */
+@media (max-width: 600px) {
+  .container {
+    max-width: 90%; /* Allow container to be wider on smaller screens */
+    padding: 10px; /* Reduce padding for smaller screens */
+  }
+
+  .login-title {
+    font-size: 24px; /* Smaller font size for titles */
+  }
+
+  .form-control {
+    font-size: 12px; /* Smaller font size for input fields */
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    font-size: 12px; /* Smaller font size for buttons */
+    width: 100%; /* Make buttons full width */
+    margin-right: 0; /* Remove right margin to center buttons */
+  }
+
+  .buttons-container {
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center align buttons */
+  }
+
+  .buttons-container-centered {
+    justify-content: center; /* Center buttons */
+  }
+}
+
+/* For screens smaller than 400px */
+@media (max-width: 400px) {
+  .login-container {
+    padding: 20px; /* Further reduce padding for very small screens */
+  }
+
+  .form-group {
+    margin-bottom: 15px; /* Reduce margin for smaller inputs */
+  }
+
+  .login-title {
+    font-size: 20px; /* Even smaller font size for very small screens */
+  }
+
+  .form-control {
+    padding: 10px; /* Reduce input padding */
+  }
+}

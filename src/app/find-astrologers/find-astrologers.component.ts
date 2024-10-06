@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { WebSocketService } from '../web-socket.service';
 interface astrologerImages {
   id: number;
   name: string | null;
@@ -25,21 +26,25 @@ interface Astrologer {
   templateUrl: './find-astrologers.component.html',
   styleUrls: ['./find-astrologers.component.css'],
 })
-export class FindAstrologersComponent implements OnInit {
+export class FindAstrologersComponent implements OnInit,OnDestroy {
   data: Astrologer[] = [];
   filteredAstrologers: Astrologer[] = [];
   searchTerm: string = '';
   hoverRating: number | null = null;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router,private webSocketService: WebSocketService) {
     this.getAllData();
     this.filteredAstrologers = this.data;
 
+  }
+  ngOnDestroy(): void {
+    this.webSocketService.disconnect();
   }
 
   ngOnInit(): void {
     this.filteredAstrologers = this.data;
     this.getAllData();
+    this.webSocketService.connect();
 
   }
 
@@ -100,7 +105,7 @@ export class FindAstrologersComponent implements OnInit {
     }));
 
     // Navigate to the chat page
-    this.router.navigate(['/chatwithastro', astrologer.regId]); // Update this route as needed
+    this.router.navigate(['/chatwithastro']); // Update this route as needed
   }
 
   

@@ -1,30 +1,28 @@
 <div class="dashboard-container">
   <nav class="sidebar">
-    <div class="sidebar-header">
-      <h2>Home</h2>
+    <div class="sidebar-header d-flex justify-content-between align-items-center">
+      <h2 class="logo-text">Adishkati</h2>
+      <!-- Toggle button for mobile to close the sidebar -->
+      
     </div>
-    <ul class="sidebar-menu">
-      <li><a routerLink="/astrodash"><i><img src="astrodashboard.png" width="30px"></i> Dashboard</a></li>
-      <!-- <li><a routerLink="/astroprofile">Profile</a></li> -->
-      <li><a routerLink="/astroclient"><i><img src="clientlist.png" width="30px"></i> Clients Report</a></li>
-      <!-- <li><a routerLink="/astroreport">Reports</a></li> -->
-      <li><a routerLink="/insert-blog"><i><img src="createblog.png" width="30px"></i> Create Blogs</a></li>
-      <li><a routerLink="/consultation-price"><i><img src="consultprice.png" width="30px"></i> Consultation Price</a>
-      </li>
-      <li><a href="#"><i><img src="logout.png" width="30px"></i> Logout</a></li>
+    <ul class="sidebar-menu list-unstyled">
+      <li><a routerLink="/astrodash" routerLinkActive="active"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+      <li><a routerLink="/astroclient" routerLinkActive="active"><i class="fa-solid fa-pen-to-square"></i> Clients Report</a></li>
+      <li><a routerLink="/insert-blog" routerLinkActive="active"><i class="fa-solid fa-blog"></i> Create Blogs</a></li>
+      <li><a routerLink="/consultation-price" routerLinkActive="active"><i class="fa-solid fa-money-check-dollar"></i> Consultation Price</a></li>
+      <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
     </ul>
   </nav>
+  
   <div class="main-content">
-    <header class="topbar">
-      <h1>Dashboard</h1>
-      <div class="user-info">
-        <p>Welcome, <strong>Username</strong></p>
-        <a href="#">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+    <div class="row">
+      <div class="col-md-12 one">
+        <h2 class="text-center mt-4">Dashboard</h2>
       </div>
-    </header>
+    </div>
 
     <!-- Dashboard Section -->
-    <section class="dashboard-section">
+    <section class="dashboard-section mt-0 pt-0">
       <div class="stat">
         <h3>Total Clients</h3>
         <p>{{ totalClients }}</p>
@@ -45,7 +43,7 @@
 
     <!-- Manage Availability Section -->
     <section class="availability-section">
-      <h2>Current Status</h2>
+      <h3>Current Status</h3>
       <!-- <div class="availability-form">
         <label for="status">Availability Status:</label>
         <select id="status" [(ngModel)]="availabilityStatus">

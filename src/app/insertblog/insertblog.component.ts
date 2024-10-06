@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Config } from 'datatables.net';
 import Swal from 'sweetalert2';
+import { WebSocketService } from '../web-socket.service';
 
 interface Astrologer {
   // firstName: string;
@@ -25,7 +26,7 @@ export interface Blog {
 })
 
 
-export class InsertblogComponent implements OnInit {
+export class InsertblogComponent implements OnInit,OnDestroy {
   newArray: any = [];
   Astrologer: Astrologer[] = [];
   Blogs: Blog[] = [];
@@ -34,8 +35,11 @@ export class InsertblogComponent implements OnInit {
   image: any = []
   dtOptions: Config = {};
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router,private webSocketService: WebSocketService) {
     this.getAllData()
+  }
+  ngOnDestroy(): void {
+    this.webSocketService.disconnect();
   }
   myData: FormGroup = new FormGroup({
     featuredImage: new FormControl('', [Validators.required]),
@@ -80,6 +84,8 @@ export class InsertblogComponent implements OnInit {
       }]
     };
     this.getAllAstrologers();
+    this.webSocketService.connect();
+
   }
   onImageUpload(event: any) {
     // Capture the uploaded image file

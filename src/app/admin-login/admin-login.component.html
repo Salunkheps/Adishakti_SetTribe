@@ -8,12 +8,12 @@
         <div class="login-container">
             <h2 class="login-title">Admin Login</h2>
             <div class="form-group">
-                <label for="email">Username:</label>
-                <input type="email" id="email" class="form-control" [(ngModel)]="email">
+                <label for="email">Email </label>
+                <input type="email" id="email" class="form-control" [(ngModel)]="email" placeholder="Enter Your Username">
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" class="form-control" [(ngModel)]="password">
+                <input type="password" id="password" class="form-control" [(ngModel)]="password" placeholder="Enter Your Password">
             </div>
             <div class="buttons-container">
                 <button class="btn btn-primary login-button" (click)="validateCredentials()">Login</button>
@@ -28,4 +28,3 @@
     </div>
 </body>
 <app-footer2></app-footer2>
-

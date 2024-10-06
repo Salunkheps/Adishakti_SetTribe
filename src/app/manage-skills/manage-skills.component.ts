@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Config } from 'datatables.net';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-skills',
@@ -21,7 +22,7 @@ export class ManageSkillsComponent implements OnInit {
   faEdit = faEdit;
   faTrash = faTrash;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private router: Router) { }
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -55,12 +56,13 @@ export class ManageSkillsComponent implements OnInit {
           title: 'Actions',
           render: (data: any, type: any, row: any, meta: any) => {
             return `
-                <button class="edit-btn" data-index="${meta.row}">
+                  <button class="edit-btn btn btn-primary" data-index="${meta.row}">
                   <fa-icon [icon]="faEdit"></fa-icon> Edit
                 </button>
-                <button class="delete-btn" data-index="${meta.row}">
+                <button class="delete-btn btn btn-danger" data-index="${meta.row}">
                   <fa-icon [icon]="faTrash"></fa-icon> Delete
                 </button>`;
+
           },
           orderable: false
         }
@@ -163,4 +165,25 @@ export class ManageSkillsComponent implements OnInit {
     this.newSkillName = '';
     this.editIndex = -1; // Reset edit mode
   }
+
+  logout(event: MouseEvent) {
+    event.preventDefault(); // Prevent default link behavior
+    Swal.fire({
+      title: 'Are you sure you want to logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Logout',
+      cancelButtonText: 'Cancel',
+      backdrop: true,
+      allowOutsideClick: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('User logged out');
+        this.router.navigate(['/Home']);
+      }
+    });
+  }
+
 }

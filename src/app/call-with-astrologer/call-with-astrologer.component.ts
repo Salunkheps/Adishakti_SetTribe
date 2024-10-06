@@ -33,7 +33,7 @@ export class CallWithAstrologerComponent implements OnInit {
   getAstrologerData(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.http.get<Astrologer>(`http://localhost:8081/api/astrologers/${id}`).subscribe(
+      this.http.get<Astrologer>(`http://localhost:8075/api/astrologers/${id}`).subscribe(
         (data) => {
           this.astrologer = data;
         },

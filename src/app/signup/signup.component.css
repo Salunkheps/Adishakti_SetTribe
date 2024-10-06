@@ -1,13 +1,13 @@
 /* Styling for background image */
 .background-image {
-  position: fixed; /* Makes the background image fixed and fills the viewport */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   z-index: -1;
   object-fit: cover;
-  opacity: 0.8; /* Adjust transparency for better readability */
+  opacity: 0.8;
 }
 
 /* Overall body style */
@@ -19,17 +19,17 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  color: #000; /* Black text color */
-  overflow: hidden; /* Prevent scrolling */
+  color: #000;
+  overflow: hidden;
 }
 
 /* Main signup container */
 .signup-container {
   display: flex;
-  justify-content: center; /* Center align */
-  align-items: center; /* Center vertically */
-  width: 100%; /* Full width */
-  padding: 50px; /* Reduced padding */
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 100px;
 }
 
 /* Sign Up Form Container */
@@ -39,62 +39,51 @@ body {
 
 /* Sign Up Form */
 .signup-form {
-  background-color: rgba(234, 228, 221, 0.9); /* Make form background semi-transparent */
+  background-color: rgba(234, 228, 221, 0.9);
   border-radius: 20px;
-  padding: 20px; /* Reduced padding */
+  padding: 20px;
   box-shadow: 0 20px 40px rgba(134, 70, 156, 0.4);
 }
 
 /* Sign Up Form Heading */
 .signup-form h2 {
-  font-size: 24px; /* Adjusted font size */
+  font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
   color: #000;
 }
 
-/* Form content */
-.form-content {
+/* Form rows */
+.form-row {
   display: flex;
   justify-content: space-between;
-}
-
-/* Form columns */
-.form-column {
-  width: 48%; /* Adjusted to keep two columns */
+  margin-bottom: 15px;
 }
 
 /* Form fields */
-.signup-form input, .signup-form select {
-  padding: 10px; /* Adjusted padding */
+.signup-form input, 
+.signup-form select {
+  padding: 12px; /* Adjusted padding */
   border: 1px solid #ddd;
-  border-radius: 5px; /* Slightly smaller border radius */
-  font-size: 14px; /* Adjusted font size */
-  margin-bottom: 10px; /* Adjusted margin */
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%; /* Ensure full width within its container */
+  box-sizing: border-box; /* Include padding and border in element's width */
+}
+
+/* Form-group container to align two fields per row */
+.form-group {
+  width: 48%; /* Two fields take up roughly 50% of the row */
+}
+
+/* Full-width form-group (for single fields like submit button) */
+.form-group-full {
   width: 100%;
 }
 
 /* Submit button */
 .signup-button {
-  padding: 10px; /* Smaller button */
-  background-color: #6a1b9a;
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-  font-size: 14px; /* Smaller font size */
-  font-weight: bold;
-  cursor: pointer;
-  width: 100%; /* Full width */
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.signup-button:hover {
-  background-color: #4a148c;
-  transform: translateY(-2px);
-}
-
-button[type="submit"] {
   background-color: #3b5998;
   color: #ffffff;
   padding: 10px 10px; /* Reduced padding for a smaller button */
@@ -106,6 +95,117 @@ button[type="submit"] {
   margin-top: 15px; /* Reduced margin above the button */
   width: 100px; /* Fixed width for the button */
   display: block; /* Make the button a block element */
-  /* margin-left: auto; /* Center the button horizontally 
-  margin-right: auto; Center the button horizontally */
+  margin-right: auto; /* Center the button horizontally */
+  margin-left: auto; /* Center the button horizontally */
+}
+
+.signup-button:hover {
+  background-color: #4a148c;
+  transform: translateY(-2px);
+}
+.form-group span{
+  color: red;
+}
+/* Main Heading Style */
+h2 {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  color: #080808;
+  transition: all 0.4s ease 0s;
+}
+
+/* Heading Style with Underline */
+.one h2 {
+  text-align: center;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+}
+.one h2:before {
+  width: 28px;
+  height: 5px;
+  display: block;
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  margin-left: -14px;
+  background-color: #b80000;
+}
+.one h2:after {
+  width: 100px;
+  height: 1px;
+  display: block;
+  content: "";
+  position: relative;
+  margin-top: 25px;
+  left: 50%;
+  margin-left: -50px;
+  background-color: #b80000;
+}
+
+/* Responsive adjustments */
+
+/* For screens smaller than 800px */
+@media (max-width: 800px) {
+  .signup-container {
+    padding: 20px; /* Reduce padding on smaller screens */
+  }
+
+  .signup-form-container {
+    width: 100%; /* Allow the form to take full width */
+    padding: 10px; /* Add some padding */
+  }
+
+  .signup-form {
+    padding: 15px; /* Reduce padding in the form */
+  }
+
+  .form-row {
+    flex-direction: column; /* Stack form fields vertically */
+  }
+
+  .form-group {
+    width: 100%; /* Make form fields full width */
+    margin-bottom: 10px; /* Add spacing between stacked fields */
+  }
+
+  .signup-button {
+    width: 100%; /* Make button full width */
+    margin-right: 0; /* Remove right margin */
+    margin-left: 0; /* Remove left margin */
+  }
+
+  h2 {
+    font-size: 30px; /* Reduce heading size */
+  }
+}
+
+/* For screens smaller than 500px */
+@media (max-width: 500px) {
+  h2 {
+    font-size: 24px; /* Further reduce heading size */
+  }
+
+  .signup-form {
+    padding: 10px; /* Further reduce padding in the form */
+  }
+
+  .form-group {
+    margin-bottom: 5px; /* Reduce margin between fields */
+  }
+
+  /* Ensure input fields are spaced properly */
+  .form-row {
+    margin-bottom: 10px; /* Add bottom margin for better spacing */
+  }
+
+  /* Adjust button to full width */
+  .signup-button {
+    width: 100%; /* Make button full width */
+    padding: 12px; /* Adjust padding */
+  }
 }

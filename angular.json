@@ -42,6 +42,7 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
+              "src/polyfills.ts",
               "node_modules/datatables.net/js/dataTables.min.js"
             ]
           },

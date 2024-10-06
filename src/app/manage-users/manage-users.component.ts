@@ -5,6 +5,7 @@ import { Config } from 'datatables.net';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'; // Import your icons
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 interface User {
   regId: string;
@@ -34,7 +35,7 @@ export class ManageUsersComponent implements OnInit {
   faEdit = faEdit;
   faTrash = faTrash;
 
-  constructor(private userService: UserService, private http: HttpClient) { }
+  constructor(private userService: UserService, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -63,7 +64,7 @@ export class ManageUsersComponent implements OnInit {
         title: 'First Name',
         data: 'firstName'
       },
-       {
+      {
         title: 'Last Name', // Change from 'Name' to 'Last Name'
         data: 'lastName'
       }, {
@@ -89,7 +90,7 @@ export class ManageUsersComponent implements OnInit {
             return '-'; // Render a hyphen when the user is deactivated
           } else {
             return `
-              <button class="edit-btn" data-index="${row.regId}">
+             <button class="edit-btn btn btn-danger" data-index="${row.regId}">
                 <fa-icon [icon]="faEdit"></fa-icon> Deactivate
               </button>`;
           }
@@ -99,17 +100,17 @@ export class ManageUsersComponent implements OnInit {
       ]
     };
   }
- 
+
   ngAfterViewInit(): void {
     // Attach event listeners after the DataTable has been initialized
     $(document).on('click', '.edit-btn', (event) => {
       const userId = $(event.currentTarget).data('index'); // Get the user ID from the data-index attribute
-  
+
       // Call the deactivateUser method
       this.deactivateUser(userId);
     });
   }
-  
+
 
   // Load users from the API
   loadUsers(): void {
@@ -127,7 +128,7 @@ export class ManageUsersComponent implements OnInit {
       () => {
         this.loadUsers(); // Reload users after deactivating
         console.log(`User with ID ${regId} deactivated successfully.`);
-        
+
         Swal.fire({
           title: 'User Deactivated',
           text: `User with ID ${regId} deactivated successfully!`,
@@ -142,13 +143,13 @@ export class ManageUsersComponent implements OnInit {
       (error) => {
         console.error('Error deactivating user', error);
         alert('An error occurred while deactivating the user. Please try again.');
-      }  
+      }
     );
   }
-  
-  
 
-  
+
+
+
   // Merge firstName and lastName into name
   getFullName(user: User): string {
     return `${user.firstName} ${user.lastName}`;
@@ -199,4 +200,24 @@ export class ManageUsersComponent implements OnInit {
     this.isNewUser = false;
     this.newUser = {};
   }
+  logout(event: MouseEvent) {
+    event.preventDefault(); // Prevent default link behavior
+    Swal.fire({
+      title: 'Are you sure you want to logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Logout',
+      cancelButtonText: 'Cancel',
+      backdrop: true,
+      allowOutsideClick: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('User logged out');
+        this.router.navigate(['/Home']);
+      }
+    });
+  }
+
 }

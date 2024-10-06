@@ -1,24 +1,34 @@
-
 <app-navbar></app-navbar>
 
 <div class="payment-card">
   <h2>Payment Details</h2>
+
+  <label>
+    <!-- <input type="checkbox" class="alertCheckbox" autocomplete="off" /> -->
+    <div class="alert warning">
+      <span class="alertClose"></span>
+      <span class="alertText">You will be able to start your chat with the astrologer once your payment has been reviewed and approved by the admin. Please allow some time for the approval process, and you'll receive confirmation shortly.
+      <br class="clear"/></span>
+    </div>
+  </label>
+
   <p>Total Amount: {{ totalAmount | currency : "INR" : "symbol" }}</p>
-  <!-- Add payment form or other components here -->
-  <img src="paymentQR.png" alt="Payment QR Code" /><br />
+  <img src="paymentQR.png" alt="Payment QR Code" /><br><br>
 
-  <!-- WhatsApp Link with Image -->
-  <!-- <div *ngIf="astrologerMobile" class="logo">
-    <a [href]="'https://wa.me/' + astrologerMobile" target="_blank">
-      <img src="WhatsAppLogo.png" alt="Chat with Astrologer" /><br />
-      <h6>Chat via WhatsApp</h6>
-    </a>
-  </div> -->
+  <div>
+    <label for="transactionId">Transaction ID:</label>
+    <input type="text" id="transactionId" [(ngModel)]="transactionId" placeholder="Enter Transaction ID" />
+  </div><br>
 
-  <!-- Button to navigate to chat -->
-  <button class="btn btn-primary" (click)="goToChat()">
+  <!-- Input field for uploading transaction ID photo -->
+  <div>
+    <label for="transactionIdPhoto">Upload Screenshot of Payment : </label>
+    <input type="file" id="transactionIdPhoto" (change)="onFileChange($event)" />
+  </div>
+  <br>
+
+  <button class="btn btn-primary" (click)="submitPayment()">
     Proceed to Chat
   </button>
 </div>
-
 <app-footer></app-footer>
