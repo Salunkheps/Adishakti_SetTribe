@@ -5,13 +5,12 @@ import { Observable } from 'rxjs';
 export interface Blog {
   id: number;
   title: string;
-  featuredImage: string;
   content: string;
-  blogCatagory?:string;
-  status?:string;
+  blogCatagory?: string;
+  status?: string;
+  imageUrl?: string; // Ensure this is included
   astrologer: {
     name: string;
-    
   };
 }
 
@@ -35,8 +34,11 @@ export class BlogService {
     return this.http.get<Blog>(`${this.apiUrl}/${id}`);
   }
 
+  // Method to fetch the blog image URL by blog ID
+  getBlogImage(id: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/image/${id}`, { responseType: 'blob' });
+  }
 
-//for manage blogs section
   approveBlog(blogId: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/approve/${blogId}`, {});
   }

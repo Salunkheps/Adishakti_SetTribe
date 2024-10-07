@@ -1,48 +1,19 @@
 <div class="latestblog">
   <div class="one">
     <h1>Latest Blogs</h1>
-  </div> <!-- Moved outside of the blog container -->
+  </div>
+  
   <div class="latest-blogs">
     <div class="blog" *ngFor="let blog of blogs">
       <div class="blog-image-container">
-        <img [src]="blog.featuredImage" alt="{{blog.title}}" class="blog-image">
+        <!-- Dynamically fetch and display the image -->
+        <img [src]="blog.imageUrl" alt="{{blog.title}}" class="blog-image" *ngIf="blog.imageUrl">
       </div>
       <div class="blog-content">
         <h3>{{blog.title}}</h3>
-        <p>by {{blog.astrologer.name}}</p>
+        <p>{{blog.content}}</p>
         <button (click)="readMore(blog.id)">View more</button>
       </div>
     </div>
   </div>
 </div>
-
-
-<!-- 
-<div class="latest-blogs">
-  <h2>Latest from Blogs</h2>
-  <div *ngIf="loading">Loading...</div>
-  <div *ngIf="error">{{ error }}</div>
-  <div *ngIf="!loading && blogs.length === 0">No blogs available.</div>
-  <div class="blog" *ngFor="let blog of blogs">
-    <img [src]="blog.featuredImage" alt="{{ blog.title }}">
-    <h3>{{ blog.title }}</h3>
-    <button (click)="readMore(blog.id)">Read more</button>
-  </div>
-</div>
-
-
-
-<!-- 
-<div class="latest-blogs">
-  <h2>Latest from Blogs</h2>
-  <div *ngIf="loading">Loading...</div>
-  <div *ngIf="error">{{ error }}</div>
-  <div *ngIf="!loading && blogs.length === 0">No blogs available.</div>
-  <div class="blog" *ngFor="let blog of blogs">
-    <img [src]="blog.featuredImage" alt="{{ blog.title }}">
-    <h3>{{ blog.title }}</h3>
-    <button (click)="readMore(blog.id)">Read more</button>
-  </div>
-</div>
-
--->

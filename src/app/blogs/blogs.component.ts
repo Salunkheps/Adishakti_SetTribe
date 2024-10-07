@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogService, Blog } from '../blog.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-blogs',
@@ -11,130 +10,84 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 })
 export class BlogsComponent implements OnInit {
   blogs: Blog[] = [];
- displayBlock:boolean=false
-  individualData:any=[]
-  
-  selectedBlog: Blog | null = null;
-  data:any=[]
-  constructor(private blogService: BlogService, private router: Router, private route: ActivatedRoute,public http:HttpClient,private sanitizer: DomSanitizer) {
-    this.gerData()
-  }
-  viewMore(i:any){
-    this.displayBlock=!this.displayBlock;
-    this.individualData=i
+  displayBlock: boolean = false;
+  individualData: any = [];
+  data: any[] = [];
 
-  }
-  
- closs(){
-  this.displayBlock=false
- }
-  gerData(){
-    
-   this.http.get("http://localhost:8075/api/blogs").subscribe(
-    (data)=>{
-      this.data=data
-
-    }
-    ,(error)=>
-    {
-      
-    }
-   )
-  }
-  getEducation(){
-    
-    this.http.get("http://localhost:8075/api/blogs/education").subscribe(
-     (data)=>{
-       this.data=data
-      // const objectURL = URL.createObjectURL(data);
-       //this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-       
-     }
-     ,(error)=>
-     {
-       
-     }
-    )
-   }
-   
-   getLifeStyle(){
-    
-    this.http.get("http://localhost:8075/api/blogs/lifestyle").subscribe(
-     (data)=>{
-       this.data=data
-      // const objectURL = URL.createObjectURL(data);
-       //this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-       
-     }
-     ,(error)=>
-     {
-       
-     }
-    )
-   }
-   getTec(){
-    
-    this.http.get("http://localhost:8075/api/blogs/tecnology").subscribe(
-     (data)=>{
-       this.data=data
-      // const objectURL = URL.createObjectURL(data);
-       //this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-       
-     }
-     ,(error)=>
-     {
-       
-     }
-    )
-   }
-   getHelth(){
-    
-    this.http.get("http://localhost:8075/api/blogs/helth").subscribe(
-     (data)=>{
-       this.data=data
-      // const objectURL = URL.createObjectURL(data);
-       //this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-       
-     }
-     ,(error)=>
-     {
-       
-     }
-    )
-   }
-  ngOnInit(): void {
-    
+  constructor(private blogService: BlogService, private router: Router, private http: HttpClient) {
+    this.gerData();
   }
 
-  fetchBlogs(): void {
-    this.blogService.getBlogs().subscribe((data: Blog[]) => {
-      this.blogs = data;
-    });
+  viewMore(i: any) {
+    this.displayBlock = !this.displayBlock;
+    this.individualData = i;
+    this.fetchBlogImage(i.id); // Fetch the image when viewing more
   }
 
-  fetchBlogsByCategory(category: string): void {
-    this.blogService.getBlogsByCategory(category).subscribe((data: Blog[]) => {
-      this.blogs = data;
-    });
+  closs() {
+    this.displayBlock = false;
   }
 
-  fetchBlogById(id: number): void {
-    this.blogService.getBlogById(id).subscribe((data: Blog) => {
-      this.selectedBlog = data;
-    });
+  gerData() {
+    this.blogService.getBlogs().subscribe(
+      (data) => {
+        this.data = data;
+        this.data.forEach((blog: Blog) => {
+          this.fetchBlogImage(blog.id); // Fetch images for all blogs
+        });
+      },
+      (error) => {}
+    );
   }
 
-  filterByCategory(category: string): void {
-    this.selectedBlog = null;
-    this.router.navigate(['/blogs/category', category]);
+  getEducation() {
+    this.blogService.getBlogsByCategory('education').subscribe(
+      (data) => {
+        this.data = data;
+      },
+      (error) => {}
+    );
   }
 
-  readMore(blogId: number): void {
-    this.router.navigate(['/blogs', blogId]);
+  getLifeStyle() {
+    this.blogService.getBlogsByCategory('lifestyle').subscribe(
+      (data) => {
+        this.data = data;
+      },
+      (error) => {}
+    );
   }
 
-  backToList(): void {
-    this.selectedBlog = null;
-    this.router.navigate(['/blogs']);
+  getTec() {
+    this.blogService.getBlogsByCategory('technology').subscribe(
+      (data) => {
+        this.data = data;
+      },
+      (error) => {}
+    );
   }
+
+  getHelth() {
+    this.blogService.getBlogsByCategory('health').subscribe(
+      (data) => {
+        this.data = data;
+      },
+      (error) => {}
+    );
+  }
+
+  fetchBlogImage(id: number) {
+    this.blogService.getBlogImage(id).subscribe(
+      (blob: Blob) => {
+        const url = URL.createObjectURL(blob);
+        const blogIndex = this.data.findIndex((blog) => blog.id === id);
+        if (blogIndex !== -1) {
+          this.data[blogIndex].imageUrl = url; // Set the image URL
+        }
+      },
+      (error) => {}
+    );
+  }
+
+  ngOnInit(): void {}
 }
