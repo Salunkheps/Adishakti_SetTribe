@@ -16,7 +16,7 @@
         <div class="form-row">
           <div class="form-group">
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" formControlName="firstName" required placeholder="Enter Your First Name" />
+            <input type="text" id="firstName" formControlName="firstName" required placeholder="Enter First Name" />
             <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)" class="error-message">
               <b *ngIf="firstName?.errors?.['required']">First Name is required</b>
             </div>
@@ -24,7 +24,7 @@
 
           <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" formControlName="lastName" required placeholder="Enter Your Last Name" />
+            <input type="text" id="lastName" formControlName="lastName" required placeholder="Enter Last Name" />
             <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="error-message">
               <b *ngIf="lastName?.errors?.['required']">Last Name is required</b>
             </div>
@@ -35,7 +35,7 @@
           <div class="form-group">
             <label for="gender">Gender</label>
             <select id="gender" formControlName="gender" required>
-              <option value="" disabled>Select Your Option</option>
+              <option value="" disabled>Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="other">Other</option>
@@ -44,7 +44,7 @@
 
           <div class="form-group">
             <label for="mobileNumber">Mobile Number</label>
-            <input type="text" id="mobileNumber" formControlName="mobileNumber" required placeholder="Enter Your Mobile Number" maxlength="10" />
+            <input type="text" id="mobileNumber" formControlName="mobileNumber" required placeholder="Enter Mobile Number" maxlength="10" />
             <div *ngIf="mobileNumber?.invalid && (mobileNumber?.dirty || mobileNumber?.touched)" class="error-message">
               <b *ngIf="mobileNumber?.errors?.['required']">Mobile Number is required</b>
               <b *ngIf="mobileNumber?.errors?.['pattern']">Mobile Number must be numeric and 10 digits long</b>
@@ -60,7 +60,7 @@
 
           <div class="form-group">
             <label for="city">City</label>
-            <input type="text" id="city" formControlName="city" required placeholder="Enter Your City" />
+            <input type="text" id="city" formControlName="city" required placeholder="Enter City" />
           </div>
         </div>
 
@@ -72,7 +72,7 @@
 
           <div class="form-group">
             <label for="birthPlace">Birth Place</label>
-            <input type="text" id="birthPlace" formControlName="birthPlace" required placeholder="Enter Your Birth Place" />
+            <input type="text" id="birthPlace" formControlName="birthPlace" required placeholder="Enter Birth Place" />
           </div>
         </div>
 
@@ -84,7 +84,7 @@
 
           <div class="form-group">
             <label for="email">Email As <span>Username</span></label>
-            <input type="email" id="email" formControlName="email" required placeholder="Enter Your Email" />
+            <input type="email" id="email" formControlName="email" required placeholder="Enter Email" />
             <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-message">
               <b *ngIf="email?.errors?.['required']">Email is required</b>
               <b *ngIf="email?.errors?.['email']">Invalid email address</b>
@@ -95,7 +95,7 @@
         <div class="form-row">
           <div class="form-group">
             <label for="password">Password</label>
-            <input [type]="hidePassword ? 'password' : 'text'" id="password" formControlName="password" required placeholder="Enter Your Password" />
+            <input [type]="hidePassword ? 'password' : 'text'" id="password" formControlName="password" required placeholder="Enter Password" />
             <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error-message">
               <b *ngIf="password?.errors?.['required']">Password is required</b>
               <b *ngIf="password?.errors?.['minlength']">Password must be at least 8 characters long</b>
@@ -104,7 +104,7 @@
 
           <div class="form-group">
             <label for="confirmpass">Confirm Password</label>
-            <input type="password" id="confirmpass" formControlName="confirmpass" required placeholder="Confirm Your Password" />
+            <input type="password" id="confirmpass" formControlName="confirmpass" required placeholder="Confirm Password" />
           </div>
         </div>
 

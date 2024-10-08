@@ -8,7 +8,7 @@ interface Astrologer {
   firstName: string;
   lastName: string;
   mobile: string;
-  ratePerMinute: number;
+  ratePerMinute: number | null; // Accept ratePerMinute as nullable
 }
 
 @Component({
@@ -20,6 +20,7 @@ export class ChatWithAstrologerComponent implements OnInit,OnDestroy {
   astrologer: Astrologer | null = null;
   minutes: number | null = null;
   totalAmount: number | null = null;
+  minutesError: boolean = false; // Flag for input validation error
   isAvailable: boolean = true; // Set availability status based on your logic
 
   constructor(
@@ -59,6 +60,9 @@ export class ChatWithAstrologerComponent implements OnInit,OnDestroy {
           .subscribe(
             (data) => {
               this.astrologer = data;
+              if (!this.astrologer.ratePerMinute || this.astrologer.ratePerMinute <= 0) {
+                console.warn('Astrologer has not set a rate yet.');
+              }
             },
             (error) => {
               console.error('Error fetching astrologer data', error);
@@ -70,10 +74,26 @@ export class ChatWithAstrologerComponent implements OnInit,OnDestroy {
     }
   }
 
+  validateInput(event: KeyboardEvent): void {
+    const inputChar = String.fromCharCode(event.keyCode);
+
+    // Ensure that only digits are allowed (prevent symbols and letters)
+    if (!/^\d+$/.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  onMinutesChange(): void {
+    if (this.minutes === null || this.minutes < 1) {
+      this.minutesError = true;
+    } else {
+      this.minutesError = false;
+    }
+  }
 
   calculateTotal(): void {
     if (this.astrologer && this.minutes !== null) {
-      this.totalAmount = this.astrologer.ratePerMinute * this.minutes;
+      this.totalAmount = this.astrologer.ratePerMinute! * this.minutes;
 
       sessionStorage.setItem('ratePerMinute', this.totalAmount.toString());
       sessionStorage.setItem('selectedMinutes', this.minutes.toString());

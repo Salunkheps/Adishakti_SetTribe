@@ -18,7 +18,6 @@ h2 {
 
 /* Decorative elements for the heading */
 .one h2 {
-  text-transform: uppercase;
   padding-bottom: 5px;
   margin-bottom: 5%; /* Adjust the bottom margin */
   position: relative;
@@ -113,6 +112,8 @@ img {
 
 .one h2 span {
   color: #420E57;
+  text-transform: uppercase;
+
 }
 
 /* Justify the paragraph text */

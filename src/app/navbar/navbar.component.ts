@@ -13,7 +13,7 @@ export class NavbarComponent implements OnInit {
   currentTab = '';
   static homeClick = true;
   static blogClick = false;
-  static findAistro = false;
+  static findAstroClick = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -22,25 +22,27 @@ export class NavbarComponent implements OnInit {
     this.isLoggedIn = this.authService.isLoggedIn();
     const currentUser = sessionStorage.getItem('currentUser');
     this.isLoggedIn = !!currentUser;  // If currentUser exists, isLoggedIn becomes true
+    // If logged in, set Find Astrologer as the active tab
+    if (this.isLoggedIn) {
+      NavbarComponent.findAstroClick = true;
+      NavbarComponent.homeClick = false; // Home should be hidden
+    }
   }
+
+
 
   onClickHome() {
     NavbarComponent.homeClick = true;
     NavbarComponent.blogClick = false;
-    NavbarComponent.findAistro = false;
+    NavbarComponent.findAstroClick = false;
   }
 
   onClickBlog() {
     NavbarComponent.homeClick = false;
     NavbarComponent.blogClick = true;
-    NavbarComponent.findAistro = false;
+    NavbarComponent.findAstroClick = false;
   }
-  onClickFeedback() {
-    NavbarComponent.homeClick = false;
-    NavbarComponent.blogClick = true;
-    NavbarComponent.findAistro = false;
-  }
-
+  
   onClickFindAstrologers() {
     if (this.isLoggedIn) {
       this.router.navigate(['/find-astrologers']);
@@ -67,10 +69,10 @@ export class NavbarComponent implements OnInit {
     this.authService.logout();
     this.isLoggedIn = false;
     this.showDropdown = false;
-     // Clear session and reload page
-     sessionStorage.removeItem('currentUser');
-     this.isLoggedIn = false;
-     // Optionally reload or navigate
+    // Clear session and reload page
+    sessionStorage.removeItem('currentUser');
+    this.isLoggedIn = false;
+    // Optionally reload or navigate
   }
 
   setActiveTab(tabName: string) {

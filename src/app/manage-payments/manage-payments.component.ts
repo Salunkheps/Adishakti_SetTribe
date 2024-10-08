@@ -13,16 +13,28 @@ export class ManagePaymentsComponent implements OnInit {
   payments: any[] = [];
   dtOptions: Config = {};
 
-  constructor(private http: HttpClient,private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     this.dtOptions = {
       ajax: (dataTablesParameters: any, callback) => {
         this.http.get<any[]>('http://localhost:8075/api/payments/pending').subscribe(data => {
-          callback({
-            recordsTotal: data.length,
-            recordsFiltered: data.length,
-            data: data
+          // Fetch user details for each payment and store full name in payment object
+          const paymentsWithFullNames = data.map(payment => {
+            return this.fetchUserDetails(payment.userId).then(fullName => {
+              payment.fullName = fullName;
+              return payment;
+            });
+          });
+
+          // Wait for all names to be fetched before proceeding
+          Promise.all(paymentsWithFullNames).then(payments => {
+            this.payments = payments; // Store payments for rendering via Angular
+            callback({
+              recordsTotal: payments.length,
+              recordsFiltered: payments.length,
+              data: payments
+            });
           });
         }, error => {
           console.error("Error fetching payments:", error);
@@ -34,38 +46,35 @@ export class ManagePaymentsComponent implements OnInit {
           title: 'Sr. No.',
           data: null,
           render: (data: any, type: any, row: any, meta: any) => {
-            return meta.row + 1; // Generates the serial 
+            return meta.row + 1; // Generates the serial
           }
         },
         { title: 'Payment ID', data: 'transactionId' }, // Updated to use transactionId
-        { title: 'User ID', data: 'userId' }, // Now correctly binding to userId
+        { title: 'User Name', data: 'fullName' }, // Now showing full name instead of userId
         { title: 'Amount', data: 'amount' },
         { title: 'Status', data: 'status' },
         {
-          title: 'View Image', // Title for the new column
+          title: 'View',
           render: (data: any, type: any, row: any) => {
-            // Create the anchor tag for viewing the image
-            return `<a href="http://localhost:8075/api/payments/getScreenshotByUserId/${row.userId}" target="_blank">View Image</a>`;
+            return `<a href="http://localhost:8075/api/payments/getScreenshotByUserId/${row.userId}" target="_blank" style="text-decoration: none;">View Payment Screenshot</a>`;
           },
         },
-
         {
           title: 'Actions',
           render: (data: any, type: any, row: any, meta: any) => {
             let buttons = '';
             if (row.status === 'Pending') {
               buttons = `
-                <button class="edit-btn btn btn-primary" data-index="${row.paymentId || row.transactionId}">
-                  
-               <i class="fa-solid fa-check"></i>
-               </button>
-                <button class="delete-btn btn btn-danger"  data-index="${row.paymentId || row.transactionId}">
-                  <i class="fa-solid fa-close"></i>
-                </button>`;
-            }
-            return buttons;
+              <button class="edit-btn btn btn-primary" data-index="${row.paymentId || row.transactionId}">
+                
+             <i class="fa-solid fa-check"></i>
+             </button>
+              <button class="delete-btn btn btn-danger"  data-index="${row.paymentId || row.transactionId}">
+                <i class="fa-solid fa-close"></i>
+              </button>`;
           }
-          ,
+            return buttons;
+          },
           orderable: false
         }
       ]
@@ -89,7 +98,25 @@ export class ManagePaymentsComponent implements OnInit {
 
   loadPayments(): void {
     this.http.get<any[]>('http://localhost:8075/api/payments/pending').subscribe((data: any[]) => {
-      this.payments = data; // Store payments for rendering via Angular
+      this.payments = data;
+      this.payments.forEach(payment => {
+        const regId = payment.userId;
+        this.fetchUserDetails(regId).then(fullName => {
+          payment.fullName = fullName; // Store the full name
+        });
+      });
+    });
+  }
+
+  fetchUserDetails(regId: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.http.get<any>(`http://localhost:8075/api/users/regId/${regId}`).subscribe(user => {
+        const fullName = `${user.firstName} ${user.lastName}`;
+        resolve(fullName); // Return the full name
+      }, error => {
+        console.error("Error fetching user details:", error);
+        reject('');
+      });
     });
   }
   approvePayment(paymentId: string): void {
@@ -107,27 +134,27 @@ export class ManagePaymentsComponent implements OnInit {
         // Proceed with approving the payment
         this.http.put(`http://localhost:8075/api/payments/approve/${paymentId}`, {}, { responseType: 'text' })
           .subscribe({
-            next: (response) => {
-              console.log("Response:", response);
-              Swal.fire({
-                title: 'Approved!',
-                text: 'The payment has been approved.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-              }).then(() => {
-                // Refresh the page after the user clicks "OK"
-                window.location.reload();
-              });
-            },
-            error: (error) => {
-              console.error("Error:", error);
-              Swal.fire('Error!', 'Error approving payment. Please try again.', 'error');
-            }
-          });
+          next: (response) => {
+            console.log("Response:", response);
+            Swal.fire({
+              title: 'Approved!',
+              text: 'The payment has been approved.',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              // Refresh the page after the user clicks "OK"
+              window.location.reload();
+            });
+          },
+          error: (error) => {
+            console.error("Error:", error);
+            Swal.fire('Error!', 'Error approving payment. Please try again.', 'error');
+          }
+        });
       }
     });
   }
-  
+
   rejectPayment(paymentId: string): void {
     Swal.fire({
       title: 'Are you sure?',
@@ -143,26 +170,26 @@ export class ManagePaymentsComponent implements OnInit {
         // Proceed with rejecting the payment
         this.http.put(`http://localhost:8075/api/payments/reject/${paymentId}`, {}, { responseType: 'text' })
           .subscribe({
-            next: (response) => {
-              console.log("Response:", response);
-              Swal.fire({
-                title: 'Rejected!',
-                text: 'The payment has been rejected.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-              }).then(() => {
-                // Refresh the page after the user clicks "OK"
-                window.location.reload();
-              });
-            },
-            error: (error) => {
-              console.error("Error:", error);
-              Swal.fire('Error!', 'Error rejecting payment. Please try again.', 'error');
-            }
-          });
+          next: (response) => {
+            console.log("Response:", response);
+            Swal.fire({
+              title: 'Rejected!',
+              text: 'The payment has been rejected.',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              // Refresh the page after the user clicks "OK"
+              window.location.reload();
+            });
+          },
+          error: (error) => {
+            console.error("Error:", error);
+            Swal.fire('Error!', 'Error rejecting payment. Please try again.', 'error');
+          }
+        });
       }
     });
-  }  
+  }
   logout(event: MouseEvent) {
     event.preventDefault(); // Prevent default link behavior
     Swal.fire({
@@ -180,7 +207,6 @@ export class ManagePaymentsComponent implements OnInit {
         console.log('User logged out');
         this.router.navigate(['/Home']);
       }
-    });
-  }
-
+    });
+  }
 }

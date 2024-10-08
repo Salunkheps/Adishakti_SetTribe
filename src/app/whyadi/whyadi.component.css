@@ -145,9 +145,12 @@
 /* === HEADING STYLE #1 === */
 .one h1 {
   text-align: center;
-  text-transform: uppercase;
   padding-bottom: 5px;
   /* margin-bottom: 50px; */
+}
+
+.one span {
+  text-transform: uppercase;
 }
 .one h1:before {
   width: 28px;

@@ -14,12 +14,12 @@
         <div class="astrologer-details">
           <div class="astrologer-wrapper">
             <span class="astrologername">
-              {{ astrologer.firstName | uppercase }} {{ astrologer.lastName | uppercase }}
+                {{ astrologer.firstName | uppercase }} {{ astrologer.lastName | uppercase }}
             </span>
             <span class="checkbox-wrapper-35">
               <input value="private" [checked]="astrologer.isOnline" name="switch" id="switch" type="checkbox"
                 class="switch" disabled>
-              <label for="switch{{ astrologer.regId }}">
+              <label for="switch{{ astrologer.regId }}" style="cursor: default;">
                 <span class="switch-x-text">Astrologer is </span>
                 <span class="switch-x-toggletext">
                   <span class="switch-x-unchecked"><span class="switch-x-hiddenlabel">Offline: </span>Offline</span>
@@ -29,15 +29,15 @@
             </span>
           </div>
 
-          <p>Skills: {{ astrologer.skills }}</p>
-          <p>ratePerMinute: {{ astrologer.ratePerMinute }}</p>
-          <p>
-            Languages Known:
+          <p><strong>Skills:</strong> {{ astrologer.skills }}</p>
+          <p><strong>Rate Per Minute:</strong> {{ astrologer.ratePerMinute }}</p>
+          <p><strong>
+              Languages Known:</strong>
             <span *ngFor="let language of astrologer.languagesKnown">{{ language }},
             </span>
           </p>
-          <p>
-            Rating:
+          <p><strong>
+              Rating:</strong>
             <span class="star-rating">
               <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" (mouseover)="hoverRating = i + 1"
                 (mouseleave)="hoverRating = null" [class.filled]="

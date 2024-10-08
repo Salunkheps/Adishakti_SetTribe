@@ -95,13 +95,6 @@
 } */
 
 
-/* General styles */
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4; /* Light background color for better contrast */
-}
-
 /* Navbar styles */
 .navbar {
   width: 100%;
@@ -111,6 +104,8 @@ body {
   align-items: center;
   padding: 10px 20px; /* Reduced height */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;  
+  z-index: 1;
 }
 
 
@@ -264,6 +259,12 @@ body {
   background-color: #F9DA82; /* Light Yellow */
   color: #420E57; /* Dark Purple */
 }
+.nav-link.active {
+
+  font-weight: bold; /* or any style you want to apply */
+  color: #F9DA82 !important; /* Bootstrap primary color or any color */
+}
+
 
 
 /* Animations */
@@ -286,4 +287,6 @@ body {
   to {
     opacity: 1;
   }
+
+  
 }

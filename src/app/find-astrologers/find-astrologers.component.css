@@ -1,5 +1,3 @@
-
-
 .outside {
   background-color: #8393a3;
   background: url('/back.jpg') no-repeat center center;
@@ -8,7 +6,6 @@
   background-position: center;
   background-repeat: no-repeat;
   max-width: 1600px;
-  
   /* border-radius: 10px; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   /* margin: 40px; Center the container on the page */
@@ -230,7 +227,8 @@
   display: flex; /* Use flexbox to center align the content */
   flex-direction: column;
   align-items: center; /* Center items horizontally */
-}
+  margin-top: 6rem;
+ }
 
 .search-bar {
   margin-bottom: 20px;

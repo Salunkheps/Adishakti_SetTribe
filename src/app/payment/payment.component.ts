@@ -24,7 +24,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
     private router: Router,
     private webSocketService: WebSocketService,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     this.webSocketService.disconnect();
@@ -63,7 +63,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
     const selectedAstrologer = JSON.parse(sessionStorage.getItem('selectedAstrologer') || '{}');
     const selectedMinutes = sessionStorage.getItem('selectedMinutes'); // Get selectedMinutes from sessionStorage
 
-    if (!currentUser || !selectedAstrologer|| !selectedMinutes) {
+    if (!currentUser || !selectedAstrologer || !selectedMinutes) {
       console.error('User, selected astrologer, or selectedMinutes not found in sessionStorage');
       return;
     }
@@ -95,9 +95,16 @@ export class PaymentComponent implements OnInit, OnDestroy {
           // Show SweetAlert on successful submission
           Swal.fire({
             icon: 'success',
-            title: 'Form Submitted',
-            text: 'Payment submitted successfully. Please wait for admin to authorize your payment.',
+            title: 'Payment Submitted',
+            text: 'You can start your chat once the payment is reviewed and approved by the admin. Please wait for confirmation.',
+            confirmButtonText: 'OK',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Redirect to 'find-astrologers' route
+              this.router.navigate(['/find-astrologers']);
+            }
           });
+
           console.log('Payment submitted successfully', response);
         },
         error => {
