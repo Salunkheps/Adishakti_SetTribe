@@ -11,11 +11,15 @@ body {
 .card {
   background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow */
-  width: 400px; /* Fixed width */
-  padding: 20px; /* Adjusted padding */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  /* Darker shadow */
+  width: 400px;
+  /* Fixed width */
+  padding: 20px;
+  /* Adjusted padding */
   box-sizing: border-box;
-  margin: 20px; /* Reduced margin */
+  margin: 20px;
+  /* Reduced margin */
 }
 
 .card-header {
@@ -26,24 +30,31 @@ body {
 }
 
 .astrologer-name {
-  font-size: 20px; /* Slightly larger font size */
+  font-size: 20px;
+  /* Slightly larger font size */
   font-weight: bold;
 }
 
 .availability-status {
-  font-size: 16px; /* Slightly larger font size */
-  color: #28a745; /* Default color for available status */
+  font-size: 16px;
+  /* Slightly larger font size */
+  color: #28a745;
+  /* Default color for available status */
 }
 
 .availability-status.unavailable {
-  color: #dc3545; /* Color for unavailable status */
+  color: #dc3545;
+  /* Color for unavailable status */
 }
 
 .card-body {
-  font-size: 16px; /* Slightly larger font size */
+  font-size: 16px;
+  /* Slightly larger font size */
 }
 
-.current-date, .mobile-number, .rate-per-minute {
+.current-date,
+.mobile-number,
+.rate-per-minute {
   margin: 12px 0;
 }
 
@@ -70,11 +81,22 @@ body {
 }
 
 .calculator input {
-  width: calc(100% - 20px); /* Adjust input width to fit within the card */
+  width: calc(100% - 20px);
+  /* Adjust input width to fit within the card */
   padding: 8px;
   border: 1px solid #ced4da;
   border-radius: 4px;
   box-sizing: border-box;
+  /* Remove spinner (arrows) */
+  -moz-appearance: textfield;
+  /* Firefox */
+}
+
+.calculator input::-webkit-outer-spin-button,
+.calculator input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  /* Chrome, Safari, Edge, Opera */
+  margin: 0;
 }
 
 .calculator button {
@@ -107,4 +129,13 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+.img-fluid {
+  max-width: 100%;
+  /* Ensure the image doesn't exceed its container */
+  height: auto;
+  /* Maintain aspect ratio */
+  margin-left: 20%;
+  /* Optional: adds margin on the left if needed */
 }

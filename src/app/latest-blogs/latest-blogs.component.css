@@ -5,6 +5,11 @@
   padding: 20px;
   border-radius: 10px;
   text-align: center;
+  margin-bottom: 10px;
+}
+
+.one{
+  margin-bottom: 20px;
 }
 
 /* Heading styling */

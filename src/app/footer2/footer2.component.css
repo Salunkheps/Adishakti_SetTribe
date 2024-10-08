@@ -2,6 +2,9 @@
 .hs_bottom_footer_main_wrapper {
     padding: 10px 0; /* Reduced padding to decrease height */
     background-color: #420E57; /* Set to your desired background color */
+    position: fixed;
+    width: 100%;
+    bottom: 0;
   }
   
   .footer_bottom_cont_wrapper p {
