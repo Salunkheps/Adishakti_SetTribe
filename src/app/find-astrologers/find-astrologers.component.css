@@ -1,6 +1,6 @@
 .outside {
   background-color: #8393a3;
-  background: url('/back.jpg') no-repeat center center;
+  background: url("/back.jpg") no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
@@ -54,7 +54,8 @@
   margin-top: 10px;
 }
 
-.btn-chat, .btn-call {
+.btn-chat,
+.btn-call {
   padding: 12px 24px; /* Increased padding for buttons */
   border: none;
   border-radius: 5px;
@@ -65,7 +66,7 @@
 }
 
 .btn-chat {
-  background-color: #008CBA;
+  background-color: #008cba;
 }
 
 .btn-chat:hover {
@@ -105,7 +106,6 @@
   }
 }
 
-
 .search-bar {
   position: relative;
   margin-bottom: 20px;
@@ -123,7 +123,7 @@
 }
 
 .search-bar input:focus {
-  border-color: #008CBA; /* Change border color on focus */
+  border-color: #008cba; /* Change border color on focus */
   box-shadow: 0 0 5px rgba(0, 140, 186, 0.3); /* Add shadow effect */
   outline: none; /* Remove default outline */
 }
@@ -142,7 +142,7 @@
 }
 
 .btn-clear:hover {
-  color: #008CBA; /* Change color on hover */
+  color: #008cba; /* Change color on hover */
 }
 
 .search-bar input::placeholder {
@@ -166,7 +166,8 @@
   width: 100%;
 }
 
-.btn-chat, .btn-call {
+.btn-chat,
+.btn-call {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -177,7 +178,7 @@
 }
 
 .btn-chat {
-  background-color: #008CBA;
+  background-color: #008cba;
 }
 
 .btn-chat:hover {
@@ -196,7 +197,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow */
 }
 
-.btn-chat:focus, .btn-call:focus {
+.btn-chat:focus,
+.btn-call:focus {
   outline: 2px solid #000; /* Added focus outline for accessibility */
   outline-offset: 2px;
 }
@@ -210,12 +212,12 @@
 }
 
 .star.filled {
-  color: #FFD700; /* Gold color for filled stars */
+  color: #ffd700; /* Gold color for filled stars */
 }
 
 .star:hover,
 .star:hover ~ .star {
-  color: #FFD700; /* Gold color for stars on hover */
+  color: #ffd700; /* Gold color for stars on hover */
 }
 
 .find-astrologers {
@@ -227,8 +229,8 @@
   display: flex; /* Use flexbox to center align the content */
   flex-direction: column;
   align-items: center; /* Center items horizontally */
-  margin-top: 6rem;
- }
+  /* margin-top: 6rem; */
+}
 
 .search-bar {
   margin-bottom: 20px;
@@ -291,7 +293,6 @@
   }
 }
 
-
 @media screen and (max-width: 768px) {
   .astrologer {
     flex-direction: column;
@@ -301,13 +302,10 @@
   }
 }
 
-
 .astrologer:hover {
   transform: scale(1.02);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
-
-
 
 .astrologer:hover .astrologer-image {
   transform: scale(1.05);
@@ -329,7 +327,6 @@
   font-size: 20px;
 }
 
-
 .astrologer-wrapper {
   display: flex;
   align-items: center;
@@ -346,7 +343,8 @@
   gap: 10px;
 }
 
-.btn-chat, .btn-call {
+.btn-chat,
+.btn-call {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -357,7 +355,7 @@
 }
 
 .btn-chat {
-  background-color: #008CBA;
+  background-color: #008cba;
 }
 
 .btn-chat:hover {
@@ -374,22 +372,20 @@
   transform: translateY(-2px);
 }
 
+.astrologer-details {
+  padding: 10px 0;
+}
 
+.astrologer-actions {
+  flex-direction: row;
+  gap: 10px;
+}
 
-  .astrologer-details {
-    padding: 10px 0;
-  }
-
-  .astrologer-actions {
-    flex-direction: row;
-    gap: 10px;
-  }
-
-  .btn-chat, .btn-call {
-    flex: 1;
-    text-align: center;
-  }
-
+.btn-chat,
+.btn-call {
+  flex: 1;
+  text-align: center;
+}
 
 .star {
   color: #ccc;
@@ -400,12 +396,12 @@
 }
 
 .star.filled {
-  color: #FFD700; /* Gold color for filled stars */
+  color: #ffd700; /* Gold color for filled stars */
 }
 
 .star:hover,
 .star:hover ~ .star {
-  color: #FFD700; /* Gold color for stars on hover */
+  color: #ffd700; /* Gold color for stars on hover */
 }
 
 .checkbox-wrapper-35 .switch {
@@ -423,7 +419,7 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   line-height: 15px;
   position: relative;
@@ -434,8 +430,8 @@
 }
 
 .checkbox-wrapper-35 .switch + label::before,
-  .checkbox-wrapper-35 .switch + label::after {
-  content: '';
+.checkbox-wrapper-35 .switch + label::after {
+  content: "";
   display: block;
 }
 
@@ -452,7 +448,8 @@
 .checkbox-wrapper-35 .switch + label::after {
   background-color: #fff;
   border-radius: 13px;
-  box-shadow: 0 3px 1px 0 rgba(255, 42, 0, 0.05), 0 2px 2px 0 rgba(37, 34, 71, 0.1), 0 3px 3px 0 rgba(37, 34, 71, 0.05);
+  box-shadow: 0 3px 1px 0 rgba(255, 42, 0, 0.05),
+    0 2px 2px 0 rgba(37, 34, 71, 0.1), 0 3px 3px 0 rgba(37, 34, 71, 0.05);
   height: 13px;
   left: 1px;
   position: absolute;
@@ -466,7 +463,7 @@
 
 .checkbox-wrapper-35 .switch + label .switch-x-text {
   display: block;
-  margin-right: .3em;
+  margin-right: 0.3em;
 }
 
 .checkbox-wrapper-35 .switch + label .switch-x-toggletext {
@@ -480,7 +477,7 @@
 }
 
 .checkbox-wrapper-35 .switch + label .switch-x-unchecked,
-  .checkbox-wrapper-35 .switch + label .switch-x-checked {
+.checkbox-wrapper-35 .switch + label .switch-x-checked {
   left: 0;
   position: static; /* Allow text to take up its full width */
   top: 0;
@@ -489,7 +486,8 @@
   -webkit-transition: opacity 0.125s ease-out, -webkit-transform 0.125s ease-out;
   transition: opacity 0.125s ease-out, -webkit-transform 0.125s ease-out;
   transition: transform 0.125s ease-out, opacity 0.125s ease-out;
-  transition: transform 0.125s ease-out, opacity 0.125s ease-out, -webkit-transform 0.125s ease-out;
+  transition: transform 0.125s ease-out, opacity 0.125s ease-out,
+    -webkit-transform 0.125s ease-out;
 }
 
 .checkbox-wrapper-35 .switch + label .switch-x-unchecked {

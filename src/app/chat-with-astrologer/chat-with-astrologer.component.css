@@ -19,6 +19,9 @@ body {
   /* Adjusted padding */
   box-sizing: border-box;
   margin: 20px;
+  height: 50%;
+  margin-top: 10%;
+  margin-left: 4%;
   /* Reduced margin */
 }
 
@@ -132,10 +135,14 @@ button:hover {
 }
 
 .img-fluid {
-  max-width: 100%;
+  max-width: 75%;
   /* Ensure the image doesn't exceed its container */
   height: auto;
   /* Maintain aspect ratio */
   margin-left: 20%;
   /* Optional: adds margin on the left if needed */
+}
+
+.row{
+  height: 100vh;
 }

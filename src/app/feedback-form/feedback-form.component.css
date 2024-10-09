@@ -121,10 +121,10 @@ label {
 input, textarea, select {
   width: 100%;
   padding: 10px;
-  border: 1px solid #F9DA82;
+  border: 1px solid #ffffff;
   border-radius: 5px;
   box-sizing: border-box;
-  background-color: #F9DA82;
+  background-color: #ffffff;
   color: #420E57;
 }
 
@@ -146,4 +146,12 @@ button:disabled {
 
 div.ng-invalid.ng-touched {
   color: red;
+}
+
+p{
+  color: rgb(255, 255, 255);
+}
+
+.astroname{
+  color:#F9DA82 !important ;
 }
