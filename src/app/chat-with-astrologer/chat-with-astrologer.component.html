@@ -1,11 +1,14 @@
 <app-navbar></app-navbar>
-<div class="row" style="padding-top: 7rem;">
+<div class="row">
   <div class="card col-md-6">
     <div class="card-header">
       <h2 class="astrologer-name">
         {{ astrologer?.firstName }} {{ astrologer?.lastName }}
       </h2>
-      <span class="availability-status" [ngClass]="{ available: isAvailable, unavailable: !isAvailable }">
+      <span
+        class="availability-status"
+        [ngClass]="{ available: isAvailable, unavailable: !isAvailable }"
+      >
         {{ isAvailable ? "Available" : "Unavailable" }}
       </span>
     </div>
@@ -15,21 +18,28 @@
       Mobile: 
       <a [href]="'tel:' + astrologer?.mobile">{{ astrologer?.mobile }}</a>
     </p> -->
-    <p class="rate-per-minute">
-      Rate Per Minute:
-      <span *ngIf="(astrologer?.ratePerMinute ?? 0) > 0">
-        {{ astrologer?.ratePerMinute | currency : "INR" : "symbol" }}
-      </span>
-      <span *ngIf="(astrologer?.ratePerMinute ?? 0) <= 0">
-        <strong>Astrologer has not set a price yet.</strong>
-      </span>
-    </p>
-    
+      <p class="rate-per-minute">
+        Rate Per Minute:
+        <span *ngIf="(astrologer?.ratePerMinute ?? 0) > 0">
+          {{ astrologer?.ratePerMinute | currency : "INR" : "symbol" }}
+        </span>
+        <span *ngIf="(astrologer?.ratePerMinute ?? 0) <= 0">
+          <strong>Astrologer has not set a price yet.</strong>
+        </span>
+      </p>
 
       <div class="calculator">
         <label for="minutes">Enter Minutes:</label>
-        <input type="number" id="minutes" [(ngModel)]="minutes" min="1" pattern="\d*" (keypress)="validateInput($event)"
-          (input)="onMinutesChange()" required />
+        <input
+          type="number"
+          id="minutes"
+          [(ngModel)]="minutes"
+          min="1"
+          pattern="\d*"
+          (keypress)="validateInput($event)"
+          (input)="onMinutesChange()"
+          required
+        />
         <button (click)="calculateTotal()">Calculate</button>
       </div>
 
@@ -38,12 +48,15 @@
       </p>
 
       <!-- Add the payment button -->
-      <button *ngIf="totalAmount !== null && totalAmount > 0" (click)="goToPayment()">
+      <button
+        *ngIf="totalAmount !== null && totalAmount > 0"
+        (click)="goToPayment()"
+      >
         Proceed to Payment
       </button>
     </div>
   </div>
-  <img src="chatWithAstrologer.jpg" class="img-fluid col-md-3">
+  <img src="chatWithAstrologer.jpg" class="img-fluid col-md-5" />
 </div>
 
-<app-footer></app-footer>
+<app-footer2></app-footer2>

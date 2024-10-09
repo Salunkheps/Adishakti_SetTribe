@@ -14,20 +14,24 @@ export class BlogsComponent implements OnInit {
   individualData: any = [];
   data: any[] = [];
 
-  constructor(private blogService: BlogService, private router: Router, private http: HttpClient) {
+  constructor(private blogService: BlogService, private router: Router, private http: HttpClient) {}
+
+  ngOnInit(): void {
     this.gerData();
   }
 
+  // Method to handle the 'View More' button click
   viewMore(i: any) {
-    this.displayBlock = !this.displayBlock;
+    this.displayBlock = true;
     this.individualData = i;
-    this.fetchBlogImage(i.id); // Fetch the image when viewing more
   }
 
+  // Method to close the popup
   closs() {
     this.displayBlock = false;
   }
 
+  // Method to fetch all blogs
   gerData() {
     this.blogService.getBlogs().subscribe(
       (data) => {
@@ -36,58 +40,60 @@ export class BlogsComponent implements OnInit {
           this.fetchBlogImage(blog.id); // Fetch images for all blogs
         });
       },
-      (error) => {}
+      (error) => {
+        console.error('Error fetching blogs:', error);
+      }
     );
   }
 
+  // Methods to fetch blogs by categories
   getEducation() {
-    this.blogService.getBlogsByCategory('education').subscribe(
-      (data) => {
-        this.data = data;
-      },
-      (error) => {}
-    );
+    this.fetchBlogsByCategory('education');
   }
 
   getLifeStyle() {
-    this.blogService.getBlogsByCategory('lifestyle').subscribe(
-      (data) => {
-        this.data = data;
-      },
-      (error) => {}
-    );
+    this.fetchBlogsByCategory('lifestyle');
   }
 
   getTec() {
-    this.blogService.getBlogsByCategory('technology').subscribe(
-      (data) => {
-        this.data = data;
-      },
-      (error) => {}
-    );
+    this.fetchBlogsByCategory('technology');
   }
 
   getHelth() {
-    this.blogService.getBlogsByCategory('health').subscribe(
+    this.fetchBlogsByCategory('health');
+  }
+
+  // Generalized method to fetch blogs by category
+  fetchBlogsByCategory(category: string) {
+    this.blogService.getBlogsByCategory(category).subscribe(
       (data) => {
         this.data = data;
+        this.data.forEach((blog: Blog) => {
+          this.fetchBlogImage(blog.id); // Fetch images for blogs in this category
+        });
       },
-      (error) => {}
+      (error) => {
+        console.error(`Error fetching ${category} blogs:`, error);
+      }
     );
   }
 
+  // Method to fetch the blog image
   fetchBlogImage(id: number) {
     this.blogService.getBlogImage(id).subscribe(
       (blob: Blob) => {
-        const url = URL.createObjectURL(blob);
-        const blogIndex = this.data.findIndex((blog) => blog.id === id);
-        if (blogIndex !== -1) {
-          this.data[blogIndex].imageUrl = url; // Set the image URL
-        }
+        const reader = new FileReader();
+        reader.onload = () => {
+          const blogIndex = this.data.findIndex((blog) => blog.id === id);
+          if (blogIndex !== -1) {
+            this.data[blogIndex].imageUrl = reader.result as string; // Set the image URL
+          }
+        };
+        reader.readAsDataURL(blob); // Convert the Blob to a data URL
       },
-      (error) => {}
+      (error) => {
+        console.error(`Error fetching image for blog ${id}:`, error);
+      }
     );
   }
-
-  ngOnInit(): void {}
 }
