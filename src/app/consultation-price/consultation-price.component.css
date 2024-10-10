@@ -1,32 +1,45 @@
-/* Sidebar Styles */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  position: fixed !important;
+  width: 100%;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.logo img {
+  height: 80px; /* Reduced size */
+  width: 80px; /* Reduced size */
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-size: 1.5rem; /* Reduced font size */
+  font-weight: bold;
+  color: #F9DA82; /* Light Yellow */
+  animation: glow 1.5s ease-in-out infinite; /* Apply glow animation */
+}
+
 .sidebar {
-  width: 250px; /* Sidebar width */
-  background-color: #4c70ba; /* Match the first sidebar */
-  color: #ecf0f1;
+  background-color: #4c70ba;
+  color: #fff;
   display: flex;
   flex-direction: column;
-  position: fixed;
-  height: 100vh; /* Full height of the viewport */
-  top: 0; /* Align to the top */
-  left: 0; /* Align to the left */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 2; /* Ensure sidebar is above other content */
 }
 
 .sidebar-header {
-  padding: 25px 20px;
+  padding: 20px;
   text-align: center;
-  font-size: 1.5em;
-  font-weight: 700;
-  letter-spacing: 1px;
-  border-bottom: 1px solid #1abc9c;
+  background-color: #4c70ba;
 }
 
 .sidebar-menu {
   list-style-type: none;
   padding: 0;
   margin: 0;
-  flex-grow: 1;
 }
 
 .sidebar-menu li {
@@ -36,59 +49,60 @@
 .sidebar-menu li a {
   display: block;
   padding: 15px 20px;
-  color: #ecf0f1;
+  color: #fff;
   text-decoration: none;
-  font-size: 1.1em;
-  font-weight: 500;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .sidebar-menu li a:hover {
-  background-color: #34495e;
-  color: #fff;
+  background-color: #fff;
+  color:black !important;
+}
+.sidebar-menu li a.active {
+ color:#F9DA82 ;
 }
 
-/* Topbar Styles */
-.topbar {
-  background-color: #4c70ba; /* Match the first topbar */
-  color: #ffffff;
-  padding: 20px;
+
+.main-content {
+  flex-grow: 1;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  top: 0;
-  left: 250px; /* Align topbar to the right of the sidebar */
-  width: calc(100% - 250px); /* Full width minus sidebar */
-  z-index: 1;
-  height: 70px; /* Adjust height to match your layout */
+  flex-direction: column;
+  background-color: #f2edf3;
 }
 
-.topbar h1 {
-  margin: 0;
-  font-size: 1.8em;
-  font-weight: 700;
+h2 {
+  font-size: 30px;
+  color: #0F0F8F;
+  text-align: center; /* Center the text */
 }
 
-.user-info {
-  display: flex;
-  align-items: center;
+/* Decorative elements for the heading */
+.one h2 {
+  text-transform: uppercase;
+  padding-bottom: 5px;
+  margin-bottom: 5%; /* Adjust the bottom margin */
+  position: relative;
 }
 
-.user-info p {
-  margin: 0 15px 0 0;
-  font-weight: 400;
+.one h2:before,
+.one h2:after {
+  content: "";
+  position: absolute;
+  background-color: #b80000;
+  left: 50%; /* Center the pseudo-elements */
+  transform: translateX(-50%);
 }
 
-.user-info a {
-  color: #ecf0f1;
-  text-decoration: none;
-  font-weight: 500;
+.one h2:before {
+  width: 28px;
+  height: 5px;
+  bottom: -10px; /* Adjust the distance from the heading */
 }
 
-.user-info a.logout-topbar:hover {
-  color: #c0392b;
+.one h2:after {
+  width: 100px;
+  height: 1px;
+  top: 100%; /* Place below the heading */
+  margin-top: 7px;
 }
 
 /* Form Container Styles */
@@ -115,48 +129,7 @@
 .btn:hover {
   background-color: #1abc9c;
 }
-h3 {
-  position: relative;
-  padding: 0;
-  margin: 0;
-  font-family: "Raleway", sans-serif;
-  font-weight: 300;
-  font-size: 40px;
-  color: #080808;
-  -webkit-transition: all 0.4s ease 0s;
-  -o-transition: all 0.4s ease 0s;
-  transition: all 0.4s ease 0s;
-}
-/* === HEADING STYLE #1 === */
-.one h3 {
-text-align: center;
-text-transform: uppercase;
-padding-bottom: 5px;
-margin-top: 100px;
 
-}
-.one h3:before {
-width: 28px;
-height: 5px;
-display: block;
-content: "";
-position: absolute;
-bottom: 3px;
-left: 50%;
-margin-left: -14px;
-background-color: #b80000;
-}
- .one h3:after {
-width: 100px;
-height: 1px;
-display: block;
-content: "";
-position: relative;
-margin-top: 25px;
-left: 50%;
-margin-left: -50px;
-background-color: #b80000;
-}
 .table-container {
   margin-top: 20px;
 }
@@ -164,7 +137,7 @@ background-color: #b80000;
 .table {
   width: 80%;
   border-collapse: collapse;
-  margin-left: 300px;
+ 
 }
 
 .table th, .table td {
@@ -173,8 +146,9 @@ background-color: #b80000;
 }
 
 .table th {
-  background-color: #f2f2f2;
+  background-color: #4c70ba;
   text-align: left;
+  color : white;
 }
 .button-container {
   display: flex; /* Use flexbox to align buttons in a row */

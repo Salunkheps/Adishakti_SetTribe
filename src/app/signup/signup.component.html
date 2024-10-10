@@ -16,7 +16,7 @@
         <div class="form-row">
           <div class="form-group">
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" formControlName="firstName" required placeholder="Enter First Name" />
+            <input type="text" id="firstName" formControlName="firstName" required placeholder="Enter First Name" (keypress)="validateAlphabetic($event)"/>
             <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)" class="error-message">
               <b *ngIf="firstName?.errors?.['required']">First Name is required</b>
             </div>
@@ -24,7 +24,7 @@
 
           <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" formControlName="lastName" required placeholder="Enter Last Name" />
+            <input type="text" id="lastName" formControlName="lastName" required placeholder="Enter Last Name" (keypress)="validateAlphabetic($event)"/>
             <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="error-message">
               <b *ngIf="lastName?.errors?.['required']">Last Name is required</b>
             </div>
@@ -44,23 +44,38 @@
 
           <div class="form-group">
             <label for="mobileNumber">Mobile Number</label>
-            <input type="text" id="mobileNumber" formControlName="mobileNumber" required placeholder="Enter Mobile Number" maxlength="10" />
+            <input 
+                type="text" 
+                id="mobileNumber" 
+                formControlName="mobileNumber" 
+                required 
+                placeholder="Enter Mobile Number" 
+                maxlength="10" 
+                (keypress)="validateNumeric($event)" 
+                (keydown)="validateStartDigit($event)"
+                pattern="[6-9][0-9]{9}" 
+                title="Mobile number must be 10 digits long"/>
             <div *ngIf="mobileNumber?.invalid && (mobileNumber?.dirty || mobileNumber?.touched)" class="error-message">
-              <b *ngIf="mobileNumber?.errors?.['required']">Mobile Number is required</b>
-              <b *ngIf="mobileNumber?.errors?.['pattern']">Mobile Number must be numeric and 10 digits long</b>
+                <b *ngIf="mobileNumber?.errors?.['required']">Mobile Number is required</b>
+                <b *ngIf="mobileNumber?.errors?.['pattern']">Mobile Number must be numeric and start with 6-9</b>
             </div>
-          </div>
+        </div>
+        
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="file">Profile Photo</label>
             <input type="file" accept="image/png, image/gif, image/jpeg" (change)="onFileSelected($event)">
+            <div *ngIf="invalidFile" class="error-message">
+              <b>Only JPG, PNG, or JPEG files are allowed.</b>
+            </div>
           </div>
+          
 
           <div class="form-group">
             <label for="city">City</label>
-            <input type="text" id="city" formControlName="city" required placeholder="Enter City" />
+            <input type="text" id="city" formControlName="city" required placeholder="Enter City"  (keypress)="validateAlphabetic($event)"/>
           </div>
         </div>
 
@@ -72,7 +87,7 @@
 
           <div class="form-group">
             <label for="birthPlace">Birth Place</label>
-            <input type="text" id="birthPlace" formControlName="birthPlace" required placeholder="Enter Birth Place" />
+            <input type="text" id="birthPlace" formControlName="birthPlace" required placeholder="Enter Birth Place" (keypress)="validateAlphabetic($event)" />
           </div>
         </div>
 
@@ -95,7 +110,19 @@
         <div class="form-row">
           <div class="form-group">
             <label for="password">Password</label>
-            <input [type]="hidePassword ? 'password' : 'text'" id="password" formControlName="password" required placeholder="Enter Password" />
+            <div class="password-container">
+              <input
+                [type]="hidePassword ? 'password' : 'text'"
+                id="password"
+                formControlName="password"
+                required
+                placeholder="Enter Password"
+              />
+              <i class="fa password-toggle" (click)="togglePasswordVisibility()">
+                <i class="fa" [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+              </i>
+            </div>
+            
             <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error-message">
               <b *ngIf="password?.errors?.['required']">Password is required</b>
               <b *ngIf="password?.errors?.['minlength']">Password must be at least 8 characters long</b>
@@ -108,7 +135,7 @@
           </div>
         </div>
 
-        <button type="submit" class="signup-button">Sign Up</button>
+        <button type="submit" class="signup-button" id="sbtn">Sign Up</button>
       </div>
     </form>
   </div>

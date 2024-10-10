@@ -408,6 +408,12 @@
   display: none;
 }
 
+/* Change to orange when busy */
+.checkbox-wrapper-35 .switch.busy + label::before {
+  background-color: orange; /* Set the busy color here */
+}
+
+
 .checkbox-wrapper-35 .switch + label {
   -webkit-box-align: center;
   -webkit-align-items: center;
@@ -443,6 +449,9 @@
   -webkit-transition: background-color 0.125s ease-out;
   transition: background-color 0.125s ease-out;
   width: 25px;
+}
+.checkbox-wrapper-35 .switch:checked.busy + label::before {
+  background-color: orange; /* Orange when busy */
 }
 
 .checkbox-wrapper-35 .switch + label::after {

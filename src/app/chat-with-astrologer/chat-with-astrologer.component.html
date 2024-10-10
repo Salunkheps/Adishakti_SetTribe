@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <div class="row">
-  <div class="card col-md-6">
+  <div class="card col-md-6" [ngClass]="{ 'expanded': cardExpanded }">
     <div class="card-header">
       <h2 class="astrologer-name">
         {{ astrologer?.firstName }} {{ astrologer?.lastName }}
@@ -37,10 +37,10 @@
           min="1"
           pattern="\d*"
           (keypress)="validateInput($event)"
-          (input)="onMinutesChange()"
+          (keyup)="onMinutesChange()"
           required
         />
-        <button (click)="calculateTotal()">Calculate</button>
+        <!-- <button (click)="calculateTotal()">Calculate</button> -->
       </div>
 
       <p *ngIf="totalAmount !== null">

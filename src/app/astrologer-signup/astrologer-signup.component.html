@@ -1,8 +1,6 @@
 <app-navbar></app-navbar>
-
-
 <!-- Background image using HTML -->
-<img src="astro10.jpg" alt="Background" class="background-image">
+<img src="astro10.jpg" alt="Background" class="background-image" />
 <div class="card-container">
   <form [formGroup]="signupForm" (ngSubmit)="signup()" class="signup-form">
     <a routerLink="/astrologer-login"><i class="fa-solid fa-backward"></i></a>
@@ -13,28 +11,60 @@
     <div class="form-grid">
       <div class="form-group">
         <label for="firstName">First Name</label>
-        <input type="text" id="firstName" formControlName="firstName" placeholder="Enter your first name" required />
-        <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)" class="error-message">
+        <input
+          type="text"
+          id="firstName"
+          formControlName="firstName"
+          placeholder="Enter your first name"
+          required
+        />
+        <div
+          *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+          class="error-message"
+        >
           <b *ngIf="firstName?.errors?.['required']">First Name is required</b>
         </div>
       </div>
 
       <div class="form-group">
         <label for="lastName">Last Name</label>
-        <input type="text" id="lastName" formControlName="lastName" placeholder="Enter your last name" required />
-        <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="error-message">
+        <input
+          type="text"
+          id="lastName"
+          formControlName="lastName"
+          placeholder="Enter your last name"
+          required
+        />
+        <div
+          *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+          class="error-message"
+        >
           <b *ngIf="lastName?.errors?.['required']">Last Name is required</b>
         </div>
       </div>
 
       <div class="form-group">
         <label for="mobile">Mobile Number</label>
-        <input type="text" id="mobile" formControlName="mobile" placeholder="Enter your mobile number" required
-          maxlength="10" pattern="^[0-9]{10}$" />
-        <div *ngIf="mobile?.invalid && (mobile?.dirty || mobile?.touched)" class="error-message">
+        <input
+          type="text"
+          id="mobile"
+          formControlName="mobile"
+          placeholder="Enter your mobile number"
+          required
+          maxlength="10"
+          pattern="^[0-9]{10}$"
+        />
+        <div
+          *ngIf="mobile?.invalid && (mobile?.dirty || mobile?.touched)"
+          class="error-message"
+        >
           <b *ngIf="mobile?.errors?.['required']">Mobile Number is required</b>
-          <b *ngIf="mobile?.errors?.['pattern']">Mobile Number must be numeric and 10 digits long</b>
-          <b *ngIf="mobile?.errors?.['maxlength']">Mobile Number cannot exceed 10 digits</b>
+          <b *ngIf="mobile?.errors?.['pattern']"
+            >Mobile Number must be numeric and 10 digits long</b
+          >
+          <b *ngIf="mobile?.errors?.['maxlength']"
+            >Mobile Number cannot exceed 10 digits</b
+          >
         </div>
       </div>
 
@@ -50,12 +80,31 @@
 
       <div class="form-group">
         <label for="aadharNumber">Aadhar Number</label>
-        <input type="text" id="aadharNumber" formControlName="aadharNumber" placeholder="Enter your Aadhar number"
-          required maxlength="12" pattern="^[0-9]{12}$" />
-        <div *ngIf="aadharNumber?.invalid && (aadharNumber?.dirty || aadharNumber?.touched)" class="error-message">
-          <b *ngIf="aadharNumber?.errors?.['required']">Aadhar Number is required</b>
-          <b *ngIf="aadharNumber?.errors?.['pattern']">Aadhar Number must be numeric and 12 digits long</b>
-          <b *ngIf="aadharNumber?.errors?.['maxlength']">Aadhar Number cannot exceed 12 digits</b>
+        <input
+          type="text"
+          id="aadharNumber"
+          formControlName="aadharNumber"
+          placeholder="Enter your Aadhar number"
+          required
+          maxlength="12"
+          pattern="^[0-9]{12}$"
+        />
+        <div
+          *ngIf="
+            aadharNumber?.invalid &&
+            (aadharNumber?.dirty || aadharNumber?.touched)
+          "
+          class="error-message"
+        >
+          <b *ngIf="aadharNumber?.errors?.['required']"
+            >Aadhar Number is required</b
+          >
+          <b *ngIf="aadharNumber?.errors?.['pattern']"
+            >Aadhar Number must be numeric and 12 digits long</b
+          >
+          <b *ngIf="aadharNumber?.errors?.['maxlength']"
+            >Aadhar Number cannot exceed 12 digits</b
+          >
         </div>
       </div>
 
@@ -65,20 +114,20 @@
       </div>
 
       <div class="form-group">
-        <label for="skills"> Skills</label>
-        <select id="skills" formControlName="skills" required>
-          <option value="" disabled>Select Skills</option>
-          <option value="horoscope">Horoscope Reading</option>
-          <option value="tarot">Tarot Reading</option>
-          <option value="numerology">Numerology</option>
-          <option value="palmistry">Palmistry</option>
-          <option value="vedic-astrology">Vedic Astrology</option>
-          <option value="feng-shui">Feng Shui</option>
-          <option value="face-reading">Face Reading</option>
-        </select>
+        <label for="skills">Skills</label>
+        <div class="multi-select-dropdown">
+          <div class="dropdown-header" (click)="toggleSkillsDropdown()">
+            <span *ngIf="selectedSkills.length === 0" style="color: black;">Select Skills</span>
+            <span *ngIf="selectedSkills.length > 0">{{ selectedSkills.join(', ') }}</span>
+            <i class="fa fa-caret-down"></i>
+          </div>
+          <div *ngIf="showSkillsDropdown" class="dropdown-list">
+            <div *ngFor="let skill of skillsList">
+              <input type="checkbox" [value]="skill" (change)="onSkillChange($event)" /> {{ skill }}
+            </div>
+          </div>
+        </div>
       </div>
-
-
 
 
       <div class="form-group">
@@ -92,54 +141,102 @@
         </select>
       </div>
 
-
       <div class="form-group">
-        <label for="languages">Languages Known</label>
-        <select id="languages" formControlName="languages" required>
-          <option value="" disabled>Select Languages</option>
-          <option value="English">English</option>
-          <option value="Hindi">Hindi</option>
-          <option value="Marathi">Marathi</option>
-          <option value="others">Others</option>
-        </select>
+        <label for="languages">Languages</label>
+        <div class="multi-select-dropdown">
+          <div class="dropdown-header" (click)="toggleLanguagesDropdown()">
+            <span *ngIf="selectedLanguages.length === 0" style="color: black;">Select Languages</span>
+            <span *ngIf="selectedLanguages.length > 0">{{ selectedLanguages.join(', ') }}</span>
+            <i class="fa fa-caret-down"></i>
+          </div>
+          <div *ngIf="showLanguagesDropdown" class="dropdown-list">
+            <div *ngFor="let language of languagesList">
+              <input type="checkbox" [value]="language" (change)="onLanguageChange($event)" /> {{ language }}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="certification">Certification</label>
-        <input type="text" id="certification" formControlName="certification" placeholder="Enter your certification"
-          required />
+        <input
+          type="text"
+          id="certification"
+          formControlName="certification"
+          placeholder="Enter your certification"
+          required
+        />
       </div>
 
       <div class="form-group">
         <label for="degree">Degree</label>
-        <input type="text" id="degree" formControlName="degree" placeholder="Enter your degree" required />
+        <input
+          type="text"
+          id="degree"
+          formControlName="degree"
+          placeholder="Enter your degree"
+          required
+        />
       </div>
 
       <div class="form-group">
         <label for="city">City</label>
-        <input type="text" id="city" formControlName="city" placeholder="Enter your city" required />
+        <input
+          type="text"
+          id="city"
+          formControlName="city"
+          placeholder="Enter your city"
+          required
+        />
       </div>
 
       <div class="form-group">
         <label for="pinCode">Pin Code</label>
-        <input type="text" id="pinCode" formControlName="pinCode" placeholder="Enter your pin code" required
-          maxlength="6" pattern="^[0-9]{6}$" />
-        <div *ngIf="pinCode?.invalid && (pinCode?.dirty || pinCode?.touched)" class="error-message">
+        <input
+          type="text"
+          id="pinCode"
+          formControlName="pinCode"
+          placeholder="Enter your pin code"
+          required
+          maxlength="6"
+          pattern="^[0-9]{6}$"
+        />
+        <div
+          *ngIf="pinCode?.invalid && (pinCode?.dirty || pinCode?.touched)"
+          class="error-message"
+        >
           <b *ngIf="pinCode?.errors?.['required']">Pin Code is required</b>
-          <b *ngIf="pinCode?.errors?.['pattern']">Pin Code must be numeric and 6 digits long</b>
-          <b *ngIf="pinCode?.errors?.['maxlength']">Pin Code cannot exceed 6 digits</b>
+          <b *ngIf="pinCode?.errors?.['pattern']"
+            >Pin Code must be numeric and 6 digits long</b
+          >
+          <b *ngIf="pinCode?.errors?.['maxlength']"
+            >Pin Code cannot exceed 6 digits</b
+          >
         </div>
       </div>
 
       <div class="form-group">
         <label for="file">Profile Photo</label>
-        <input type="file" accept="image/png, image/gif, image/jpeg" (change)="onFileSelected($event)">
+        <input
+          type="file"
+          accept="image/png, image/gif, image/jpeg"
+          (change)="onFileSelected($event)"
+        />
       </div>
 
       <div class="form-group">
         <label for="email">Email as <span>Username</span></label>
-        <input type="email" id="email" formControlName="email" placeholder="Enter your email" required />
-        <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-message">
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Enter your email"
+          required
+        />
+        <div
+          *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+          class="error-message"
+        >
           <b *ngIf="email?.errors?.['required']">Email is required</b>
           <b *ngIf="email?.errors?.['email']">Invalid email address</b>
         </div>
@@ -147,19 +244,29 @@
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" formControlName="password" placeholder="Enter your password" required />
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="Enter your password"
+          required
+        />
       </div>
 
       <div class="form-group">
         <label for="confirmpass">Confirm Password</label>
-        <input type="password" id="confirmpass" formControlName="confirmpass" placeholder="Confirm your password"
-          required />
+        <input
+          type="password"
+          id="confirmpass"
+          formControlName="confirmpass"
+          placeholder="Confirm your password"
+          required
+        />
       </div>
     </div>
 
     <button type="submit">Sign Up</button>
   </form>
 </div>
-
 
 <app-footer></app-footer>

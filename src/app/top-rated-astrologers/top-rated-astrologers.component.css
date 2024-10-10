@@ -109,7 +109,7 @@
 
 .astrologer-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 24px rgba(255, 105, 180, 0.6); /* More prominent pink shadow on hover */
  
   color: #420e57; /* Dark purple text color on hover */
 }

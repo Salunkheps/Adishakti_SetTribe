@@ -18,6 +18,8 @@ interface Astrologer {
   mobileNumber: string; // Make sure this field exists in your backend response
   ratePerMinute: number;
   isOnline?: boolean; // Add this field
+  status: string; // Add this field
+  isBusy?: boolean; // Add isBusy field here
 
 }
 
@@ -26,13 +28,13 @@ interface Astrologer {
   templateUrl: './find-astrologers.component.html',
   styleUrls: ['./find-astrologers.component.css'],
 })
-export class FindAstrologersComponent implements OnInit,OnDestroy {
+export class FindAstrologersComponent implements OnInit, OnDestroy {
   data: Astrologer[] = [];
   filteredAstrologers: Astrologer[] = [];
   searchTerm: string = '';
   hoverRating: number | null = null;
 
-  constructor(private http: HttpClient, private router: Router,private webSocketService: WebSocketService) {
+  constructor(private http: HttpClient, private router: Router, private webSocketService: WebSocketService) {
     this.getAllData();
     this.filteredAstrologers = this.data;
 
@@ -53,21 +55,6 @@ export class FindAstrologersComponent implements OnInit,OnDestroy {
     return `http://localhost:8075/api/astrologers/${regId}/profile-photo`;
   }
 
-  // filterAstrologers(): void {
-  //   const searchTerm = this.searchTerm.toLowerCase().trim();
-
-  //   if (searchTerm === '') {
-  //     this.getAllData();
-  //     return;
-  //   }
-
-  //   this.getSearchData();
-  //   this.filteredAstrologers = this.data.filter(
-  //     (astrologer: Astrologer) =>
-  //       astrologer.firstName.toLowerCase().includes(searchTerm) ||
-  //       astrologer.skills.toLowerCase().includes(searchTerm)
-  //   );
-  // }
   filterAstrologers(): void {
     const searchTerm = this.searchTerm.toLowerCase().trim();
     if (searchTerm === '') {
@@ -75,8 +62,9 @@ export class FindAstrologersComponent implements OnInit,OnDestroy {
     } else {
       this.filteredAstrologers = this.data.filter(
         (astrologer: Astrologer) =>
-          astrologer.firstName.toLowerCase().includes(searchTerm) ||
-          astrologer.skills.toLowerCase().includes(searchTerm)
+          astrologer.status === 'Approved' && // Filter by status
+          (astrologer.firstName.toLowerCase().includes(searchTerm) ||
+            astrologer.skills.toLowerCase().includes(searchTerm))
       );
     }
   }
@@ -108,19 +96,37 @@ export class FindAstrologersComponent implements OnInit,OnDestroy {
     this.router.navigate(['/chatwithastro']); // Update this route as needed
   }
 
-  
+
   getAllData(): void {
     this.http
       .get<Astrologer[]>('http://localhost:8075/api/astrologers/get-astrologers')
       .subscribe(
         (data) => {
-          this.data = data;
-          this.filteredAstrologers = data;
+          this.data = data.filter(astrologer => astrologer.status === 'Approved'); // Filter here as well
+          this.filteredAstrologers = this.data;
+          this.getAstrologerBusyStatus(); // Fetch busy status after fetching all astrologers
+
         },
         (error) => {
           console.error('Error fetching data', error);
         }
       );
+  }
+   // Function to get astrologer's busy status
+   getAstrologerBusyStatus(): void {
+    this.data.forEach(astrologer => {
+      this.http
+        .get<boolean>(`http://localhost:8075/api/astrologers/isBusy/${astrologer.regId}`)
+        .subscribe(
+          (isBusy) => {
+            astrologer.isBusy = isBusy; // Set the busy status
+            console.log(`Astrologer ${astrologer.regId} is busy: ${isBusy}`); // Print the busy status to console
+          },
+          (error) => {
+            console.error(`Error fetching busy status for ${astrologer.regId}`, error);
+          }
+        );
+    });
   }
 
   // Function to get astrologer's online status

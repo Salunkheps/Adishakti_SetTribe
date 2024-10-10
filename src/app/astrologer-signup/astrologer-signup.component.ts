@@ -13,6 +13,14 @@ export class AstrologerSignupComponent implements OnInit {
   signupForm!: FormGroup;
   hidePassword: boolean = true;
   profilePhoto!: File; // To hold the uploaded file
+  skillsList: string[] = ['Horoscope Reading', 'Tarot Reading', 'Numerology', 'Palmistry', 'Vedic Astrology', 'Feng Shui', 'Face Reading'];
+  languagesList: string[] = ['English', 'Hindi', 'Marathi', 'Others'];
+
+  selectedSkills: string[] = [];
+  selectedLanguages: string[] = [];
+
+  showSkillsDropdown: boolean = false;
+  showLanguagesDropdown: boolean = false;
 
   backEndUrl: string = 'http://localhost:8075/api/astrologers/create';
 
@@ -27,8 +35,8 @@ export class AstrologerSignupComponent implements OnInit {
       aadharNumber: new FormControl('', Validators.required),
       dob: new FormControl('', Validators.required),
       experience: new FormControl('', Validators.required),
-      skills: new FormControl('', Validators.required), // Initialize as an array
-      languages: new FormControl([], Validators.required), // Initialize as an array
+      skills: new FormControl([], Validators.required), // Array for skills
+      languages: new FormControl([], Validators.required),// Initialize as an array
       certification: new FormControl('', Validators.required),
       degree: new FormControl('', Validators.required),
       city: new FormControl('', Validators.required),
@@ -44,6 +52,34 @@ export class AstrologerSignupComponent implements OnInit {
     const password = formGroup.get('password')?.value;
     const confirmpass = formGroup.get('confirmpass')?.value;
     return password === confirmpass ? null : { passwordsMismatch: true };
+  }
+
+  toggleSkillsDropdown(): void {
+    this.showSkillsDropdown = !this.showSkillsDropdown;
+  }
+
+  toggleLanguagesDropdown(): void {
+    this.showLanguagesDropdown = !this.showLanguagesDropdown;
+  }
+
+  onSkillChange(event: any): void {
+    const value = event.target.value;
+    if (event.target.checked) {
+      this.selectedSkills.push(value);
+    } else {
+      this.selectedSkills = this.selectedSkills.filter(skill => skill !== value);
+    }
+    this.signupForm.get('skills')?.setValue(this.selectedSkills);
+  }
+
+  onLanguageChange(event: any): void {
+    const value = event.target.value;
+    if (event.target.checked) {
+      this.selectedLanguages.push(value);
+    } else {
+      this.selectedLanguages = this.selectedLanguages.filter(language => language !== value);
+    }
+    this.signupForm.get('languages')?.setValue(this.selectedLanguages);
   }
 
   // Capture the file input

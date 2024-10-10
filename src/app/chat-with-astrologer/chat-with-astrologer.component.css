@@ -12,17 +12,18 @@ body {
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  /* Darker shadow */
   width: 400px;
-  /* Fixed width */
   padding: 20px;
-  /* Adjusted padding */
   box-sizing: border-box;
   margin: 20px;
   height: 50%;
   margin-top: 10%;
   margin-left: 4%;
-  /* Reduced margin */
+  transition: height 0.3s ease; /* Smooth transition */
+}
+
+.card.expanded {
+  height: 56%; /* Increase the height when expanded */
 }
 
 .card-header {

@@ -13,6 +13,10 @@ body {
   animation: fadeIn 1.5s ease-in-out;
 }
 
+#reg{
+  color: #ffffff;
+}
+
 /* Background video */
 #background-video {
   position: absolute;
@@ -178,6 +182,7 @@ label {
 .register-section {
   margin-top: 15px;
   text-align: center; /* Center the "No account" text */
+  color: white;
 }
 
 .register-link {

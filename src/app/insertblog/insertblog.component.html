@@ -41,7 +41,7 @@
           <select id="blogCatagory" formControlName="blogCatagory" class="form-select">
             <option value="">Select Blog Category</option>
             <option value="HEALTH">Health</option>
-            <option value="TECHNOLOGY">Technology</option>
+            <option value="TECNOLOGY">Technology</option>
             <option value="LIFESTYLE">Lifestyle</option>
             <option value="EDUCATION">Education</option>
           </select>
@@ -70,19 +70,25 @@
     <table datatable [dtOptions]="dtOptions" class="table-bordered table-hover table-striped mt-3">
       <thead class="text-white" style="background: #4c70ba;">
         <tr>
-          <th>ID</th>
           <th>Title</th>
           <th>Blog Description</th>
           <th>Category</th>
+          <th>Actions</th> <!-- New Actions column -->
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let blog of Blogs">
-          <td>{{ blog.id }}</td>
           <td>{{ blog.title }}</td>
           <td>{{ blog.content }}</td>
           <td>{{ blog.blogCatagory }}</td>
-        </tr>
+          <td>
+            <button (click)="editBlog(blog.id)" class="btn btn-warning btn-sm">
+              <i class="fa-solid fa-pen-to-square"></i> Edit
+            </button>
+            <button (click)="deleteBlog(blog.id)" class="btn btn-danger btn-sm">
+              <i class="fa-solid fa-trash"></i> Delete
+            </button>
+          </td>
       </tbody>
     </table>
   </div>

@@ -14,9 +14,9 @@
         <div class="astrologer-details">
           <div class="astrologer-wrapper">
             <span class="astrologername">
-                {{ astrologer.firstName | uppercase }} {{ astrologer.lastName | uppercase }}
+              {{ astrologer.firstName | uppercase }} {{ astrologer.lastName | uppercase }}
             </span>
-            <span class="checkbox-wrapper-35">
+            <!-- <span class="checkbox-wrapper-35">
               <input value="private" [checked]="astrologer.isOnline" name="switch" id="switch" type="checkbox"
                 class="switch" disabled>
               <label for="switch{{ astrologer.regId }}" style="cursor: default;">
@@ -26,7 +26,21 @@
                   <span class="switch-x-checked"><span class="switch-x-hiddenlabel">Online: </span>Online</span>
                 </span>
               </label>
+            </span> -->
+
+            <span class="checkbox-wrapper-35">
+              <input value="private" [checked]="astrologer.isOnline" name="switch" id="switch{{ astrologer.regId }}"
+                type="checkbox" class="switch" [ngClass]="{'busy': astrologer.isBusy}" disabled>
+              <label for="switch{{ astrologer.regId }}" style="cursor: default;">
+                <span class="switch-x-text">
+                  Astrologer is
+                  <span *ngIf="astrologer.isBusy">Busy</span>
+                  <span *ngIf="!astrologer.isBusy && astrologer.isOnline">Online</span>
+                  <span *ngIf="!astrologer.isOnline && !astrologer.isBusy">Offline</span>
+                </span>
+              </label>
             </span>
+
           </div>
 
           <p><strong>Skills:</strong> {{ astrologer.skills }}</p>
