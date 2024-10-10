@@ -29,9 +29,10 @@
       return this.http.put<void>(`${this.apiUrl}/approve/${regId}`, {});
     }
   
-    rejectAstrologer(regId: string): Observable<void> {
-      return this.http.put<void>(`${this.apiUrl}/reject/${regId}`, {});
+    rejectAstrologer(regId: string, rejectionReason: string) {
+      return this.http.put(`${this.apiUrl}/reject/${regId}`, rejectionReason);
     }
+    
   
     deleteAstrologer(regId: number): Observable<void> {
       return this.http.delete<void>(`${this.apiUrl}/${regId}`);
@@ -45,4 +46,4 @@
       return this.http.post<void>(`${this.apiUrl}/add`, astrologer);
     }
   }
-  
+ 

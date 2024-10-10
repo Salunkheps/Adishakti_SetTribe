@@ -3,6 +3,7 @@ import * as Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import Swal from 'sweetalert2';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class WebSocketService {
   private stompClient: Stomp.Client | null = null; // Initialize stompClient
   private messageSubject = new Subject<void>(); // Create a subject to emit loadMessages event
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   // Connect to WebSocket server
   connect(): void {
@@ -31,6 +32,8 @@ export class WebSocketService {
           console.log('Received message: ', message);
           if (message.body === 'reload') {
             this.messageSubject.next(); // Trigger loadMessages when "reload" message is received
+          } else if (message.body.startsWith('You have been rejected.')) {
+            this.showRejectionAlert(message.body); // Show SweetAlert for rejection
           } else {
             this.showAlertForAstrologer(message.body); // Show SweetAlert if not "reload"
           }
@@ -62,6 +65,24 @@ export class WebSocketService {
       }
     }, (error: any) => {
       console.error('WebSocket connection error: ', error);
+    });
+  }
+  // New method to show alert for rejection
+  private showRejectionAlert(message: string): void {
+    const [msg, reason] = message.split('Reason: '); // Split the message to separate the reason
+
+    // First, clear the session storage
+    sessionStorage.clear(); // Clear all session storage
+
+    // Navigate to the landing page
+    this.router.navigate(['/']).then(() => {
+      // After navigating, show the SweetAlert
+      Swal.fire({
+        title: 'Rejection Notification',
+        text: `Admin has rejected you for reason: ${reason}`, // Display the rejection message with reason
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
     });
   }
 

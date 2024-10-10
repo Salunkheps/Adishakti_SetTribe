@@ -97,13 +97,13 @@ export class ManageAstrologersComponent implements OnInit {
 
             } else if (row.status === 'Approved') {
               buttons = `
-              <button class="edit-btn btn btn-success" data-index="${row.regId}">
-                Approve
+              <button class="delete-btn btn btn-danger" data-index="${row.regId}">
+                Reject
               </button>`;
             }
             else if (row.status === 'Rejected') {
               buttons = `
-                <button class="edit-btn" data-index="${row.regId}">
+                <button class="edit-btn btn btn-success" data-index="${row.regId}">
                   Approve
                 </button>`;
             }
@@ -139,20 +139,76 @@ export class ManageAstrologersComponent implements OnInit {
     console.log(regId);
     this.astrologerService.approveAstrologer(regId).subscribe(() => {
       this.loadAstrologers();
-      Swal.fire(`Astrologer has been approved!`);
-      window.location.reload(); // Reload the page after approval
+      Swal.fire({
+        title: 'Success!',
+        text: 'Astrologer has been approved!',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        // Reload the page only after the user clicks 'OK'
+        window.location.reload();
+      });
 
     });
   }
+
+  // rejectAstrologer(regId: string): void {
+  //   this.astrologerService.rejectAstrologer(regId).subscribe(() => {
+  //     this.loadAstrologers();
+  //     Swal.fire({
+  //       title: 'Success!',
+  //       text: 'Astrologer has been rejected!',
+  //       icon: 'success',
+  //       confirmButtonText: 'OK'
+  //     }).then(() => {
+  //       // Reload the page only after the user clicks 'OK'
+  //       window.location.reload();
+  //     });
+  //   });
+  // }
 
   rejectAstrologer(regId: string): void {
-    this.astrologerService.rejectAstrologer(regId).subscribe(() => {
-      this.loadAstrologers();
-      Swal.fire(`Astrologer has been rejected!`);
-      window.location.reload(); // Reload the page after approval
-
+    // Prompt admin for rejection reason
+    Swal.fire({
+      title: 'Reject Astrologer',
+      text: 'Please provide the reason for rejection:',
+      input: 'text',  // Input field for reason
+      inputPlaceholder: 'Enter rejection reason',
+      showCancelButton: true,
+      confirmButtonText: 'Submit',
+      cancelButtonText: 'Cancel',
+      inputValidator: (value) => {
+        if (!value) {
+          return 'You need to provide a reason for rejection!';
+        }
+        return null;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const rejectionReason = result.value;  // Capture the input value (rejection reason)
+        this.astrologerService.rejectAstrologer(regId, rejectionReason).subscribe(() => {
+          this.loadAstrologers();
+          Swal.fire({
+            title: 'Success!',
+            text: 'Astrologer has been rejected!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            window.location.reload();
+          });
+        }, error => {
+          Swal.fire({
+            title: 'Error!',
+            text: 'There was an error rejecting the astrologer.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+          console.error('Error:', error);
+        });
+      }
     });
   }
+  
 
   // deleteAstrologer(id: number): void {
   //   this.astrologerService.deleteAstrologer(id).subscribe(() => {

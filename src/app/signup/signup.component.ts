@@ -12,8 +12,10 @@ import Swal from 'sweetalert2';
 export class SignupComponent implements OnInit {
   signupForm!: FormGroup;
   hidePassword: boolean = true;
+  invalidFile: boolean = false;
   profilePhoto!: File;
   backEndUrl: string = 'http://localhost:8075/api/users/sk';
+  
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -43,7 +45,22 @@ export class SignupComponent implements OnInit {
 
   // Capture the file input
   onFileSelected(event: any): void {
-    this.profilePhoto = event.target.files[0]; // Store the selected file
+    const file = event.target.files[0]; // Capture the selected file
+  
+    // Check if a file is selected and validate its type
+    if (file) {
+      const fileType = file.type;
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif']; // Define valid types
+  
+      // Check if the selected file type is valid
+      if (validTypes.includes(fileType)) {
+        this.profilePhoto = file; // Store the selected file
+        this.invalidFile = false; // Reset invalid file flag
+      } else {
+        this.invalidFile = true; // Set invalid file flag
+        
+      }
+    }
   }
 
   get firstName() { return this.signupForm.get('firstName'); }
@@ -75,6 +92,26 @@ export class SignupComponent implements OnInit {
       !this.confirmpass?.value &&
       !this.mobileNumber?.value;
   }
+
+  validateStartDigit(event: KeyboardEvent) {
+    const validStartDigits = ['6', '7', '8', '9'];
+    const inputLength = (event.target as HTMLInputElement).value.length;
+
+    // Allow backspace and delete
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+        return;
+    }
+
+    // Prevent entering more than 10 digits
+    if (inputLength >= 10) {
+        event.preventDefault();
+    }
+
+    // Prevent entering a number not starting with 6-9 for the first character
+    if (inputLength === 0 && !validStartDigits.includes(event.key)) {
+        event.preventDefault();
+    }
+}
 
   signup() {
     if (this.checkIfAllFieldsEmpty()) {
@@ -242,5 +279,25 @@ export class SignupComponent implements OnInit {
       return;
     }
   }
-}
+  validateAlphabetic(event: KeyboardEvent) {
+    const charCode = event.keyCode ? event.keyCode : event.which;
+    
+    // Allow only alphabetic keys (A-Z and a-z)
+    if (
+      (charCode > 31 && (charCode < 65 || charCode > 90)) && // Uppercase A-Z
+      (charCode < 97 || charCode > 122) // Lowercase a-z
+    ) {
+      event.preventDefault();
+    }
+  }
+  
 
+  validateNumeric(event: KeyboardEvent) {
+    const charCode = event.keyCode ? event.keyCode : event.which;
+    
+    // Allow only numeric keys
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+    }
+  }
+}

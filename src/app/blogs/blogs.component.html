@@ -7,62 +7,67 @@
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="w3-light-grey w3-content" style="max-width:1600px">
+  <!-- Sidebar -->
+  <nav class="nav1"><br>
+    <div class="w3-container">
+      <h4><b>Blog Categories</b></h4>
+    </div>
+    <div class="w3-bar-block">
+      <a class="w3-bar-item w3-button w3-padding" (click)="fetchBlogsByCategory('all')">
+        <i class="fa fa-th-large fa-lg" aria-hidden="true"></i> ALL Blogs
+      </a>
+      <a class="w3-bar-item w3-button w3-padding" (click)="fetchBlogsByCategory('technology')">
+        <i class="fa fa-laptop fa-lg" aria-hidden="true"></i> Technology
+      </a>
+      <a class="w3-bar-item w3-button w3-padding" (click)="fetchBlogsByCategory('health')">
+        <i class="fa fa-heartbeat fa-lg" aria-hidden="true"></i> Health
+      </a>
+      <a class="w3-bar-item w3-button w3-padding" (click)="fetchBlogsByCategory('lifestyle')">
+        <i class="fa fa-smile-o fa-lg" aria-hidden="true"></i> Lifestyle
+      </a>
+      <a class="w3-bar-item w3-button w3-padding" (click)="fetchBlogsByCategory('education')">
+        <i class="fa fa-book fa-lg" aria-hidden="true"></i> Education
+      </a>
+      
+    </div>
+  </nav>
+  
 
-<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
-  <div class="w3-container">
-    <h4><b>Blog Categories</b></h4>
-  </div>
-  <div class="w3-bar-block">
-    <a class="w3-bar-item w3-button w3-padding w3-text-teal" (click)="gerData()">
-      <i><img src="bloglogo.png" width="30px"></i> ALL Blogs
-    </a>
-    <a class="w3-bar-item w3-button w3-padding" (click)="getTec()">
-      <i><img src="technologyblog.png" width="30px"></i> Technology
-    </a>
-    <a class="w3-bar-item w3-button w3-padding" (click)="getHelth()">
-      <i><img src="healthblog.png" width="30px"></i> Health
-    </a>
-    <a class="w3-bar-item w3-button w3-padding" (click)="getLifeStyle()">
-      <i><img src="lifestyleblog.png" width="30px"></i> Lifestyle
-    </a>
-    <a class="w3-bar-item w3-button w3-padding" (click)="getEducation()">
-      <i><img src="educationblog.png" width="30px"></i> Education
-    </a>
-  </div>
-</nav>
-
-<div class="w3-bar-block" style="margin-left:300px">
-  <div class="one mt-4">
-    <h1>Latest Blogs</h1>
-  </div>
-  <!-- First Photo Grid-->
-  <div class="w3-row-padding">
-    <div class="w3-third w3-container w3-margin-bottom" *ngFor="let i of data">
-      <div class="blog-card">
-        <img [src]="i.imageUrl" alt="Blog Image" class="blog-image">
-        <div class="blog-content">
-          <p><b>{{i.title}}</b></p>
-          <p>{{i.content}}</p>
-          <div class="view-more">
-            <button (click)="viewMore(i)">View More</button>
+  <!-- Blog Display Area -->
+  <div class="blogs" style="margin-left:300px">
+    <div class="one mt-4">
+      <h1>Latest Blogs</h1>
+    </div>
+    <div class="w3-row-padding">
+      <div class="w3-third w3-container w3-margin-bottom" *ngFor="let blog of blogs">
+        <div class="blog-card">
+          <img [src]="blog.imageUrl" alt="Blog Image" class="blog-image">
+          <div class="blog-content">
+            <p><b>{{blog.title}}</b></p>
+            <p *ngIf="!blog.showFullContent">{{blog.content | slice:0:100}}...</p>
+            <p *ngIf="blog.showFullContent">{{blog.content}}</p>
+            <div class="view-more">
+              <button (click)="toggleContent(blog)">{{blog.showFullContent ? 'Show Less' : 'View More'}}</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Popup -->
-  <div *ngIf="displayBlock" class="popup-overlay">
-    <div class="popup-content">
-      <span class="close-btn" (click)="closs()">&times;</span>
-      <img [src]="individualData.imageUrl" alt="Featured Image" class="popup-image">
-      <p><b>{{individualData.title}}</b></p>
-      <p>{{individualData.content}}</p>
-      <p>Written By: {{individualData.astrologer.firstName}} {{individualData.astrologer.lastName}}</p>
+    <!-- Popup -->
+    <div *ngIf="displayBlock" class="popup-overlay">
+      <div class="popup-content">
+        <span class="close-btn" (click)="close()">&times;</span>
+        <img [src]="individualData.imageUrl" alt="Featured Image" class="popup-image">
+        <p><b>{{individualData.title}}</b></p>
+        <p>{{individualData.content}}</p>
+        <p>Written By: {{individualData.astrologer.firstName}} {{individualData.astrologer.lastName}}</p>
+      </div>
     </div>
   </div>
-</div>
 </body>
 </html>
+<app-footer></app-footer>

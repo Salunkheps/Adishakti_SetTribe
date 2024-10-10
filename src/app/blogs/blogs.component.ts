@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogService, Blog } from '../blog.service';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-blogs',
@@ -12,88 +10,106 @@ export class BlogsComponent implements OnInit {
   blogs: Blog[] = [];
   displayBlock: boolean = false;
   individualData: any = [];
-  data: any[] = [];
+  data: Blog[] = []; // Store all blogs
+  currentCategory: string = 'all'; // To track the selected category
 
-  constructor(private blogService: BlogService, private router: Router, private http: HttpClient) {}
+  constructor(private blogService: BlogService) {}
 
   ngOnInit(): void {
-    this.gerData();
+    this.getData(); // By default, get all blogs on initialization
   }
 
-  // Method to handle the 'View More' button click
-  viewMore(i: any) {
-    this.displayBlock = true;
-    this.individualData = i;
+  toggleContent(blog: Blog) {
+    blog.showFullContent = !blog.showFullContent; // Toggle full content display
   }
 
-  // Method to close the popup
-  closs() {
+  close() {
     this.displayBlock = false;
   }
 
   // Method to fetch all blogs
-  gerData() {
-    this.blogService.getBlogs().subscribe(
-      (data) => {
-        this.data = data;
-        this.data.forEach((blog: Blog) => {
-          this.fetchBlogImage(blog.id); // Fetch images for all blogs
-        });
-      },
-      (error) => {
-        console.error('Error fetching blogs:', error);
-      }
-    );
+ // Method to fetch all approved blogs
+// Method to fetch all approved blogs
+getData() {
+  this.blogService.getBlogs().subscribe((data) => {
+    console.log('Fetched blogs:', data); // Log the fetched blogs
+    this.data = data
+    .filter(blog => blog.status && blog.status.trim().toLowerCase() === 'approved')
+
+      .map(blog => ({ ...blog, showFullContent: false })); // Initialize showFullContent
+    this.filterBlogs(); // Filter blogs after fetching
+    this.data.forEach((blog: Blog) => {
+      this.fetchBlogImage(blog.id);
+    });
+  }, (error) => {
+    console.error('Error fetching blogs:', error);
+  });
+}
+
+
+
+  // Method to filter blogs based on the current category
+  filterBlogs() {
+    if (this.currentCategory === 'all') {
+      this.blogs = this.data; // Show all blogs
+    } else {
+      this.blogs = this.data.filter(blog => blog.blogCatagory === this.currentCategory); // Show filtered blogs
+    }
   }
 
-  // Methods to fetch blogs by categories
+  // Category selection methods
   getEducation() {
-    this.fetchBlogsByCategory('education');
+    this.currentCategory = 'education';
+    this.fetchBlogsByCategory(this.currentCategory);
   }
 
-  getLifeStyle() {
-    this.fetchBlogsByCategory('lifestyle');
+  getLifestyle() {
+    this.currentCategory = 'lifestyle'; // Set the current category to lifestyle
+    this.fetchBlogsByCategory(this.currentCategory); // Fetch blogs for the lifestyle category
   }
 
-  getTec() {
-    this.fetchBlogsByCategory('technology');
+  getTech() {
+    this.currentCategory = 'technology';
+    this.fetchBlogsByCategory(this.currentCategory);
   }
 
-  getHelth() {
-    this.fetchBlogsByCategory('health');
+  getHealth() {
+    this.currentCategory = 'health';
+    this.fetchBlogsByCategory(this.currentCategory);
   }
 
-  // Generalized method to fetch blogs by category
+
   fetchBlogsByCategory(category: string) {
-    this.blogService.getBlogsByCategory(category).subscribe(
-      (data) => {
-        this.data = data;
-        this.data.forEach((blog: Blog) => {
-          this.fetchBlogImage(blog.id); // Fetch images for blogs in this category
-        });
-      },
-      (error) => {
-        console.error(`Error fetching ${category} blogs:`, error);
-      }
-    );
+    this.currentCategory = category; // Set the current category to the selected one
+    this.blogService.getBlogsByCategory(category).subscribe((data) => {
+      console.log(`Fetched ${category} blogs:`, data); // Log the fetched blogs by category
+      this.data = data
+        .filter(blog => blog.status === 'approved') // Filter only approved blogs
+        .map(blog => ({ ...blog, showFullContent: false })); // Initialize showFullContent
+      this.filterBlogs(); // Apply filtering to display the blogs for the selected category
+      this.data.forEach((blog: Blog) => {
+        this.fetchBlogImage(blog.id); // Fetch and assign blog images
+      });
+    }, (error) => {
+      console.error(`Error fetching ${category} blogs:`, error);
+    });
   }
+  
 
-  // Method to fetch the blog image
+
+
   fetchBlogImage(id: number) {
-    this.blogService.getBlogImage(id).subscribe(
-      (blob: Blob) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const blogIndex = this.data.findIndex((blog) => blog.id === id);
-          if (blogIndex !== -1) {
-            this.data[blogIndex].imageUrl = reader.result as string; // Set the image URL
-          }
-        };
-        reader.readAsDataURL(blob); // Convert the Blob to a data URL
-      },
-      (error) => {
-        console.error(`Error fetching image for blog ${id}:`, error);
-      }
-    );
+    this.blogService.getBlogImage(id).subscribe((blob: Blob) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const blogIndex = this.data.findIndex((blog) => blog.id === id);
+        if (blogIndex !== -1) {
+          this.data[blogIndex].imageUrl = reader.result as string;
+        }
+      };
+      reader.readAsDataURL(blob);
+    }, (error) => {
+      console.error(`Error fetching image for blog ${id}:`, error);
+    });
   }
 }

@@ -22,6 +22,7 @@ export class ChatWithAstrologerComponent implements OnInit,OnDestroy {
   totalAmount: number | null = null;
   minutesError: boolean = false; // Flag for input validation error
   isAvailable: boolean = true; // Set availability status based on your logic
+  cardExpanded: boolean = false;  // Declare the property and set its initial value
 
   constructor(
     private route: ActivatedRoute,
@@ -88,6 +89,8 @@ export class ChatWithAstrologerComponent implements OnInit,OnDestroy {
       this.minutesError = true;
     } else {
       this.minutesError = false;
+      this.calculateTotal(); // Call calculateTotal whenever the input changes
+
     }
   }
 
@@ -98,8 +101,12 @@ export class ChatWithAstrologerComponent implements OnInit,OnDestroy {
       sessionStorage.setItem('ratePerMinute', this.totalAmount.toString());
       sessionStorage.setItem('selectedMinutes', this.minutes.toString());
 
+      this.cardExpanded = true; // Add a boolean variable to track if the card should expand
+    } else {
+      this.totalAmount = 0; // Reset the totalAmount if no valid input
     }
   }
+
 
   goToPayment(): void {
     if (this.totalAmount !== null && this.astrologer) {

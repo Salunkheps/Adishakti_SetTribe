@@ -1,4 +1,3 @@
-// manage skill component . ts
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -22,23 +21,21 @@ export class ManageSkillsComponent implements OnInit {
   faEdit = faEdit;
   faTrash = faTrash;
 
-  constructor(private http: HttpClient,private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.dtOptions = {
       ajax: (dataTablesParameters: any, callback) => {
-        this.http
-          .get<any[]>(this.apiUrl) // Fetch skills from your API
-          .subscribe((data) => {
-            callback({
-              recordsTotal: data.length,
-              recordsFiltered: data.length,
-              data: data // Pass the fetched skills data to DataTables
-            });
-          }, (error) => {
-            console.error("Error fetching skills:", error);
-            alert("Error fetching skills");
+        this.http.get<any[]>(this.apiUrl).subscribe((data) => {
+          callback({
+            recordsTotal: data.length,
+            recordsFiltered: data.length,
+            data: data // Pass the fetched skills data to DataTables
           });
+        }, (error) => {
+          console.error("Error fetching skills:", error);
+          alert("Error fetching skills");
+        });
       },
       columns: [
         {
@@ -56,13 +53,12 @@ export class ManageSkillsComponent implements OnInit {
           title: 'Actions',
           render: (data: any, type: any, row: any, meta: any) => {
             return `
-                  <button class="edit-btn btn btn-primary" data-index="${meta.row}">
-                  <fa-icon [icon]="faEdit"></fa-icon> Edit
-                </button>
-                <button class="delete-btn btn btn-danger" data-index="${meta.row}">
-                  <fa-icon [icon]="faTrash"></fa-icon> Delete
-                </button>`;
-
+              <button class="edit-btn btn btn-primary" data-index="${meta.row}">
+                <fa-icon [icon]="faEdit"></fa-icon> Edit
+              </button>
+              <button class="delete-btn btn btn-danger" data-index="${meta.row}">
+                <fa-icon [icon]="faTrash"></fa-icon> Delete
+              </button>`;
           },
           orderable: false
         }
@@ -85,6 +81,7 @@ export class ManageSkillsComponent implements OnInit {
       this.deleteSkill(index);
     });
   }
+
   // Fetch all skills from API
   getAllSkills(): void {
     this.http.get<any[]>(this.apiUrl).subscribe((data) => {
@@ -92,20 +89,40 @@ export class ManageSkillsComponent implements OnInit {
     });
   }
 
+  // Check for duplicate skill before adding
+  isDuplicateSkill(skillName: string): boolean {
+    return this.skills.some(skill => skill.skillname.toLowerCase() === skillName.toLowerCase());
+  }
+
   // Add a new skill and immediately update the skills array
   addSkill(): void {
     if (this.newSkillName) {
+      if (this.isDuplicateSkill(this.newSkillName)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Duplicate Skill',
+          text: 'This skill already exists. Please enter a different skill name.',
+        });
+        return; // Exit the function if a duplicate is found
+      }
+
       const skill = { skillname: this.newSkillName }; // Create skill object
       this.http.post<any>(this.apiUrl, skill).subscribe((createdSkill) => {
         // Push the new skill into the local array for immediate update in the UI
         this.skills.push(createdSkill);
         this.resetForm(); // Reset the form after adding the skill
+        Swal.fire("Skill added!");
+        window.location.reload(); 
+      }, (error) => {
+        console.error("Error adding skill:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'There was an issue adding the skill. Please try again.',
+        });
       });
     }
-    Swal.fire("Skill added!");
-    window.location.reload(); // Reload the page after approval
   }
-
 
   deleteSkill(index: number): void {
     if (index >= 0 && index < this.skills.length) {
@@ -128,17 +145,16 @@ export class ManageSkillsComponent implements OnInit {
               text: "The skill has been deleted.",
               icon: "success"
             });
+            window.location.reload(); // Refresh the page after deletion
           }, (error) => {
             console.error("Error deleting skill:", error);
           });
-          window.location.reload(); // Reload the page after skill update
         }
       });
     } else {
       console.error("Invalid index for deleteSkill:", index);
     }
   }
-
 
   // Edit an existing skill
   editSkill(index: number): void {
@@ -153,9 +169,16 @@ export class ManageSkillsComponent implements OnInit {
       const skill = { id: this.skills[this.editIndex].id, skillname: this.newSkillName };
       this.http.put(`${this.apiUrl}/${skill.id}`, skill).subscribe(() => {
         Swal.fire("Skill has been updated!");
-        window.location.reload(); // Reload the page after skill update
+        window.location.reload();
         this.getAllSkills(); // Reload the skills after updating
         this.resetForm();
+      }, (error) => {
+        console.error("Error updating skill:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'There was an issue updating the skill. Please try again.',
+        });
       });
     }
   }
@@ -183,7 +206,6 @@ export class ManageSkillsComponent implements OnInit {
         console.log('User logged out');
         this.router.navigate(['/Home']);
       }
-    });
-  }
-
+    });
+  }
 }

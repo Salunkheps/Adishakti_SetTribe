@@ -8,7 +8,8 @@ export interface Blog {
   content: string;
   blogCatagory?: string;
   status?: string;
-  imageUrl?: string; // Ensure this is included
+  imageUrl?: string;
+  showFullContent?: boolean; // Ensure this is included
   astrologer: {
     name: string;
   };

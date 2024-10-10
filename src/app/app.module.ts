@@ -26,9 +26,7 @@ import { AstroProfileComponent } from './astro-profile/astro-profile.component';
 import { ClientListComponent } from './client-list/client-list.component';
 import { AstroReportComponent } from './astro-report/astro-report.component';
 import { InsertblogComponent } from './insertblog/insertblog.component';
-
 import { CallWithAstrologerComponent } from './call-with-astrologer/call-with-astrologer.component';
-
 import { AstrologerLoginComponent } from './astrologer-login/astrologer-login.component';
 import { ManageAstrologersComponent } from './manage-astrologers/manage-astrologers.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
@@ -49,6 +47,10 @@ import { ConsultationPriceComponent } from './consultation-price/consultation-pr
 import { ChatAppForAstrologerComponent } from './chat-app-for-astrolgoer/chat-app-for-astrologer.component';
 import { ManagePaymentsComponent } from './manage-payments/manage-payments.component';
 import { WebSocketService } from './web-socket.service';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input'; 
+
 
 
 
@@ -113,6 +115,9 @@ import { WebSocketService } from './web-socket.service';
     DataTablesModule,
     FontAwesomeModule,
     SweetAlert2Module,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule // Make sure it's imported
   ],
   providers: [    WebSocketService // Ensure WebSocketService is provided here
 ],

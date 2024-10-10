@@ -1,4 +1,26 @@
 /* Styling for background image */
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 40px; /* Add space for the icon */
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+#sbtn{
+  margin-left: -1px;
+}
+/* Styling for background image */
 .background-image {
   position: fixed;
   top: 0;
@@ -208,4 +230,7 @@ h2 {
     width: 100%; /* Make button full width */
     padding: 12px; /* Adjust padding */
   }
+}
+.error-message b{
+  color: #b80000;
 }
