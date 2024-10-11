@@ -2,6 +2,7 @@
   margin-top: 0%;
   padding-top: 50px; /* Adjust padding to give space for heading */
   text-align: center; /* Center content inside the about section */
+  /* background-color: aliceblue; */
 }
 
 /* Center the heading at the top of the page */
@@ -119,5 +120,5 @@ img {
 /* Justify the paragraph text */
 .hs_about_us_cont_main_wrapper p {
   text-align: justify; /* Justify the paragraph text */
-  margin: 15px 0; /* Add some margin for spacing */
+  margin: 17px 0; /* Add some margin for spacing */
 }

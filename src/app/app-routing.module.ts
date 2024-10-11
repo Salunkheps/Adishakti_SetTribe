@@ -13,9 +13,7 @@ import { AstrologerDashboardComponent } from './astrologer-dashboard/astrologer-
 import { AstroProfileComponent } from './astro-profile/astro-profile.component';
 import { ClientListComponent } from './client-list/client-list.component';
 import { AstroReportComponent } from './astro-report/astro-report.component';
-
 import { InsertblogComponent } from './insertblog/insertblog.component';
-
 import { CallWithAstrologerComponent } from './call-with-astrologer/call-with-astrologer.component';
 import { AstrologerLoginComponent } from './astrologer-login/astrologer-login.component';
 import { ManageSkillsComponent } from './manage-skills/manage-skills.component';
@@ -32,6 +30,7 @@ import { ChatComponent } from './chat/chat.component';
 import { ConsultationPriceComponent } from './consultation-price/consultation-price.component';
 import { ManagePaymentsComponent } from './manage-payments/manage-payments.component';
 import { ChatAppForAstrologerComponent } from './chat-app-for-astrolgoer/chat-app-for-astrologer.component';
+import { ManageconsultationComponent } from './manageconsultation/manageconsultation.component';
 // import { NavbarComponent } from './navbar/navbar.component';
 
 const routes: Routes = [
@@ -53,11 +52,9 @@ const routes: Routes = [
   { path: 'astroclient', component: ClientListComponent },
   { path: 'insert-blog-component', component: InsertblogComponent },
   { path: 'find-astrologers', component: FindAstrologersComponent, canActivate: [AuthService] },
-
   { path: 'callwithastro/:id', component: CallWithAstrologerComponent, canActivate: [AuthService] },
   { path: 'astrologer-login', component: AstrologerLoginComponent },
   { path: 'insert-blog', component: InsertblogComponent },
-
   { path: 'admin', component: AdminDashboardComponent },
   { path: '', component: AdminDashboardComponent },
   { path: 'manageskills', component: ManageSkillsComponent },
@@ -74,6 +71,7 @@ const routes: Routes = [
   { path: 'consultation-price', component: ConsultationPriceComponent },
   { path: 'manage-payment', component: ManagePaymentsComponent },
   { path: 'astrologer-chat-app', component: ChatAppForAstrologerComponent },
+  { path: 'manage-consult', component: ManageconsultationComponent },
 
 ];
 

@@ -118,6 +118,7 @@
 
 .form-group {
   margin-bottom: 20px;
+  
 }
 
 label {
@@ -138,9 +139,9 @@ select {
   border-radius: 6px;
   font-size: 1em;
   /* box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); */
-  border-color: #6f42c1;
+  /* border-color: #6f42c1;
   outline: none;
-  box-shadow: 0 0 5px rgba(135, 0, 255, 0.5);
+  box-shadow: 0 0 5px rgba(135, 0, 255, 0.5); */
 }
 
 button[type="submit"] {
@@ -186,11 +187,11 @@ select {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-select:focus {
+/* select:focus {
   border-color: #6f42c1;
   outline: none;
   box-shadow: 0 0 5px rgba(135, 0, 255, 0.5);
-}
+} */
 
 body {
   /* background: radial-gradient(circle, #3e1556, #09091e);
@@ -295,12 +296,6 @@ input[type="tel"] {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-input[type="tel"]:focus {
-  border-color: #6f42c1;
-  outline: none;
-  box-shadow: 0 0 5px rgba(135, 0, 255, 0.5);
-}
-
 /* Style for Label */
 label[for="mobile"] {
   display: block;
@@ -333,4 +328,30 @@ label[for="mobile"] {
   .form-group {
     margin-bottom: 15px;
   }
+}
+/* Styling for background image */
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 40px; /* Add space for the icon */
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.con-password-container{
+  position: relative;
+  width: 100%;
+}
+.con-password-container input {
+  width: 100%;
+  padding-right: 40px; /* Add space for the icon */
 }

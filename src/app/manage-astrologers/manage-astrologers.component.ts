@@ -152,21 +152,6 @@ export class ManageAstrologersComponent implements OnInit {
     });
   }
 
-  // rejectAstrologer(regId: string): void {
-  //   this.astrologerService.rejectAstrologer(regId).subscribe(() => {
-  //     this.loadAstrologers();
-  //     Swal.fire({
-  //       title: 'Success!',
-  //       text: 'Astrologer has been rejected!',
-  //       icon: 'success',
-  //       confirmButtonText: 'OK'
-  //     }).then(() => {
-  //       // Reload the page only after the user clicks 'OK'
-  //       window.location.reload();
-  //     });
-  //   });
-  // }
-
   rejectAstrologer(regId: string): void {
     // Prompt admin for rejection reason
     Swal.fire({
@@ -210,12 +195,8 @@ export class ManageAstrologersComponent implements OnInit {
   }
   
 
-  // deleteAstrologer(id: number): void {
-  //   this.astrologerService.deleteAstrologer(id).subscribe(() => {
-  //     this.loadAstrologers();
-  //   });
-  // }
 
+  
   search(): void {
     const searchTerm = this.searchForm.value.searchTerm;
     this.astrologerService.searchAstrologers(searchTerm).subscribe((data: any[]) => {

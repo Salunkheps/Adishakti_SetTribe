@@ -2,12 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { WebSocketService } from '../web-socket.service';
-interface astrologerImages {
-  id: number;
-  name: string | null;
-  type: string | null;
-  imageData: string | null;
-}
+
 interface Astrologer {
   regId: string;
   firstName: string;
@@ -15,12 +10,12 @@ interface Astrologer {
   skills: string;
   languagesKnown: string[];
   rating: number;
-  mobileNumber: string; // Make sure this field exists in your backend response
+  mobileNumber: string; // Ensure this field exists in your backend response
   ratePerMinute: number;
   isOnline?: boolean; // Add this field
   status: string; // Add this field
   isBusy?: boolean; // Add isBusy field here
-
+  rpmStatus?: string; // Add this field for rate per minute status
 }
 
 @Component({
@@ -34,11 +29,15 @@ export class FindAstrologersComponent implements OnInit, OnDestroy {
   searchTerm: string = '';
   hoverRating: number | null = null;
 
-  constructor(private http: HttpClient, private router: Router, private webSocketService: WebSocketService) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private webSocketService: WebSocketService
+  ) {
     this.getAllData();
     this.filteredAstrologers = this.data;
-
   }
+
   ngOnDestroy(): void {
     this.webSocketService.disconnect();
   }
@@ -47,11 +46,9 @@ export class FindAstrologersComponent implements OnInit, OnDestroy {
     this.filteredAstrologers = this.data;
     this.getAllData();
     this.webSocketService.connect();
-
   }
 
   fetchAstrologerImage(regId: string): string {
-    // This will return the API endpoint URL for the image
     return `http://localhost:8075/api/astrologers/${regId}/profile-photo`;
   }
 
@@ -69,22 +66,7 @@ export class FindAstrologersComponent implements OnInit, OnDestroy {
     }
   }
 
-  navigateToCall(astrologer: any) {
-    // Store astrologer details in session storage
-    sessionStorage.setItem('selectedAstrologer', JSON.stringify({
-      regId: astrologer.regId,
-      firstName: astrologer.firstName,
-      lastName: astrologer.lastName,
-      imageData: astrologer.astrologerImages ? astrologer.astrologerImages.imageData : null
-    }));
-
-    // Navigate to the call page
-    this.router.navigate(['/call']); // Update this route as needed
-  }
-
-
   navigateToChat(astrologer: any) {
-    // Store astrologer details in session storage
     sessionStorage.setItem('selectedAstrologer', JSON.stringify({
       regId: astrologer.regId,
       firstName: astrologer.firstName,
@@ -92,10 +74,8 @@ export class FindAstrologersComponent implements OnInit, OnDestroy {
       imageData: astrologer.astrologerImages ? astrologer.astrologerImages.imageData : null
     }));
 
-    // Navigate to the chat page
     this.router.navigate(['/chatwithastro']); // Update this route as needed
   }
-
 
   getAllData(): void {
     this.http
@@ -105,15 +85,14 @@ export class FindAstrologersComponent implements OnInit, OnDestroy {
           this.data = data.filter(astrologer => astrologer.status === 'Approved'); // Filter here as well
           this.filteredAstrologers = this.data;
           this.getAstrologerBusyStatus(); // Fetch busy status after fetching all astrologers
-
         },
         (error) => {
           console.error('Error fetching data', error);
         }
       );
   }
-   // Function to get astrologer's busy status
-   getAstrologerBusyStatus(): void {
+
+  getAstrologerBusyStatus(): void {
     this.data.forEach(astrologer => {
       this.http
         .get<boolean>(`http://localhost:8075/api/astrologers/isBusy/${astrologer.regId}`)
@@ -129,7 +108,6 @@ export class FindAstrologersComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Function to get astrologer's online status
   getAstrologerOnlineStatus(astrologer: Astrologer): void {
     this.http
       .get<boolean>(`http://localhost:8075/api/astrologers/${astrologer.regId}/isOnline`)
@@ -142,11 +120,10 @@ export class FindAstrologersComponent implements OnInit, OnDestroy {
         }
       );
   }
+
   getSearchData(): void {
     this.http
-      .get<Astrologer[]>(
-        `http://localhost:8075/api/astrologers/get-data/${this.searchTerm}`
-      )
+      .get<Astrologer[]>(`http://localhost:8075/api/astrologers/get-data/${this.searchTerm}`)
       .subscribe(
         (data) => {
           this.data = data;
