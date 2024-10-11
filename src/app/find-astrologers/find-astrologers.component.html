@@ -3,34 +3,39 @@
   <div class="find-astrologers">
     <div class="search-bar">
       <h1 class="heading">Find your Astrologer</h1>
-      <input type="text" placeholder="Search for astrologers..." [(ngModel)]="searchTerm"
-        (input)="filterAstrologers()" />
+      <input
+        type="text"
+        placeholder="Search for astrologers..."
+        [(ngModel)]="searchTerm"
+        (input)="filterAstrologers()"
+      />
     </div>
     <div class="astrologer-list">
       <div class="astrologer" *ngFor="let astrologer of filteredAstrologers">
         <ng-container *ngIf="astrologer.regId">
-          <img [src]="fetchAstrologerImage(astrologer.regId)" alt="Astrologer Image" class="astrologer-image" />
+          <img
+            [src]="fetchAstrologerImage(astrologer.regId)"
+            alt="Astrologer Image"
+            class="astrologer-image"
+          />
         </ng-container>
         <div class="astrologer-details">
           <div class="astrologer-wrapper">
             <span class="astrologername">
               {{ astrologer.firstName | uppercase }} {{ astrologer.lastName | uppercase }}
             </span>
-            <!-- <span class="checkbox-wrapper-35">
-              <input value="private" [checked]="astrologer.isOnline" name="switch" id="switch" type="checkbox"
-                class="switch" disabled>
-              <label for="switch{{ astrologer.regId }}" style="cursor: default;">
-                <span class="switch-x-text">Astrologer is </span>
-                <span class="switch-x-toggletext">
-                  <span class="switch-x-unchecked"><span class="switch-x-hiddenlabel">Offline: </span>Offline</span>
-                  <span class="switch-x-checked"><span class="switch-x-hiddenlabel">Online: </span>Online</span>
-                </span>
-              </label>
-            </span> -->
 
             <span class="checkbox-wrapper-35">
-              <input value="private" [checked]="astrologer.isOnline" name="switch" id="switch{{ astrologer.regId }}"
-                type="checkbox" class="switch" [ngClass]="{'busy': astrologer.isBusy}" disabled>
+              <input
+                value="private"
+                [checked]="astrologer.isOnline"
+                name="switch"
+                id="switch{{ astrologer.regId }}"
+                type="checkbox"
+                class="switch"
+                [ngClass]="{ 'busy': astrologer.isBusy }"
+                disabled
+              />
               <label for="switch{{ astrologer.regId }}" style="cursor: default;">
                 <span class="switch-x-text">
                   Astrologer is
@@ -40,21 +45,30 @@
                 </span>
               </label>
             </span>
-
           </div>
 
           <p><strong>Skills:</strong> {{ astrologer.skills }}</p>
-          <p><strong>Rate Per Minute:</strong> {{ astrologer.ratePerMinute }}</p>
-          <p><strong>
-              Languages Known:</strong>
-            <span *ngFor="let language of astrologer.languagesKnown">{{ language }},
+          
+          <!-- Conditional Rate Per Minute Display -->
+          <p *ngIf="astrologer.rpmStatus === 'approved'">
+            <strong>Rate Per Minute:</strong> {{ astrologer.ratePerMinute }}
+          </p>
+          <p *ngIf="astrologer.rpmStatus !== 'approved'">
+            Rate Per Minute: Not available
+          </p>
+
+          <p><strong>Languages Known:</strong>
+            <span *ngFor="let language of astrologer.languagesKnown; let isLast = last">
+              {{ language }}<span *ngIf="!isLast">, </span>
             </span>
           </p>
-          <p><strong>
-              Rating:</strong>
+          
+          <p><strong>Rating:</strong>
             <span class="star-rating">
-              <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" (mouseover)="hoverRating = i + 1"
-                (mouseleave)="hoverRating = null" [class.filled]="
+              <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+                (mouseover)="hoverRating = i + 1"
+                (mouseleave)="hoverRating = null"
+                [class.filled]="
                     astrologer.rating >= i + 1 ||
                     (hoverRating && hoverRating >= i + 1)
                   ">
@@ -65,9 +79,6 @@
           </p>
         </div>
         <div class="astrologer-actions">
-          <!-- <button class="btn-chat" (click)="navigateToCall(astrologer)">
-              Call
-            </button> -->
           <button class="btn-call" *ngIf="astrologer.isOnline" (click)="navigateToChat(astrologer)">
             Chat
           </button>
@@ -76,5 +87,4 @@
     </div>
   </div>
 </div>
-<!-- <app-footer></app-footer> -->
 <app-footer2></app-footer2>

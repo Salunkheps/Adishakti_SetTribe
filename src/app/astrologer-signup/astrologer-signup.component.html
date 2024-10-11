@@ -17,6 +17,7 @@
           formControlName="firstName"
           placeholder="Enter your first name"
           required
+          (keypress)="validateAlphabetic($event)"
         />
         <div
           *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
@@ -34,6 +35,7 @@
           formControlName="lastName"
           placeholder="Enter your last name"
           required
+          (keypress)="validateAlphabetic($event)"
         />
         <div
           *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)"
@@ -52,20 +54,20 @@
           placeholder="Enter your mobile number"
           required
           maxlength="10"
-          pattern="^[0-9]{10}$"
+          (keypress)="validateNumeric($event)" 
+          (keydown)="validateStartDigit($event)"
+          pattern="[6-9][0-9]{9}" 
+          title="Mobile number must be 10 digits long"
         />
         <div
           *ngIf="mobile?.invalid && (mobile?.dirty || mobile?.touched)"
           class="error-message"
         >
           <b *ngIf="mobile?.errors?.['required']">Mobile Number is required</b>
-          <b *ngIf="mobile?.errors?.['pattern']"
-            >Mobile Number must be numeric and 10 digits long</b
-          >
-          <b *ngIf="mobile?.errors?.['maxlength']"
-            >Mobile Number cannot exceed 10 digits</b
-          >
-        </div>
+          <b *ngIf="mobile?.errors?.['pattern']">Mobile Number must be numeric and 10 digits long</b>
+          <b *ngIf="mobile?.errors?.['maxlength']">Mobile Number cannot exceed 10 digits</b>
+          <b *ngIf="mobile?.errors?.['pattern']">Mobile Number must be numeric and start with 6-9</b>
+           </div>
       </div>
 
       <div class="form-group">
@@ -88,6 +90,7 @@
           required
           maxlength="12"
           pattern="^[0-9]{12}$"
+          (keypress)="validateNumeric($event)"
         />
         <div
           *ngIf="
@@ -187,6 +190,7 @@
           formControlName="city"
           placeholder="Enter your city"
           required
+          (keypress)="validateAlphabetic($event)"
         />
       </div>
 
@@ -200,6 +204,7 @@
           required
           maxlength="6"
           pattern="^[0-9]{6}$"
+          (keypress)="validateNumeric($event)"
         />
         <div
           *ngIf="pinCode?.invalid && (pinCode?.dirty || pinCode?.touched)"
@@ -244,24 +249,30 @@
 
       <div class="form-group">
         <label for="password">Password</label>
+        <div class="password-container">
         <input
-          type="password"
+        [type]="hidePassword ? 'password' : 'text'"
           id="password"
           formControlName="password"
-          placeholder="Enter your password"
-          required
-        />
+          placeholder="Enter your password" require/>
+          <i class="fa password-toggle" (click)="togglePasswordVisibility()">
+            <i class="fa" [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </i>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="confirmpass">Confirm Password</label>
+        <div class="con-password-container">
         <input
-          type="password"
+          [type]="hidePassword ? 'password' : 'text'"
           id="confirmpass"
           formControlName="confirmpass"
-          placeholder="Confirm your password"
-          required
-        />
+          placeholder="Confirm your password" required/>
+          <i class="fa password-toggle" (click)="togglePasswordVisibility()">
+            <i class="fa" [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </i>
+        </div>
       </div>
     </div>
 

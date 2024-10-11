@@ -50,6 +50,8 @@ import { WebSocketService } from './web-socket.service';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input'; 
+import { ManageconsultationComponent } from './manageconsultation/manageconsultation.component';
+
 
 
 
@@ -100,6 +102,7 @@ import { MatInputModule } from '@angular/material/input';
     ConsultationPriceComponent,
     ChatAppForAstrologerComponent,
     ManagePaymentsComponent,
+    ManageconsultationComponent,
 
 
 

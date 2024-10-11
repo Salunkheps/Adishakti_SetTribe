@@ -1,0 +1,66 @@
+<div class="dashboard-container">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2 class="logo-text">Adishakti</h2>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a routerLink="/admin" routerLinkActive="active"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+      <li><a routerLink="/manageusers" routerLinkActive="active"><i class="bi bi-people-fill"></i> Manage Users</a></li>
+      <li><a routerLink="/manageastrologer" routerLinkActive="active"><i class="bi bi-person-check-fill"></i> Manage Astrologers</a></li>
+      <li><a routerLink="/manageblog" routerLinkActive="active"><i class="bi bi-vector-pen"></i> Manage Blog</a></li>
+      <li><a routerLink="/manageskills" routerLinkActive="active"><i class="bi bi-award-fill"></i> Manage Skills</a></li>
+      <li><a routerLink="/manage-payment" routerLinkActive="active"><i class="bi bi-credit-card-fill"></i> Manage Payment</a></li>
+      <li><a routerLink="/manage-consult" routerLinkActive="active"><i class="bi bi-calendar-fill"></i> Manage Consultation</a></li>
+      <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
+    </ul>
+    
+  </nav>
+
+  <div class="main-content">
+    <div class="row">
+      <div class="col-md-12 one">
+        <h2 class="text-center mt-4">Manage Consultation</h2>
+      </div>
+    </div>
+
+    <div class="container mt-4">
+      <h3>Consultation Rates Management</h3>
+
+      <!-- Table to display the consultation rates -->
+      <table class="table table-bordered table-striped" *ngIf="consultationPrices.length > 0">
+        <thead>
+          <tr>
+            <th>Sr No</th>
+            <th>Astrologer Name</th>
+            <th>Astrologer ID</th>
+            <th>Rate per Minute (INR)</th>
+            <th>Mobile Number</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let consultation of consultationPrices; let i = index">
+            <td>{{ i + 1 }}</td> <!-- Serial number -->
+            <td>{{ consultation.firstName }} {{ consultation.lastName }}</td> <!-- Astrologer name -->
+            <td>{{ consultation.regId }}</td> 
+            <td>{{ consultation.ratePerMinute }}</td> <!-- Rate per minute -->
+            <td>{{ consultation.mobile }}</td> <!-- Astrologer mobile number -->
+            <td>{{ consultation.rpmStatus }}</td> <!-- Status -->
+            <td>
+              <button class="btn1 btn-success btn-sm" (click)="approveConsultation(consultation)">Approve</button>
+              <button class="btn btn-danger btn-sm" (click)="rejectConsultation(consultation)">Reject</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- If no consultation prices are available -->
+      <div *ngIf="consultationPrices.length === 0">
+        <div class="alert alert-warning" role="alert">
+          No consultation prices found. Please add a rate.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
