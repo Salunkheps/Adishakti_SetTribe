@@ -13,7 +13,7 @@ export class AstrologerSignupComponent implements OnInit {
   signupForm!: FormGroup;
   hidePassword: boolean = true;
   invalidFile: boolean = false;
-  
+  todayDate: string = ''; 
   profilePhoto!: File; // To hold the uploaded file
   skillsList: string[] = ['Horoscope Reading', 'Tarot Reading', 'Numerology', 'Palmistry', 'Vedic Astrology', 'Feng Shui', 'Face Reading'];
   languagesList: string[] = ['English', 'Hindi', 'Marathi', 'Others'];
@@ -29,6 +29,10 @@ export class AstrologerSignupComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
+       // Set today's date in YYYY-MM-DD format
+       const today = new Date();
+       this.todayDate = today.toISOString().split('T')[0];
+    
     this.signupForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
@@ -47,6 +51,7 @@ export class AstrologerSignupComponent implements OnInit {
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),
       confirmpass: new FormControl('', Validators.required) // New confirm password field
     }, { validators: this.passwordsMatchValidator });
+    
   }
 
   // Validator to check if password and confirm password are the same

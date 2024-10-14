@@ -40,6 +40,11 @@ export class BlogService {
     return this.http.get(`${this.apiUrl}/image/${id}`, { responseType: 'blob' });
   }
 
+   // Method to fetch the astrologer details (firstName and lastName) by blog ID
+   getAstrologerByBlogId(blogId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${blogId}/astrologer`);
+  }
+
   approveBlog(blogId: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/approve/${blogId}`, {});
   }

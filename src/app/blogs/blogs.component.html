@@ -10,34 +10,43 @@
 </head>
 
 <body class="w3-light-grey w3-content" style="max-width:1600px">
-  <!-- Sidebar -->
-  <nav class="nav1"><br>
-    <div class="w3-container">
-      <h4><b>Blog Categories</b></h4>
-    </div>
-    <div class="w3-bar-block">
-      <a class="w3-bar-item w3-button w3-padding">
-        <i class="fa fa-th-large fa-lg" aria-hidden="true"></i> ALL Blogs
-      </a>
-      <a class="w3-bar-item w3-button w3-padding">
-        <i class="fa fa-laptop fa-lg" aria-hidden="true"></i> Technology
-      </a>
-      <a class="w3-bar-item w3-button w3-padding">
-        <i class="fa fa-heartbeat fa-lg" aria-hidden="true"></i> Health
-      </a>
-      <a class="w3-bar-item w3-button w3-padding">
-        <i class="fa fa-smile-o fa-lg" aria-hidden="true"></i> Lifestyle
-      </a>
-      <a class="w3-bar-item w3-button w3-padding" >
-        <i class="fa fa-book fa-lg" aria-hidden="true"></i> Education
-      </a>
-    </div>
-  </nav>
+  <!-- Sidebar with Buttons for Blog Categories -->
+ <!-- Sidebar for Blog Categories -->
+<nav class="nav1"><br>
+  <div class="w3-container">
+    <h4><b>Blog Categories</b></h4>
+  </div>
+  <div class="w3-bar-block">
+    <!-- Button to fetch all blogs -->
+    <!-- Button to fetch all blogs -->
+<a class="w3-bar-item w3-button w3-padding mt-4" (click)="getAllBlogs()">
+  <i class="fa fa-th-large fa-lg" aria-hidden="true"></i> ALL Blogs
+</a>
+<!-- Button to fetch Technology blogs -->
+<a class="w3-bar-item w3-button w3-padding mt-3" (click)="getTech()">
+  <i class="fa fa-laptop fa-lg" aria-hidden="true"></i> Technology
+</a>
+<!-- Button to fetch Health blogs -->
+<a class="w3-bar-item w3-button w3-padding mt-3" (click)="getHealth()">
+  <i class="fa fa-heartbeat fa-lg" aria-hidden="true"></i> Health
+</a>
+<!-- Button to fetch Lifestyle blogs -->
+<a class="w3-bar-item w3-button w3-padding mt-3" (click)="getLifestyle()">
+  <i class="fa fa-smile-o fa-lg" aria-hidden="true"></i> Lifestyle
+</a>
+<!-- Button to fetch Education blogs -->
+<a class="w3-bar-item w3-button w3-padding mt-3" (click)="getEducation()">
+  <i class="fa fa-book fa-lg" aria-hidden="true"></i> Education
+</a>
+
+  </div>
+</nav>
+
 
   <!-- Blog Display Area -->
   <div class="blogs" style="margin-left:300px">
-    <div class="one mt-4">
-      <h1>Latest Blogs</h1>
+    <div class="one">
+      <h1>{{ currentCategory | titlecase }} Blogs</h1> <!-- Dynamic Category Heading -->
     </div>
     <div class="w3-row-padding">
       <div class="w3-third w3-container w3-margin-bottom" *ngFor="let blog of blogs">
@@ -50,7 +59,9 @@
             <div class="view-more">
               <button (click)="toggleContent(blog)">
                 {{ blog.showFullContent ? 'Show Less' : 'View More' }}
-              </button></div>
+              </button>
+            </div>
+            
           </div>
         </div>
       </div>

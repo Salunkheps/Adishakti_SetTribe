@@ -1,52 +1,51 @@
 <body>
-    <div class="sidebar">
-      <i class="fas fa-search"></i>
-      <i class="fas fa-comment-dots active"></i>
-      <i class="fas fa-user profile"></i>
+  <div class="sidebar">
+    <i class="fas fa-search"></i>
+    <i class="fas fa-comment-dots active"></i>
+    <i class="fas fa-user profile"></i>
+  </div>
+
+  <div class="main-content">
+    <div class="search-bar">
+      <input placeholder="Search" type="text" />
     </div>
-  
-    <div class="main-content">
-      <div class="search-bar">
-        <input placeholder="Search" type="text" />
-      </div>
-      
-      <div class="chat-list">
-        <div class="chat-item active" *ngFor="let client of clients" >
-          <!-- (click)="selectClient(client)" -->
-          <div class="chat-info">
-            <div class="name">{{ userDetails?.firstName }} {{ userDetails?.lastName }}</div>
-            <div class="message">{{ client.lastMessage }}</div>
-          </div>
-          <div class="time">22:00</div>
+    
+    <div class="chat-list">
+      <div class="chat-item active" *ngFor="let client of clients" >
+        <!-- (click)="selectClient(client)" -->
+        <div class="chat-info">
+          <div class="name">{{ userDetails?.firstName }} {{ userDetails?.lastName }}</div>
+          <div class="message">{{ client.lastMessage }}</div>
         </div>
-      </div>
-    </div>
-  
-    <div class="chat-window">
-      <div class="chat-header">
-        <!-- <img [src]="selectedClient.image" alt="User profile picture" height="40" width="40" /> -->
-        <div class="name">{{ userDetails.firstName }} {{ userDetails.lastName }}</div>
-        <div *ngIf="countdown > 0">
-          Time Remaining: {{ formatCountdown() }}
-        </div>
-        <div class="icons">
-          <i class="fas fa-phone"></i>
-          <i class="fas fa-video"></i>
-          <i class="fas fa-ellipsis-h"></i>
-        </div>
-      </div>
-  
-      <div class="chat-messages">
-        <div *ngFor="let message of messages" [ngClass]="{'sent': message.isSender, 'received': !message.isSender}" class="message">
-          <div class="text">{{ message.content }}</div>
-          <div class="time">{{ message.time }}</div>
-        </div>
-      </div>
-  
-      <div class="chat-input">
-        <input placeholder="Message..." type="text" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" />
-        <i class="fas fa-paper-plane" (click)="sendMessage()"></i>
+        <div class="time">22:00</div>
       </div>
     </div>
-  </body>
-  
+  </div>
+
+  <div class="chat-window">
+    <div class="chat-header">
+      <!-- <img [src]="selectedClient.image" alt="User profile picture" height="40" width="40" /> -->
+      <div class="name">{{ userDetails.firstName }} {{ userDetails.lastName }}</div>
+      <div *ngIf="countdown > 0">
+        Time Remaining: {{ formatCountdown() }}
+      </div>
+      <div class="icons">
+        <i class="fas fa-phone"></i>
+        <i class="fas fa-video"></i>
+        <i class="fas fa-ellipsis-h"></i>
+      </div>
+    </div>
+
+    <div class="chat-messages">
+      <div *ngFor="let message of messages" [ngClass]="{'sent': message.isSender, 'received': !message.isSender}" class="message">
+        <div class="text">{{ message.content }}</div>
+        <div class="time">{{ message.time }}</div>
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <input placeholder="Message..." type="text" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" />
+      <i class="fas fa-paper-plane" (click)="sendMessage()"></i>
+    </div>
+  </div>
+</body>

@@ -4,6 +4,7 @@ import SockJS from 'sockjs-client';
 import Swal from 'sweetalert2';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,9 @@ import { Router } from '@angular/router';
 export class WebSocketService {
   private stompClient: Stomp.Client | null = null; // Initialize stompClient
   private messageSubject = new Subject<void>(); // Create a subject to emit loadMessages event
+  private timerSubject = new Subject<void>();
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private http: HttpClient) { }
 
   // Connect to WebSocket server
   connect(): void {
@@ -30,10 +32,13 @@ export class WebSocketService {
       if (astrologerRegId) {
         this.stompClient?.subscribe('/topic/astrologer/' + astrologerRegId, (message: any) => {
           console.log('Received message: ', message);
+          
           if (message.body === 'reload') {
             this.messageSubject.next(); // Trigger loadMessages when "reload" message is received
           } else if (message.body.startsWith('You have been rejected.')) {
             this.showRejectionAlert(message.body); // Show SweetAlert for rejection
+          } else if (message.body == 'start-timer') {
+            this.timerSubject.next(); // Trigger the timer start when "start-timer" message is received
           } else {
             this.showAlertForAstrologer(message.body); // Show SweetAlert if not "reload"
           }
@@ -58,7 +63,10 @@ export class WebSocketService {
           console.log('Received message: ', message);
           if (message.body === 'reload') {
             this.messageSubject.next(); // Trigger loadMessages when "reload" message is received
-          } else {
+          } else if (message.body == 'start-timer') {
+            this.timerSubject.next(); // Trigger the timer start when "start-timer" message is received
+          }
+          else {
             this.showAlertForUser(message.body); // Show SweetAlert if not "reload"
           }
         });
@@ -86,9 +94,9 @@ export class WebSocketService {
     });
   }
 
-  // Show SweetAlert for astrologer
   private showAlertForAstrologer(message: string): void {
     const [msg, chatSessionId] = message.split('|'); // Split message and session ID
+
     Swal.fire({
       title: 'Astrologer Notification',
       text: msg,
@@ -97,36 +105,66 @@ export class WebSocketService {
       confirmButtonText: 'Chat Now',
     }).then((result) => {
       if (result.isConfirmed) {
-        // Navigate to the chat page for astrologer
-        sessionStorage.setItem('chatSessionId', chatSessionId);
-        window.location.href = '/astrologer-chat-app';
+        // Retrieve astrologer regId from session storage (or from any other source you have)
+        const astrologerRegId = sessionStorage.getItem('regId'); // assuming it's stored under 'selectedAstrologer'
+  
+        // First, set the astrologer as busy
+        this.http.put(`http://localhost:8075/api/astrologers/busy-status/${astrologerRegId}?isBusy=true`, {})
+          .subscribe(() => {
+            // After successfully marking astrologer as busy, call the astrologer-ready endpoint
+            this.http.put(`http://localhost:8075/api/chatsessions/${chatSessionId}/astrologer-ready`, true)
+              .subscribe(() => {
+                sessionStorage.setItem('chatSessionId', chatSessionId);
+                window.location.href = '/astrologer-chat-app';
+              }, (error) => {
+                console.error('Error marking astrologer as ready', error);
+              });
+          }, (error) => {
+            console.error('Error updating astrologer busy status', error);
+          });
+  
+      } else {
+        console.log("Chat Now was canceled.");
       }
     });
   }
 
-  // Show SweetAlert for user
   private showAlertForUser(message: string): void {
     const [msg, chatSessionId] = message.split('|'); // Split message and session ID
 
     Swal.fire({
-      title: 'Wohoo!',
-      text: 'Admin has approved your payment. You can now chat with the astrologer.',
+      title: 'Payment Approved!',
+      text: msg,
       icon: 'success',
       confirmButtonText: 'Chat Now',
     }).then((result) => {
       if (result.isConfirmed) {
-        // Redirect to the chat page when the button is clicked
-        sessionStorage.setItem('chatSessionId', chatSessionId);
-        window.location.href = '/chat';
+        console.log("Chat Now button clicked by user. Session ID:", chatSessionId);
+        this.http.put(`http://localhost:8075/api/chatsessions/${chatSessionId}/user-ready`, true)
+          .subscribe(() => {
+            sessionStorage.setItem('chatSessionId', chatSessionId);
+            window.location.href = '/chat';
+          }, (error) => {
+            console.error('Error marking user as ready', error);
+          });
+
+      } else {
+        console.log("Chat Now was canceled.");
       }
     });
   }
+
+
 
   // Expose the subject as an observable to listen for message reload events
   getMessageSubject() {
     return this.messageSubject.asObservable();
   }
 
+  // Expose the timer subject as an observable
+  getTimerSubject() {
+    return this.timerSubject.asObservable();
+  }
   // Disconnect WebSocket
   disconnect(): void {
     if (this.stompClient !== null) {

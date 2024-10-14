@@ -28,21 +28,40 @@ export class ChatComponent implements OnInit, OnDestroy {
   countdown: number = 0; // Timer in seconds
   countdownInterval: any; // Interval for countdown
 
-  constructor(private chatService: ChatService, private http: HttpClient, private router: Router, private webSocketService: WebSocketService,private cdr: ChangeDetectorRef) { }
+  constructor(private chatService: ChatService, private http: HttpClient, private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef) { 
+        this.webSocketService.connect(); // Connect to WebSocket on component init
+
+  }
 
 
   ngOnInit(): void {
+    this.webSocketService.connect(); // Connect to WebSocket on component init
+
     this.sessionId = sessionStorage.getItem('chatSessionId') ? Number(sessionStorage.getItem('chatSessionId')) : null;
     // Load user and astrologer details from session storage
     const currentUser = JSON.parse(sessionStorage.getItem('currentUser')!);
     const selectedAstrologer = JSON.parse(sessionStorage.getItem('selectedAstrologer')!);
     const selectedMinutes = sessionStorage.getItem('selectedMinutes');
-    this.webSocketService.connect(); // Connect to WebSocket on component init
 
-    
+
     // Subscribe to message reload events
     this.webSocketService.getMessageSubject().subscribe(() => {
       this.loadMessages();  // Reload messages when a new message is received via WebSocket
+    });
+
+    // Retrieve countdown from session storage if available
+    const storedCountdown = sessionStorage.getItem('countdown');
+    if (storedCountdown) {
+      this.countdown = parseInt(storedCountdown, 10);
+    } else if (selectedMinutes) {
+      // Initialize countdown from selectedMinutes if no countdown was stored
+      this.countdown = parseInt(selectedMinutes, 10) * 60;
+      sessionStorage.setItem('countdown', this.countdown.toString()); // Save initial countdown
+    }
+    
+
+    this.webSocketService.getTimerSubject().subscribe(() => {
+      this.startCountdown();
     });
 
     // Load countdown from session storage
@@ -50,12 +69,9 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.countdown = parseInt(selectedMinutes, 10) * 60;
     }
 
-    // Check if currentSessionId exists in session storage
-    // const existingSessionId = sessionStorage.getItem('currentSessionId');
 
     if (selectedAstrologer) {
       this.astrologerDetails = selectedAstrologer; // Store astrologer details
-      // console.log('Astrologer details:', this.astrologerDetails); // Debug log
     }
     if (currentUser) {
       this.startSession();
@@ -66,17 +82,28 @@ export class ChatComponent implements OnInit, OnDestroy {
 
       if (this.sessionId) {
         this.loadMessages(); // Load messages for the existing session
+        this.checkReadyStatus(); // Call the method to check ready status
       } else {
         // If no existing session, create a new session
       }
-
-      // Start countdown if it’s greater than zero
-      if (this.countdown > 0) {
-        this.startCountdown();
-      }
     }
+    
   }
 
+  // Method to check if both astrologer and user are ready
+checkReadyStatus() {
+  this.http.get<boolean>(`http://localhost:8075/api/chatsessions/check-ready/${this.sessionId}`).subscribe(
+    (isReady: boolean) => {
+      if (isReady) {
+        // If both are ready, start the countdown
+        this.startCountdown();
+      }
+    },
+    (error) => {
+      console.error('Error checking ready status:', error);
+    }
+  );
+}
   startSession() {
     // const chatSessionId = sessionStorage.getItem('chatSessionId'); // Get chat session ID from session storage
     const selectedMinutes = sessionStorage.getItem('selectedMinutes'); // Get selected minutes from session storage
@@ -161,7 +188,7 @@ export class ChatComponent implements OnInit, OnDestroy {
               timestamp: new Date(msg.timestamp) // Store the timestamp for sorting
             }))
             .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()); // Sort based on timestamp
-            this.cdr.detectChanges(); // Add this line
+          this.cdr.detectChanges(); // Add this line
 
           this.scrollToBottom(); // Ensure the view is scrolled to the bottom to show the latest message
         },

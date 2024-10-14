@@ -9,7 +9,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./manage-astro-feedback.component.css']
 })
 export class ManageAstroFeedbackComponent implements OnInit {
-  feedbacks: any[] = []; 
+  feedbacks: any[] = [];
+  astrologers: any[] = []; // To store astrologer data
+
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
@@ -21,12 +23,38 @@ export class ManageAstroFeedbackComponent implements OnInit {
     this.http.get('http://localhost:8075/api/feedbacks').subscribe(
       (data: any) => {
         this.feedbacks = data;
+        this.fetchAstrologers(); // Fetch astrologer data after feedbacks are fetched
       },
       (error) => {
         console.error('Error fetching feedbacks', error);
       }
     );
   }
+
+  // Fetch astrologers from the API
+  fetchAstrologers() {
+    this.http.get('http://localhost:8075/api/astrologers/get-astrologers').subscribe(
+      (data: any) => {
+        this.astrologers = data;
+      },
+      (error) => {
+        console.error('Error fetching astrologers', error);
+      }
+    );
+  }
+
+  // Method to get astrologer's full name by matching regId
+  getAstrologerName(feedbackregId: string): string {
+    // Find astrologer with matching regId
+    const astrologer = this.astrologers.find(a => a.regId === feedbackregId);
+    return astrologer ? `${astrologer.firstName} ${astrologer.lastName}` : 'No astrologer found';
+  }
+
+  // Method to generate stars based on the rating
+getStars(rating: number): string {
+  return '⭐'.repeat(rating);  // Repeat the star character based on the rating
+}
+
 
   // Logout method
   logout(event: MouseEvent) {

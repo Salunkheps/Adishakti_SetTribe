@@ -1,3 +1,66 @@
+
+/* Sidebar Styles */
+.nav1 {
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.w3-container{
+  margin-top: -10px;
+}
+
+.w3-container h4 {
+  font-family: 'Poppins', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 1.2rem;
+}
+
+.w3-bar-item {
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  display: block;
+  color: #333;
+  text-decoration: none;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover and active state effect */
+.w3-bar-item:hover {
+  background-color: #0073e6; /* Change background color */
+  color: #fff; /* Change text color */
+  transform: scale(1.05); /* Slightly increase size */
+}
+
+.w3-bar-item:active {
+  background-color: #005bb5; /* Darker background on click */
+  transform: scale(0.98); /* Slight shrink effect on click */
+}
+
+.w3-bar-item i {
+  margin-right: 8px;
+  transition: transform 0.3s ease; /* Icon hover effect */
+}
+
+.w3-bar-item:hover i {
+  transform: rotate(10deg); /* Slight rotation effect for icons on hover */
+}
+
+/* Additional styling for mobile responsiveness */
+@media (max-width: 600px) {
+  .nav1 {
+    padding: 10px;
+  }
+  .w3-bar-item {
+    font-size: 16px;
+    padding: 10px;
+  }
+}
+
 /* Flexbox to make sure the footer sticks to the bottom */
 body {
   display: flex;
@@ -18,7 +81,7 @@ footer {
 }
 
 .blogs {
-  margin-top: -250px;
+  margin-top: -380px;
 }
 
 .one h1 {
@@ -57,7 +120,7 @@ h1 {
   margin: 0;
   font-family: "Raleway", sans-serif;
   font-weight: 300;
-  font-size: 40px;
+  font-size: 35px;
   color: #080808;
   -webkit-transition: all 0.4s ease 0s;
   -o-transition: all 0.4s ease 0s;
