@@ -85,16 +85,11 @@ label {
   border-radius: 5px;
   font-size: 14px;
   background-color: white;
-  color: #fff;
+  color: black ;
   transition: all 0.3s ease;
 }
 
-.form-control:focus {
-  border-color: #ffdd57;
-  box-shadow: 0 0 10px rgba(255, 221, 87, 0.5);
-  outline: none;
-  background-color: rgba(255, 255, 255, 0.3);
-}
+
 
 /* Password input group */
 .input-group {

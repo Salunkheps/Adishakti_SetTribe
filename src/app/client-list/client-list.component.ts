@@ -4,171 +4,204 @@ import { Config } from 'datatables.net';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { WebSocketService } from '../web-socket.service';
+import { UserService } from '../user.service';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+interface User {
+  regId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  mobileNumber?: string; // Ensure mobileNumber is included
+  dob?: string; // Ensure dob is included
+  status?: string;
+  
+}
 
 @Component({
   selector: 'app-client-list',
   templateUrl: './client-list.component.html',
   styleUrl: './client-list.component.css'
 })
-export class ClientListComponent implements OnInit, OnDestroy {
-  users: any[] = [];
+export class ClientListComponent implements  OnInit {
+  users: User[] = [];
+  filteredUsers: User[] = [];
+  isEditable: boolean[] = [];
+  isNewUser = false;
+  newUser: Partial<User> = {};
+  searchTerm = '';
   dtOptions: Config = {};
-  astrologerRegId: string | null; // Declare the property
 
-  constructor(private http: HttpClient, private router: Router, private webSocketService: WebSocketService) {
-    this.astrologerRegId = sessionStorage.getItem('regId');
+  // Font Awesome icons
+  faEdit = faEdit;
+  faTrash = faTrash;
 
-  }
-  ngOnDestroy(): void {
-    this.webSocketService.disconnect();
-  }
+  constructor(private userService: UserService, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
+    this.loadUsers();
     this.dtOptions = {
       ajax: (dataTablesParameters: any, callback) => {
-        const astrologerRegId = sessionStorage.getItem('regId');
-        // Fetch chat sessions for this astrologer
-        this.http.get<any[]>(`http://localhost:8075/api/chatsessions/astrologer/${astrologerRegId}`)
-          .subscribe((chatSessions) => {
-            // Map through chatSessions to get only the required user fields
-            const users = chatSessions.map(cs => ({
-              firstName: cs.user.firstName,
-              lastName: cs.user.lastName,
-              email: cs.user.email,
-              dob: cs.user.dob,
-              birthTime: cs.user.birthTime,
-              birthPlace: cs.user.birthPlace
-
-            }));
-
+        this.http.get<any[]>('http://localhost:8075/api/users') // Ensure the URL matches your backend configuration
+          .subscribe((data) => {
             callback({
-              recordsTotal: users.length,
-              recordsFiltered: users.length,
-              data: users
+              recordsTotal: data.length,
+              recordsFiltered: data.length,
+              data: data
             });
           }, (error) => {
-            console.error("Error fetching chat sessions:", error);
-            alert("Error fetching chat sessions");
+            console.error("Error fetching Users:", error);
+            alert("Error fetching Users");
           });
       },
-      columns: [
-        {
-          title: 'Sr. No.',
-          data: null,
-          render: (data: any, type: any, row: any, meta: any) => {
-            return meta.row + 1; // This generates the serial number
-          }
-        },
-        {
-          title: 'Full Name',
-          data: null,
-          render: (data: any) => {
-            return` ${data.firstName} ${data.lastName}`;
-          }
-        },
-        {
-          title: 'Date Of Birth',
-          data: 'dob'
-        },
-        {
-          title: 'Email',
-          data: 'email'
-        },
-        {
-          title: 'Birth Time',
-          data: 'birthTime'
-        }, {
-          title: 'Birth Place',
-          data: 'birthPlace'
+      columns: [{
+        title: 'Sr. No.',
+        data: null,
+        render: (data: any, type: any, row: any, meta: any) => {
+          return meta.row + 1; // This generates the serial number
         }
+      },
+      {
+        title: 'First Name',
+        data: 'firstName'
+      },
+      {
+        title: 'Last Name', // Change from 'Name' to 'Last Name'
+        data: 'lastName'
+      }, {
+        title: 'Email',
+        data: 'email'
+      }, {
+        title: 'Mobile Number',
+        data: 'mobileNumber'
+      },
+      {
+        title: 'Date of Birth',
+        data: 'dob'
+      },
+      {
+        title: 'Birth Place',
+        data: 'birthPlace'
+      }
       ]
     };
-
-    this.webSocketService.connect();
-    this.fetchUsers();
   }
 
-  fetchUsers(): void {
-    this.http.get<any[]>('http://localhost:8075/api/users') // Ensure the URL matches your backend configuration
-      .subscribe(
-        data => {
-          this.users = data;
-        },
-        error => {
-          console.error('Error fetching users', error);
-        }
-      );
-  }
-  logout(event: MouseEvent): void {
-    // Prevent the default behavior of the button click (in case it's a form submission or link)
-    event.preventDefault();
-    const isUserOnline = sessionStorage.getItem('isUserOnline') === 'true';
+  ngAfterViewInit(): void {
+    // Attach event listeners after the DataTable has been initialized
+    $(document).on('click', '.edit-btn', (event) => {
+      const userId = $(event.currentTarget).data('index'); // Get the user ID from the data-index attribute
 
-    if (isUserOnline) {
-      Swal.fire({
-        title: 'You are online',
-        text: 'Are you sure you want to go offline and logout?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, go offline and logout',
-        cancelButtonText: 'No, stay online'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Proceed to update the user's online status in the database
-          const apiUrl =` http://localhost:8075/api/astrologers/toggle-status/${this.astrologerRegId}`;
-          this.http.put(apiUrl, {}).subscribe(
-            (response) => {
-              console.log('User status updated to offline:', response);
-
-              // Clear session storage and perform logout
-              this.performLogout();
-            },
-            (error: HttpErrorResponse) => {
-              console.error('Error updating user status', error);
-              // Optionally show an error message or handle it accordingly
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'There was an error updating your status. Please try again.',
-              });
-            }
-          );
-        }
-        // If the user cancels, do nothing (stay online)
-      });
-    } else {
-      // If the user is offline, show a standard logout confirmation
-      Swal.fire({
-        title: 'Are you sure?',
-        text: 'Do you really want to logout?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, logout',
-        cancelButtonText: 'No, stay logged in'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Clear session storage and perform logout
-          this.performLogout();
-        }
-        // If the user cancels, do nothing (no redirection)
-      });
-    }
+      // Call the deactivateUser method
+      this.deactivateUser(userId);
+    });
   }
 
-  // Helper method to perform the actual logout logic
-  private performLogout(): void {
-    sessionStorage.clear(); // Clear session storage
-    localStorage.removeItem('currentUser'); // Optional: clear local storage if you're storing user info
 
-    // Show another SweetAlert message confirming logout success
+  // Load users from the API
+  loadUsers(): void {
+    this.userService.getAllUsers().subscribe(
+      (data) => {
+        this.users = data;
+        this.filteredUsers = this.users;
+        this.isEditable = new Array(this.users.length).fill(false);
+      },
+      (error) => console.error('Error fetching users', error)
+    );
+  }
+  deactivateUser(regId: string): void {
+    this.userService.deactivateUser(regId).subscribe(
+      () => {
+        this.loadUsers(); // Reload users after deactivating
+        console.log(`User with ID ${regId} deactivated successfully.`);
+
+        Swal.fire({
+          title: 'User Deactivated',
+          text: `User with ID ${regId} deactivated successfully!`,
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload(); // Refresh the page after the user clicks "OK"
+          }
+        });
+      },
+      (error) => {
+        console.error('Error deactivating user', error);
+        alert('An error occurred while deactivating the user. Please try again.');
+      }
+    );
+  }
+
+
+
+
+  // Merge firstName and lastName into name
+  getFullName(user: User): string {
+    return `${user.firstName} ${user.lastName}`;
+  }
+
+  // Filter users based on search input
+  searchUsers(): void {
+    this.filteredUsers = this.users.filter(user =>
+      this.getFullName(user).toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+  // Toggle edit mode for a specific row
+  toggleEdit(index: number): void {
+    this.isEditable[index] = !this.isEditable[index];
+  }
+
+  // Save an existing user after editing
+  saveUser(user: User): void {
+    this.userService.updateUser(user).subscribe(
+      () => {
+        this.isEditable.fill(false);
+        this.loadUsers(); // Reload users after saving
+      },
+      (error) => console.error('Error updating user', error)
+    );
+  }
+
+  // Delete a user
+  deleteUser(index: number): void {
+    const userId = this.filteredUsers[index].regId;
+    this.userService.deleteUser(userId).subscribe(
+      () => this.loadUsers(), // Reload users after deletion
+      (error) => console.error('Error deleting user', error)
+    );
+  }
+
+  // Add a new user (trigger adding mode)
+  addUser(): void {
+    this.isNewUser = true;
+    this.newUser = {};
+  }
+
+
+
+  // Cancel adding new user
+  cancelNewUser(): void {
+    this.isNewUser = false;
+    this.newUser = {};
+  }
+  logout(event: MouseEvent) {
+    event.preventDefault(); // Prevent default link behavior
     Swal.fire({
-      title: 'Logged Out',
-      text: 'You have been logged out successfully.',
-      icon: 'success',
-      confirmButtonText: 'OK'
-    }).then(() => {
-      // Redirect to login page after showing success message
-      this.router.navigate(['/astrologer-login']);
+      title: 'Are you sure you want to logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Logout',
+      cancelButtonText: 'Cancel',
+      backdrop: true,
+      allowOutsideClick: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('User logged out');
+        this.router.navigate(['/Home']);
+      }
     });
   }
 

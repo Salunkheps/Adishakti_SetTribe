@@ -27,7 +27,14 @@
         <h3>{{ astrologer.firstName }} {{ astrologer.lastName }}</h3>
         <p class="skills">Skills: {{ astrologer.skills }}</p>
         <p class="languages">Languages: {{ astrologer.languagesKnown.join(', ') }}</p>
-        <p class="rating">Rating: {{ astrologer.rating }} ⭐⭐⭐⭐</p>
+        <p><strong>Rating:</strong>
+          <ng-container *ngIf="astrologer.rating !== undefined && astrologer.rating > 0">
+            <span *ngFor="let star of generateStars(astrologer.rating); let i = index">
+              ⭐
+            </span>
+          </ng-container>
+          <span *ngIf="astrologer.rating === undefined || astrologer.rating <= 0">No rating available</span>
+        </p>
       </div>
     </div>
   </div>

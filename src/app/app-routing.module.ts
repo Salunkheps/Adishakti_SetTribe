@@ -31,9 +31,12 @@ import { ConsultationPriceComponent } from './consultation-price/consultation-pr
 import { ManagePaymentsComponent } from './manage-payments/manage-payments.component';
 import { ChatAppForAstrologerComponent } from './chat-app-for-astrolgoer/chat-app-for-astrologer.component';
 import { ManageconsultationComponent } from './manageconsultation/manageconsultation.component';
+import { Footer2Component } from './footer2/footer2.component';
+import { ManageAstroFeedbackComponent } from './manage-astro-feedback/manage-astro-feedback.component';
 // import { NavbarComponent } from './navbar/navbar.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/Home', pathMatch: 'full' },
   { path: '', component: HomeComponent },
   { path: 'Home', component: HomeComponent },
   { path: 'about-us', component: AboutUsComponent },
@@ -62,7 +65,6 @@ const routes: Routes = [
   { path: 'manageusers', component: ManageUsersComponent },
   { path: 'manageblog', component: ManageBlogsComponent },
   { path: 'adminastrologer', component: AdminastrologerComponent },
-  { path: '', redirectTo: '/admin', pathMatch: 'full' },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'admin-dashbord', component: AdminDashboardComponent },
   { path: 'payment', component: PaymentComponent },
@@ -72,7 +74,8 @@ const routes: Routes = [
   { path: 'manage-payment', component: ManagePaymentsComponent },
   { path: 'astrologer-chat-app', component: ChatAppForAstrologerComponent },
   { path: 'manage-consult', component: ManageconsultationComponent },
-
+  { path: 'footer2', component: Footer2Component },
+  { path: 'manage-astro-feedback', component: ManageAstroFeedbackComponent },
 ];
 
 @NgModule({

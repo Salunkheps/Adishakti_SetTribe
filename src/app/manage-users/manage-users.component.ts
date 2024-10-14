@@ -91,7 +91,7 @@ export class ManageUsersComponent implements OnInit {
           } else {
             return `
              <button class="edit-btn btn btn-danger" data-index="${row.regId}">
-                <fa-icon [icon]="faEdit"></fa-icon> Deactivate
+                <i class="fa fa-times" style="font-size: 20px;"></i>
               </button>`;
           }
         },

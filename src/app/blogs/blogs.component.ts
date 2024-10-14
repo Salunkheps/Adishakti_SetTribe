@@ -20,16 +20,21 @@ export class BlogsComponent implements OnInit {
   }
 
   toggleContent(blog: Blog) {
-    blog.showFullContent = !blog.showFullContent; // Toggle full content display
+    // Close all other blogs except the one clicked
+    this.blogs.forEach(b => {
+      if (b !== blog) {
+        b.showFullContent = false; // Close other blogs
+      }
+    });
+  
+    // Toggle the clicked blog's content
+    blog.showFullContent = !blog.showFullContent;
   }
 
   close() {
     this.displayBlock = false;
   }
 
-  // Method to fetch all blogs
- // Method to fetch all approved blogs
-// Method to fetch all approved blogs
 getData() {
   this.blogService.getBlogs().subscribe((data) => {
     console.log('Fetched blogs:', data); // Log the fetched blogs

@@ -89,22 +89,22 @@ export class ManageAstrologersComponent implements OnInit {
             if (row.status === 'Pending') {
               buttons = `
                 <button class="edit-btn btn btn-success" data-index="${row.regId}">
-                  Approve
+                 <i class="fa fa-check " style="font-size: 18px;"></i>
                 </button>
                 <button class="delete-btn btn btn-danger" data-index="${row.regId}">
-                  Reject
+                  <i class="fa fa-times" style="font-size: 20px;"></i>
                 </button>`;
 
             } else if (row.status === 'Approved') {
               buttons = `
               <button class="delete-btn btn btn-danger" data-index="${row.regId}">
-                Reject
+               <i class="fa fa-times" style="font-size: 20px;"></i>
               </button>`;
             }
             else if (row.status === 'Rejected') {
               buttons = `
                 <button class="edit-btn btn btn-success" data-index="${row.regId}">
-                  Approve
+                 <i class="fa fa-check " style="font-size: 18px;"></i>
                 </button>`;
             }
             return buttons;

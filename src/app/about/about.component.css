@@ -17,6 +17,12 @@ h2 {
   transition: all 0.4s ease 0s;
 }
 
+
+#big{
+  font-size: 1.5rem;
+}
+
+
 /* Decorative elements for the heading */
 .one h2 {
   padding-bottom: 5px;
@@ -63,11 +69,12 @@ img {
   height: 350px;
   object-fit: cover;
   border-radius: 8px;
+  
 }
 
 .hs_about_img_main_wrapper img:hover {
-  transform: scale(1.07);
-  transition: transform 0.5s ease-in-out, box-shadow 0.3s ease-in-out;
+  transform: scale(1.04);
+  transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
   box-shadow: 0 10px 20px rgba(150, 54, 174, 0.3);
 }
 
@@ -117,8 +124,14 @@ img {
 
 }
 
+.one h2{
+  margin-bottom: 40px;
+  font-weight: normal;
+}
+
 /* Justify the paragraph text */
 .hs_about_us_cont_main_wrapper p {
   text-align: justify; /* Justify the paragraph text */
-  margin: 17px 0; /* Add some margin for spacing */
+  margin: 20px 0; /* Add some margin for spacing */
+  margin-left: 10px;
 }

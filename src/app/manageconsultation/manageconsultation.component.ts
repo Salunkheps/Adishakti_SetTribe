@@ -44,14 +44,14 @@ export class ManageconsultationComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#28a745',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, approve it!',
+      confirmButtonText: 'Yes, Approve it!',
       cancelButtonText: 'No, cancel!'
     }).then((result) => {
       if (result.isConfirmed) {
-        const updatedStatus = { rpmStatus: 'approved' }; // Prepare updated status object
+        const updatedStatus = { rpmStatus: 'Approved' }; // Prepare updated status object
         this.http.put(`http://localhost:8075/api/astrologers/rpm-status/${consultation.regId}`, updatedStatus).subscribe(
           () => {
-            Swal.fire('Approved!', 'The consultation rate has been approved.', 'success');
+            Swal.fire('Approved!', 'The consultation rate has been Approved.', 'success');
             this.loadConsultationPrices(); // Refresh the list after approval
           },
           error => {
@@ -75,7 +75,7 @@ export class ManageconsultationComponent implements OnInit {
       cancelButtonText: 'No, cancel!'
     }).then((result) => {
       if (result.isConfirmed) {
-        const updatedStatus = { rpmStatus: 'rejected' }; // Prepare updated status object 
+        const updatedStatus = { rpmStatus: 'Rejected' }; // Prepare updated status object 
         this.http.put(`http://localhost:8075/api/astrologers/rpm-status/${consultation.regId}`, updatedStatus).subscribe(
           () => {
             Swal.fire('Approved!', 'The consultation rate has been approved.', 'success');

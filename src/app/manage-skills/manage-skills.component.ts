@@ -54,10 +54,10 @@ export class ManageSkillsComponent implements OnInit {
           render: (data: any, type: any, row: any, meta: any) => {
             return `
               <button class="edit-btn btn btn-primary" data-index="${meta.row}">
-                <fa-icon [icon]="faEdit"></fa-icon> Edit
+                <i class="fa-solid fa-pen-to-square"></i>
               </button>
               <button class="delete-btn btn btn-danger" data-index="${meta.row}">
-                <fa-icon [icon]="faTrash"></fa-icon> Delete
+                <i class="fa-solid fa-trash"></i>
               </button>`;
           },
           orderable: false

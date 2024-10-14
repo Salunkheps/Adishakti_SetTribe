@@ -1,3 +1,5 @@
+
+
 .outside {
   background-color: #8393a3;
   background: url("/back.jpg") no-repeat center center;
@@ -6,9 +8,9 @@
   background-position: center;
   background-repeat: no-repeat;
   max-width: 1600px;
-  /* border-radius: 10px; */
+ 
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  /* margin: 40px; Center the container on the page */
+  
 }
 .astrologer {
   display: flex;
@@ -104,6 +106,12 @@
     margin-right: 0; /* Remove margin on smaller screens */
     margin-bottom: 15px; /* Add margin below image on smaller screens */
   }
+}
+
+.search-bar h2{
+  font-family: 'Poppins', sans-serif;
+  margin-left: 100px;
+
 }
 
 .search-bar {
@@ -225,7 +233,7 @@
   margin: 0 auto;
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
+  height: 653px;
   display: flex; /* Use flexbox to center align the content */
   flex-direction: column;
   align-items: center; /* Center items horizontally */
@@ -542,3 +550,4 @@
   display: flex;
   align-items: center;
 }
+

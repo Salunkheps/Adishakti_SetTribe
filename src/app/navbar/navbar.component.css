@@ -1,7 +1,9 @@
+
 /* Navbar styles */
 .navbar {
   width: 100%;
   background-color: #420E57; /* Dark Purple */
+  font-family: 'Poppins', sans-serif;
   color: #ffffff;
   display: flex;
   align-items: center;

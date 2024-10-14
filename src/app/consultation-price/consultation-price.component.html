@@ -43,33 +43,33 @@
     </div>
 
     <div class="table-container ml-5 pt-0"  *ngIf="consultationPrices.length > 0">
-      <div class="one">
+      <!-- <div class="one">
         <h2>Price Lists</h2>
-      </div>
-      <table class="table"  >
+      </div> -->
+      <table class="table">
         <thead>
           <tr>
-            
+            <th>Sr. No.</th> <!-- New Serial Number column -->
             <th>Rate per Minute</th>
-            <th>Actions</th> <!-- New Actions column -->
+            <th>Actions</th> <!-- Actions column -->
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let price of consultationPrices">
+          <tr *ngFor="let price of consultationPrices; let i = index">
+            <td>{{ i + 1 }}</td> <!-- Display row number (i + 1 to start from 1) -->
             <td>{{ price.ratePerMinute }}</td>
             <td>
               <button (click)="editPrice(price)" class="btn btn-warning btn-small">
-                <i class="fa fa-pencil" aria-hidden="true"></i> 
+                <i class="fa fa-pencil" aria-hidden="true"></i>
               </button>
               <button (click)="deletePrice(price.id!)" class="btn btn-danger btn-small">
-                <i class="fa fa-trash" aria-hidden="true"></i> 
+                <i class="fa fa-trash" aria-hidden="true"></i>
               </button>
-              
             </td>
-            
           </tr>
         </tbody>
       </table>
+      
     </div>
   </div>
 </div>

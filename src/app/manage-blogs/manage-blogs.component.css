@@ -113,6 +113,10 @@ h2 {
   margin-top: 7px;
 }
 
+.table-responsive{
+  width: 1250px;
+}
+
  th{
   background-color: #4c70ba;
   color: white;
