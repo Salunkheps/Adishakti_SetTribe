@@ -30,18 +30,20 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
   countdownInterval: any;
   selectedMinutes: number = 0;
 
-  constructor(private chatService: ChatService, private http: HttpClient, private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef) { }
+  constructor(private chatService: ChatService, private http: HttpClient, private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef) {
+    this.webSocketService.connect(); // Connect to WebSocket on component init
+  }
 
   ngOnInit(): void {
+
     // Load astrologer details from session storage
     const astrologer = JSON.parse(sessionStorage.getItem('astrologer')!);
     this.chatSessionId = sessionStorage.getItem('chatSessionId'); // Load chatSessionId from session storage
-    this.webSocketService.connect(); // Connect to WebSocket on component init
     this.loading = false; // Hide loading overlay when ready
 
-    this.checkChatSessionReadiness();
-
-
+    this.webSocketService.getTimerSubject().subscribe(() => {
+      this.startCountdown();
+    });
     // Subscribe to message reload events
     this.webSocketService.getMessageSubject().subscribe(() => {
       this.loadMessages();  // Reload messages when a new message is received via WebSocket
@@ -54,6 +56,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
 
     // Retrieve user regId using the chat session ID
     if (this.chatSessionId) {
+      this.checkReadyStatus(); // Call the method to check ready status
       this.http.get<any>(`http://localhost:8075/api/chatsessions/session-details/${this.chatSessionId}`).subscribe(
         (response) => {
           const { selectedMinutes, userRegId } = response;
@@ -65,7 +68,13 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
 
           this.getUserDetails(); // Fetch user details now
           this.countdown = selectedMinutes * 60;
-          this.startCountdown();
+
+          // Check if a countdown is already in session storage
+          const savedCountdown = sessionStorage.getItem('countdown');
+          if (savedCountdown) {
+            this.countdown = parseInt(savedCountdown, 10); // Parse saved countdown
+          }
+          // this.startCountdown();
         },
         (error) => {
           console.error('Error fetching session details:', error);
@@ -78,18 +87,24 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
     const savedCountdown = sessionStorage.getItem('countdown');
     if (savedCountdown) {
       this.countdown = parseInt(savedCountdown, 100);
-      if (this.countdown > 0) {
-        this.startCountdown();
-      }
     }
   }
 
-  private checkChatSessionReadiness(): void {
-    // Logic to check if the user/astrologer is ready
-    // If not ready, set isLoading = true
-    // If ready, set isLoading = false
-  }
 
+  // Method to check if both astrologer and user are ready
+  checkReadyStatus() {
+    this.http.get<boolean>(`http://localhost:8075/api/chatsessions/check-ready/${this.chatSessionId}`).subscribe(
+      (isReady: boolean) => {
+        if (isReady) {
+          // If both are ready, start the countdown
+          this.startCountdown();
+        }
+      },
+      (error) => {
+        console.error('Error checking ready status:', error);
+      }
+    );
+  }
 
   // New method to fetch user details based on userRegId
   getUserDetails(): void {
@@ -121,7 +136,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
               timestamp: new Date(msg.timestamp) // Store the timestamp for sorting
             }))
             .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()); // Sort based on timestamp
-            this.cdr.detectChanges(); // Add this line
+          this.cdr.detectChanges(); // Add this line
 
           this.scrollToBottom(); // Ensure the view is scrolled to the bottom to show the latest message
         },
@@ -175,6 +190,8 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
   }
 
   startCountdown() {
+    if (this.countdownInterval) return;
+
     this.countdownInterval = setInterval(() => {
       if (this.countdown > 0) {
         this.countdown--;
@@ -190,7 +207,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
       this.countdownInterval = null;
-      sessionStorage.removeItem('countdown');
+      // sessionStorage.removeItem('countdown');
     }
   }
 
@@ -204,10 +221,21 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
       cancelButtonText: 'Close',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.router.navigate(['/astrodash']);
+        // Retrieve astrologer regId from session storage (assuming it is stored as 'selectedAstrologer')
+        const astrologerRegId = sessionStorage.getItem('regId');
+  
+        // Call API to update astrologer's busy status to false
+        this.http.put(`http://localhost:8075/api/astrologers/busy-status/${astrologerRegId}?isBusy=false`, {})
+          .subscribe(() => {
+            // After successful status update, navigate to the dashboard
+            this.router.navigate(['/astrodash']);
+          }, (error) => {
+            console.error('Error updating astrologer busy status', error);
+          });
       }
     });
   }
+  
 
   formatCountdown(): string {
     const minutes: number = Math.floor(this.countdown / 60);

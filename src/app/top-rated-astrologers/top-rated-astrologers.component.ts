@@ -8,12 +8,12 @@ interface Astrologer {
   lastName: string;
   skills: string;
   languagesKnown: string[];
-  rating?: number; // Rating will be added
-  regId: string; 
-  profilePhoto?: string; 
+  rating?: number;
+  regId: string;
+  profilePhoto?: string;
   mobileNumber: string;
   ratePerMinute: number;
-  
+  status: string;  // Added status field
 }
 
 @Component({
@@ -39,8 +39,9 @@ export class TopRatedAstrologersComponent implements OnInit {
   getAllData(): void {
     this.http.get<Astrologer[]>('http://localhost:8075/api/astrologers/get-astrologers').subscribe(
       (data) => {
-        this.data = data;
-        this.filteredAstrologers = data.slice(0, this.visibleCards); // Limit to 3 cards
+        // Filter astrologers by status 'Approved'
+        this.data = data.filter(astrologer => astrologer.status === 'Approved');
+        this.filteredAstrologers = this.data.slice(0, this.visibleCards); // Limit to 3 cards
         this.getAstrologerRatings(); // Fetch ratings after fetching astrologers
       },
       (error) => {
@@ -76,7 +77,7 @@ export class TopRatedAstrologersComponent implements OnInit {
   }
 
   onImageError(astrologer: Astrologer): void {
-    astrologer.profilePhoto = 'assets/placeholder.jpg'; // Placeholder
+    astrologer.profilePhoto = 'assets/placeholder.jpg'; // Placeholder image
   }
 
   updateVisibleCards(): void {

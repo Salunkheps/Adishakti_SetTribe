@@ -27,17 +27,21 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>User ID</th>
-        <th>Registration ID</th>
+        <th>Sr. No.</th>
+        <th>Astrologer Name</th>
+        <th>User Name</th>
         <th>Rating</th>
         <th>Comments</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let feedback of feedbacks">
-        <td>{{ feedback.user_id }}</td>
-        <td>{{ feedback.regId }}</td>
-        <td>{{ feedback.rating }}</td>
+      <tr *ngFor="let feedback of feedbacks; let i = index">
+        <td>{{ i + 1 }}</td> <!-- Sr. No. -->
+        <td>{{ feedback.astrologer.firstName }} {{ feedback.astrologer.lastName }}</td>
+        <td>{{ feedback.user.firstName }} {{ feedback.user.lastName }}</td>
+        <td>
+          {{ feedback.rating }} [{{ getStars(feedback.rating) }}] <!-- Display stars based on rating -->
+        </td>
         <td>{{ feedback.comments }}</td>
       </tr>
     </tbody>

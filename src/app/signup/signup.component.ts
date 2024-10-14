@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 export class SignupComponent implements OnInit {
   signupForm!: FormGroup;
   hidePassword: boolean = true;
+  todayDate: string = ''; 
   invalidFile: boolean = false;
   profilePhoto!: File;
   backEndUrl: string = 'http://localhost:8075/api/users/sk';
@@ -20,6 +21,10 @@ export class SignupComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
+// Set today's date in YYYY-MM-DD format
+const today = new Date();
+this.todayDate = today.toISOString().split('T')[0];
+
     this.signupForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
