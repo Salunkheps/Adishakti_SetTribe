@@ -127,7 +127,7 @@ h2 {
 }
 
 .btn:hover {
-  background-color: #1abc9c;
+  background-color: #1184f0;
 }
 
 .table-container {
@@ -158,9 +158,10 @@ h2 {
 
 .btn-small {
   font-size: 0.8em; /* Make the font size smaller */
-  padding: 20px 15px; /* Adjust padding */
+  padding: 10px 15px; /* Adjust padding */
   display: inline-block; /* Ensure buttons are inline */
   width: 50px; /* Set width to auto to avoid stretching */
+  
 }
 
 .table td {

@@ -36,7 +36,7 @@
   padding: 10px;
   text-align: center;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(142, 54, 164, 0.6);
   flex: 1;
   max-width: calc(33.33% - 20px); /* Make sure cards fit 3 per row */
 }
@@ -100,7 +100,7 @@
   padding: 20px;
   background: #fff; /* White background for cards */
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(142, 54, 164, 0.6);
   transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
   position: relative;
   z-index: 2;
@@ -109,7 +109,7 @@
 
 .astrologer-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 12px 24px rgba(255, 105, 180, 0.6); /* More prominent pink shadow on hover */
+  box-shadow: 0 12px 24px rgba(142, 54, 164, 0.6); /* More prominent pink shadow on hover */
  
   color: #420e57; /* Dark purple text color on hover */
 }

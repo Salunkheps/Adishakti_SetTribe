@@ -52,27 +52,42 @@ export class ManageBlogsComponent implements OnInit {
           }
         },
         { title: 'Title', data: 'title' }, // Assuming blog has a 'title' field
-        { title: 'Author', data: 'astrologer.firstName' }, // Assuming blog has an astrologer with 'firstName'
-        { title: 'content', data: 'content' }, // Assuming blog has a 'publishedDate' field
-        { title: 'Catagory', data: 'blogCatagory' }, // Assuming blog has a 'publishedDate' field
+        {
+          title: 'Astrologer',
+          data: null,  // Set data to null as we will handle it manually
+          render: (data: any, type: any, row: any) => {
+            if (row.astrologer) {
+              return `${row.astrologer.firstName} ${row.astrologer.lastName}`;  // Concatenate firstName and lastName
+            } else {
+              return 'N/A';  // Handle undefined astrologer
+            }
+          }
+        }
+        , // Assuming blog has an astrologer with 'firstName'
+        { title: 'Content', data: 'content' }, // Assuming blog has a 'publishedDate' field
+        { title: 'Category', data: 'blogCatagory' },
+        {
+          title: 'Blog Photo',
+          render: (data: any, type: any, row: any) => {
+            return `<a href="http://localhost:8075/api/blogs/featuredImage/${row.id}" target="_blank" style="text-decoration: none;">View Photo</a>`;
+          },
+        },
         { title: 'Status', data: 'status' }, // Assuming blog has a 'publishedDate' field
         {
           title: 'Actions',
           render: (data: any, type: any, row: any, meta: any) => {
             const approveButton = row.status === 'Pending' || row.status === 'Rejected'
-              ? `<button class="edit-btn btn btn-success" data-index="${row.id}"><fa-icon [icon]="faEdit"></fa-icon> Approve</button>`
+              ? `<button class="edit-btn btn btn-success" data-index="${row.id}" style="margin-right: 5px;"><i class="fa fa-check" style="font-size: 18px;"></i></button>`
               : '';
-
+        
             const rejectButton = row.status === 'Pending' || row.status === 'Approved'
-              ? `<button class="delete-btn btn btn-danger" data-index="${row.id}"><fa-icon [icon]="faTrash"></fa-icon> Reject</button>`
+              ? `<button class="delete-btn btn btn-danger" data-index="${row.id}" style="margin-left: 5px;"><i class="fa fa-times" style="font-size: 20px;"></i></button>`
               : '';
-
-            return `${approveButton} ${rejectButton}`;
-
+        
+            return `<div style="display: flex; justify-content: center; align-items: center;">${approveButton} ${rejectButton}</div>`;
           },
           orderable: false
         }
-
       ]
     };
 
@@ -103,9 +118,6 @@ export class ManageBlogsComponent implements OnInit {
       }
     });
   }
-
-
-
 
   fetchBlogs(): void {
     this.blogService.getBlogs().subscribe((blogs: Blog[]) => {

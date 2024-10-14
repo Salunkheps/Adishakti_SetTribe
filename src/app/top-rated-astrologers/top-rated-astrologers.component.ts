@@ -8,11 +8,12 @@ interface Astrologer {
   lastName: string;
   skills: string;
   languagesKnown: string[];
-  rating: number;
+  rating?: number; // Rating will be added
   regId: string; 
   profilePhoto?: string; 
   mobileNumber: string;
   ratePerMinute: number;
+  
 }
 
 @Component({
@@ -40,12 +41,34 @@ export class TopRatedAstrologersComponent implements OnInit {
       (data) => {
         this.data = data;
         this.filteredAstrologers = data.slice(0, this.visibleCards); // Limit to 3 cards
+        this.getAstrologerRatings(); // Fetch ratings after fetching astrologers
       },
       (error) => {
         console.error('Error fetching data:', error);
         alert('Failed to fetch astrologers. Please try again later.');
       }
     );
+  }
+
+  generateStars(rating: number): number[] {
+    return new Array(Math.round(rating)); // Creates an array with the number of stars based on the rating
+  }
+
+  getAstrologerRatings(): void {
+    this.filteredAstrologers.forEach((astrologer) => {
+      this.http
+        .get<number>(`http://localhost:8075/api/feedbacks/average-rating/${astrologer.regId}`)
+        .subscribe(
+          (rating) => {
+            console.log('Average Rating for astrologer', astrologer.regId, ':', rating);
+            astrologer.rating = rating; // Assign the rating to the astrologer object
+          },
+          (error) => {
+            console.error(`Error fetching rating for astrologer ${astrologer.regId}`, error);
+            astrologer.rating = 0; // Default to 0 if error occurs
+          }
+        );
+    });
   }
 
   fetchAstrologerImage(regId: string): string {

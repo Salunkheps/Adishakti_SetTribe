@@ -11,6 +11,7 @@
       <li><a routerLink="/manageskills" routerLinkActive="active"><i class="bi bi-award-fill"></i> Manage Skills</a></li>
       <li><a routerLink="/manage-payment" routerLinkActive="active"><i class="bi bi-credit-card-fill"></i> Manage Payment</a></li>
       <li><a routerLink="/manage-consult" routerLinkActive="active"><i class="bi bi-calendar-fill"></i> Manage Consultation</a></li>
+      <li><a routerLink="/manage-astro-feedback" routerLinkActive="active"><i class="bi bi-chat-dots-fill"></i> Astrologer Feedback</a></li>
       <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
     </ul>
     
@@ -62,7 +63,7 @@
                 <td>{{ skill.skillname }}</td>
                 <td>
                   <button class="btn btn-warning btn-sm" (click)="editSkill(i)">
-                    Edit
+                    <i class="fa-solid fa-pen-to-square"></i>
                   </button>
                   <button class="btn btn-danger btn-sm" (click)="deleteSkill(i)">
                     Delete

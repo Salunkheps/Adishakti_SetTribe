@@ -14,7 +14,7 @@ export interface Blog {
   blogCatagory: string;
   astrologer: string;
   status: string;
-  rejectionReason?: string; // Optional field for rejection reason
+  rejectionReason?: string;
 }
 
 @Component({
@@ -81,7 +81,13 @@ export class InsertblogComponent implements OnInit, OnDestroy {
       }, {
         title: 'Blog Category',
         data: 'blogCatagory'
-      },{
+      }, {
+        title: 'Blog Photo',
+        render: (data: any, type: any, row: any) => {
+          return `<a href="http://localhost:8075/api/blogs/featuredImage/${row.id}" target="_blank" style="text-decoration: none;">View Photo</a>`;
+        },
+      }
+      ,{
         title: 'Status', // New column for status
         data: 'status',
         render: (data: string, type: string, row: Blog) => {
@@ -302,9 +308,6 @@ export class InsertblogComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Close'
     });
   }
-
-
-
 
   onFileSelected(event: any): void {
     this.featuredImage = event.target.files[0];

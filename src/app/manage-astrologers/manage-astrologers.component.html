@@ -11,6 +11,7 @@
       <li><a routerLink="/manageskills" routerLinkActive="active"><i class="bi bi-award-fill"></i> Manage Skills</a></li>
       <li><a routerLink="/manage-payment" routerLinkActive="active"><i class="bi bi-credit-card-fill"></i> Manage Payment</a></li>
       <li><a routerLink="/manage-consult" routerLinkActive="active"><i class="bi bi-calendar-fill"></i> Manage Consultation</a></li>
+      <li><a routerLink="/manage-astro-feedback" routerLinkActive="active"><i class="bi bi-chat-dots-fill"></i> Astrologer Feedback</a></li>
       <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
     </ul>
     
@@ -62,8 +63,8 @@
             <td>{{ astrologer.email }}</td>
             <td>{{ astrologer.mobile }}</td>
             <td>
-              <button (click)="approveAstrologer(astrologer)" class="btn btn-success btn-sm">Approve</button>
-              <button (click)="rejectAstrologer(astrologer)" class="btn btn-danger btn-sm">Reject</button>
+              <button (click)="approveAstrologer(astrologer)" class="btn btn-success btn-sm"><i class="fa fa-check " style="font-size: 18px;"></i></button>
+              <button (click)="rejectAstrologer(astrologer)" class="btn btn-danger btn-sm"><i class="fa fa-times" style="font-size: 20px;"></i></button>
             </td>
           </tr>
         </tbody>

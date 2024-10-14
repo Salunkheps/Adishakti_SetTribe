@@ -9,10 +9,8 @@
   align-items: center;
   margin: 50px 0;
   padding: 20px;
-  /* background-color: #f9f9f9; Light background for contrast */
-  /* border-radius: 12px; */
-  /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(135, 0, 255, 0.2); Purple shadow */
-  color: #333; /* Dark text color for contrast */
+  
+  color: black; /* Dark text color for contrast */
   position: relative;
   overflow: hidden;
 }
@@ -38,7 +36,7 @@
   transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s, color 0.3s;
   position: relative;
   z-index: 2;
-  color: #333; /* Dark text color for items */
+  color: black; /* Dark text color for items */
 }
 
 .stat-item:hover {
@@ -63,7 +61,7 @@
 
 .stat-item p {
   font-size: 18px;
-  color: #666; /* Dark grey paragraph color */
+  color: black; /* Dark grey paragraph color */
   font-family: 'Poppins', sans-serif;
 }
 

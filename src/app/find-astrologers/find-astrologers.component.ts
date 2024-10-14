@@ -9,13 +9,13 @@ interface Astrologer {
   lastName: string;
   skills: string;
   languagesKnown: string[];
-  rating: number;
-  mobileNumber: string; // Ensure this field exists in your backend response
+  rating?: number; // Rating will be added
+  mobileNumber: string;
   ratePerMinute: number;
-  isOnline?: boolean; // Add this field
-  status: string; // Add this field
-  isBusy?: boolean; // Add isBusy field here
-  rpmStatus?: string; // Add this field for rate per minute status
+  isOnline?: boolean;
+  status: string;
+  isBusy?: boolean;
+  rpmStatus?: string;
 }
 
 @Component({
@@ -59,7 +59,7 @@ export class FindAstrologersComponent implements OnInit, OnDestroy {
     } else {
       this.filteredAstrologers = this.data.filter(
         (astrologer: Astrologer) =>
-          astrologer.status === 'Approved' && // Filter by status
+          astrologer.status === 'Approved' &&
           (astrologer.firstName.toLowerCase().includes(searchTerm) ||
             astrologer.skills.toLowerCase().includes(searchTerm))
       );
@@ -67,14 +67,17 @@ export class FindAstrologersComponent implements OnInit, OnDestroy {
   }
 
   navigateToChat(astrologer: any) {
-    sessionStorage.setItem('selectedAstrologer', JSON.stringify({
-      regId: astrologer.regId,
-      firstName: astrologer.firstName,
-      lastName: astrologer.lastName,
-      imageData: astrologer.astrologerImages ? astrologer.astrologerImages.imageData : null
-    }));
+    sessionStorage.setItem(
+      'selectedAstrologer',
+      JSON.stringify({
+        regId: astrologer.regId,
+        firstName: astrologer.firstName,
+        lastName: astrologer.lastName,
+        imageData: astrologer.astrologerImages ? astrologer.astrologerImages.imageData : null,
+      })
+    );
 
-    this.router.navigate(['/chatwithastro']); // Update this route as needed
+    this.router.navigate(['/chatwithastro']);
   }
 
   getAllData(): void {
@@ -82,9 +85,9 @@ export class FindAstrologersComponent implements OnInit, OnDestroy {
       .get<Astrologer[]>('http://localhost:8075/api/astrologers/get-astrologers')
       .subscribe(
         (data) => {
-          this.data = data.filter(astrologer => astrologer.status === 'Approved'); // Filter here as well
-          this.filteredAstrologers = this.data;
-          this.getAstrologerBusyStatus(); // Fetch busy status after fetching all astrologers
+          this.data = data.filter((astrologer) => astrologer.status === 'Approved');
+          this.filteredAstrologers = this.data; // Initialize filtered astrologers
+          this.getAstrologerRatings(); // Fetch ratings after fetching astrologers
         },
         (error) => {
           console.error('Error fetching data', error);
@@ -92,33 +95,41 @@ export class FindAstrologersComponent implements OnInit, OnDestroy {
       );
   }
 
+  generateStars(rating: number): number[] {
+    return new Array(Math.round(rating)); // Creates an array with the number of stars based on the rating
+  }
+  
+  getAstrologerRatings(): void {
+    this.filteredAstrologers.forEach((astrologer) => {
+      this.http
+        .get<number>(`http://localhost:8075/api/feedbacks/average-rating/${astrologer.regId}`)
+        .subscribe(
+          (rating) => {
+            console.log('Average Rating for astrologer', astrologer.regId, ':', rating);
+            astrologer.rating = rating; // Assign the rating to the astrologer object
+          },
+          (error) => {
+            console.error(`Error fetching rating for astrologer ${astrologer.regId}`, error);
+            astrologer.rating = 0; // Default to 0 if error occurs
+          }
+        );
+    });
+  }
+
   getAstrologerBusyStatus(): void {
-    this.data.forEach(astrologer => {
+    this.data.forEach((astrologer) => {
       this.http
         .get<boolean>(`http://localhost:8075/api/astrologers/isBusy/${astrologer.regId}`)
         .subscribe(
           (isBusy) => {
-            astrologer.isBusy = isBusy; // Set the busy status
-            console.log(`Astrologer ${astrologer.regId} is busy: ${isBusy}`); // Print the busy status to console
+            astrologer.isBusy = isBusy;
+            console.log(`Astrologer ${astrologer.regId} is busy: ${isBusy}`);
           },
           (error) => {
             console.error(`Error fetching busy status for ${astrologer.regId}`, error);
           }
         );
     });
-  }
-
-  getAstrologerOnlineStatus(astrologer: Astrologer): void {
-    this.http
-      .get<boolean>(`http://localhost:8075/api/astrologers/${astrologer.regId}/isOnline`)
-      .subscribe(
-        (isOnline) => {
-          astrologer.isOnline = isOnline;
-        },
-        (error) => {
-          console.error(`Error fetching online status for ${astrologer.regId}`, error);
-        }
-      );
   }
 
   getSearchData(): void {

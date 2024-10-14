@@ -14,48 +14,33 @@
       <li><a routerLink="/manage-astro-feedback" routerLinkActive="active"><i class="bi bi-chat-dots-fill"></i> Astrologer Feedback</a></li>
       <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
     </ul>
-    
   </nav>
 
   <div class="main-content flex-grow-1 p-4">
     <div class="row mb-4">
-      <div class="col-12 one">
-        <h2 class="text-center one">Manage Blogs</h2>
+      <div class="col-12">
+        <h2 class="text-center">Astrologer Feedback</h2>
       </div>
     </div>
-
-    <!-- Blog Table -->
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table-hover table-striped">
-        <thead>
-          <tr>
-            <th>#</th> <!-- Serial number -->
-            <th>Title</th>
-            <th>Author</th>
-            <th>Content</th>
-            <th>Category</th>
-            <th>Blog Photo</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let blog of filteredBlogs">
-            <td>{{ blog.title || 'Untitled' }}</td>
-            <td>{{ blog.astrologer.name || 'Unknown' }}</td>
-            <td>{{ blog.content || 'No content available' }}</td>
-            <td>{{ blog.blogCatagory || 'No Category available' }}</td>
-            <td>{{ blog.blogCatagory || 'No Category available' }}</td>
-            <td>{{ blog.status || 'No Status available' }}</td>
-            <td>
-              <button (click)="approveBlog(blog)" class="btn btn-success btn-sm">Approve</button>
-              <button (click)="rejectBlog(blog)" class="btn btn-danger btn-sm">Reject</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div *ngIf="filteredBlogs.length === 0" class="text-center mt-4">No blogs found.</div>
+ <!-- Feedback Table -->
+ <div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Registration ID</th>
+        <th>Rating</th>
+        <th>Comments</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let feedback of feedbacks">
+        <td>{{ feedback.user_id }}</td>
+        <td>{{ feedback.regId }}</td>
+        <td>{{ feedback.rating }}</td>
+        <td>{{ feedback.comments }}</td>
+      </tr>
+    </tbody>
+  </table>
   </div>
 </div>

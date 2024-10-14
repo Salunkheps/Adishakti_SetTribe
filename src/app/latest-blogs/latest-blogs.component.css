@@ -8,19 +8,9 @@
   margin-bottom: 10px;
 }
 
-.one{
+.one {
   margin-bottom: 20px;
 }
-
-/* Heading styling */
-/* .blog-heading {
-  font-size: 36px;
-  color: #333;
-  margin-bottom: 10px;
-  letter-spacing: 1.2px; /* Add letter spacing 
-  text-shadow: 2px 2px 5px rgba(134, 70, 156, 0.4);
-  text-align: center;
-} */
 
 /* Blog container styling */
 .latest-blogs {
@@ -37,17 +27,19 @@
   border-radius: 15px;
   width: 23%; /* Set width to fit four cards in one row */
   text-align: center;
-  box-shadow: 0 4px 8px rgba(255, 105, 180, 0.4); /* Soft pink shadow */
+  box-shadow: 0 4px 8px rgba(142, 54, 164, 0.6); /* Soft pink shadow */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden; /* Ensure the content fits inside the card */
   display: flex;
   flex-direction: column; /* Ensure the content stacks vertically */
+  justify-content: space-between;
+  min-height: 400px; /* Set a fixed minimum height for all cards */
 }
 
 /* Hover effect */
 .blog:hover {
   transform: translateY(-10px);
-  box-shadow: 0 12px 24px rgba(255, 105, 180, 0.6); /* More prominent pink shadow on hover */
+  box-shadow: 0 12px 24px rgba(142, 54, 164, 0.6); /* More prominent pink shadow on hover */
 }
 
 /* Image container for consistent image sizing */
@@ -71,7 +63,20 @@
   transform: scale(1.05); /* Slight zoom effect on hover */
 }
 
-/* Blog content styling */
+/* Limit blog content to 3-4 lines with ellipsis */
+.blog-content p {
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Limit the number of lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  color: black;
+  margin-bottom: 20px;
+  /* font-family: 'Open Sans', sans-serif; */
+}
+
+/* Ensure content grows to fill space and handles cards with less content */
 .blog-content {
   padding: 15px;
   flex-grow: 1; /* Ensure content grows to fill space */
@@ -82,22 +87,14 @@
 
 /* Blog title styling */
 .blog h3 {
-  font-size: 22px;
+  font-size: 24px;
   margin: 10px 0;
   color: #333333;
   font-family: 'Roboto', sans-serif;
   text-transform: capitalize; /* Capitalize the title */
 }
 
-/* Blog author styling */
-.blog p {
-  font-size: 14px;
-  color: #888888;
-  margin-bottom: 20px;
-  font-family: 'Open Sans', sans-serif;
-}
-
-/* Button styling */
+/* Button styling with transition effect on click */
 .blog button {
   background-color: #9636ae;
   color: white;
@@ -106,7 +103,7 @@
   border-radius: 25px;
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s ease; /* Added transform for click effect */
   margin-top: auto; /* Push the button to the bottom of the card */
   align-self: center; /* Center-align the button horizontally */
 }
@@ -117,7 +114,12 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Button click effect */
+.blog button:active {
+  transform: scale(0.95); /* Slightly reduce size on click for effect */
+}
 
+/* Heading styling */
 h1 {
   position: relative;
   padding: 0;
@@ -130,12 +132,14 @@ h1 {
   -o-transition: all 0.4s ease 0s;
   transition: all 0.4s ease 0s;
 }
+
 /* === HEADING STYLE #1 === */
 .one h1 {
   text-align: center;
   text-transform: uppercase;
   padding-bottom: 5px;
 }
+
 .one h1:before {
   width: 28px;
   height: 5px;
@@ -147,6 +151,7 @@ h1 {
   margin-left: -14px;
   background-color: #b80000;
 }
+
 .one h1:after {
   width: 100px;
   height: 1px;
