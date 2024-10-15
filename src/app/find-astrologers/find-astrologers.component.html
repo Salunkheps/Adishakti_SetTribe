@@ -3,21 +3,13 @@
   <div class="find-astrologers">
     <div class="search-bar">
       <h2 class="heading">Find your Astrologer</h2>
-      <input
-        type="text"
-        placeholder="Search for astrologers..."
-        [(ngModel)]="searchTerm"
-        (input)="filterAstrologers()"
-      />
+      <input type="text" placeholder="Search for astrologers..." [(ngModel)]="searchTerm"
+        (input)="filterAstrologers()" />
     </div>
     <div class="astrologer-list">
       <div class="astrologer" *ngFor="let astrologer of filteredAstrologers">
         <ng-container *ngIf="astrologer.regId">
-          <img
-            [src]="fetchAstrologerImage(astrologer.regId)"
-            alt="Astrologer Image"
-            class="astrologer-image"
-          />
+          <img [src]="fetchAstrologerImage(astrologer.regId)" alt="Astrologer Image" class="astrologer-image" />
         </ng-container>
         <div class="astrologer-details">
           <div class="astrologer-wrapper">
@@ -26,16 +18,8 @@
             </span>
 
             <span class="checkbox-wrapper-35">
-              <input
-                value="private"
-                [checked]="astrologer.isOnline"
-                name="switch"
-                id="switch{{ astrologer.regId }}"
-                type="checkbox"
-                class="switch"
-                [ngClass]="{ 'busy': astrologer.isBusy }"
-                disabled
-              />
+              <input value="private" [checked]="astrologer.isOnline" name="switch" id="switch{{ astrologer.regId }}"
+                type="checkbox" class="switch" [ngClass]="{ 'busy': astrologer.isBusy }" disabled />
               <label for="switch{{ astrologer.regId }}" style="cursor: default;">
                 <span class="switch-x-text">
                   Astrologer is
@@ -48,7 +32,7 @@
           </div>
 
           <p><strong>Skills:</strong> {{ astrologer.skills }}</p>
-          
+
           <p *ngIf="astrologer.rpmStatus === 'Approved'">
             <strong>Rate Per Minute:</strong> ₹{{ astrologer.ratePerMinute }}
           </p>
@@ -61,10 +45,10 @@
               {{ language }}<span *ngIf="!isLast">, </span>
             </span>
           </p>
-          
 
-           <!-- Rating -->
-           <p><strong>Rating:</strong>
+
+          <!-- Rating -->
+          <p><strong>Rating:</strong>
             <ng-container *ngIf="astrologer.rating !== undefined && astrologer.rating > 0">
               <span *ngFor="let star of generateStars(astrologer.rating); let i = index">
                 ⭐
@@ -72,11 +56,17 @@
             </ng-container>
             <span *ngIf="astrologer.rating === undefined || astrologer.rating <= 0">No rating available</span>
           </p>
-          
+
         </div>
         <div class="astrologer-actions">
           <button class="btn-call" *ngIf="astrologer.isOnline" (click)="navigateToChat(astrologer)">
             Chat
+          </button>
+
+          <!-- Book Astrologer button for offline or busy astrologers -->
+          <button class="btn-call" *ngIf="!astrologer.isOnline || astrologer.isBusy"
+            (click)="bookAstrologer(astrologer)">
+            Book Astrologer
           </button>
         </div>
       </div>

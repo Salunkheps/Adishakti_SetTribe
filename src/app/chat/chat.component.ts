@@ -28,21 +28,23 @@ export class ChatComponent implements OnInit, OnDestroy {
   countdown: number = 0; // Timer in seconds
   countdownInterval: any; // Interval for countdown
 
-  constructor(private chatService: ChatService, private http: HttpClient, private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef) { 
-        this.webSocketService.connect(); // Connect to WebSocket on component init
+  // New properties to hold session data
+  selectedMinutes: number = 0;
+  astrologerFirstName: string = '';
+  astrologerLastName: string = '';
+
+  constructor(private chatService: ChatService, private http: HttpClient, private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef) {
+    this.webSocketService.connect(); // Connect to WebSocket on component init
 
   }
 
 
   ngOnInit(): void {
     this.webSocketService.connect(); // Connect to WebSocket on component init
-
     this.sessionId = sessionStorage.getItem('chatSessionId') ? Number(sessionStorage.getItem('chatSessionId')) : null;
-    // Load user and astrologer details from session storage
-    const currentUser = JSON.parse(sessionStorage.getItem('currentUser')!);
-    const selectedAstrologer = JSON.parse(sessionStorage.getItem('selectedAstrologer')!);
-    const selectedMinutes = sessionStorage.getItem('selectedMinutes');
 
+    this.loadSessionData(); // Fetch session data from the database
+    const selectedMinutes = sessionStorage.getItem('selectedMinutes');
 
     // Subscribe to message reload events
     this.webSocketService.getMessageSubject().subscribe(() => {
@@ -58,7 +60,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.countdown = parseInt(selectedMinutes, 10) * 60;
       sessionStorage.setItem('countdown', this.countdown.toString()); // Save initial countdown
     }
-    
+
 
     this.webSocketService.getTimerSubject().subscribe(() => {
       this.startCountdown();
@@ -69,16 +71,17 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.countdown = parseInt(selectedMinutes, 10) * 60;
     }
 
-
-    if (selectedAstrologer) {
-      this.astrologerDetails = selectedAstrologer; // Store astrologer details
+    if (this.sessionId) {
     }
-    if (currentUser) {
+    if (this.astrologerRegId) {
+      this.astrologerDetails = this.astrologerRegId; // Store astrologer details
+    }
+    if (this.currentUserRegId) {
       this.startSession();
     }
-    if (currentUser && selectedAstrologer) {
-      this.currentUserRegId = currentUser.regId;
-      this.astrologerRegId = selectedAstrologer.regId;
+    if (this.currentUserRegId && this.astrologerRegId) {
+      this.currentUserRegId = this.currentUserRegId;
+      this.astrologerRegId = this.astrologerRegId;
 
       if (this.sessionId) {
         this.loadMessages(); // Load messages for the existing session
@@ -87,23 +90,51 @@ export class ChatComponent implements OnInit, OnDestroy {
         // If no existing session, create a new session
       }
     }
-    
+
+  }
+  loadSessionData() {
+    this.http.get<any>(`http://localhost:8075/api/chatsessions/${this.sessionId}`).subscribe(
+      (sessionData) => {
+        console.log('Session Data:', sessionData);
+
+        this.selectedMinutes = sessionData.selectedMinutes;
+        sessionStorage.setItem('selectedMinutes', this.selectedMinutes.toString()); // Set to session storage
+
+        this.astrologerFirstName = sessionData.astrologer.firstName;
+        this.astrologerLastName = sessionData.astrologer.lastName;
+        this.currentUserRegId = sessionData.user.regId;
+        this.astrologerRegId = sessionData.astrologer.regId;
+
+        // Update astrologerDetails here
+        this.astrologerDetails = {
+          firstName: this.astrologerFirstName,
+          lastName: this.astrologerLastName
+        };
+
+        this.loadMessages();
+        this.checkReadyStatus();
+      },
+      (error) => {
+        console.error('Error loading session data:', error);
+      }
+    );
   }
 
+
   // Method to check if both astrologer and user are ready
-checkReadyStatus() {
-  this.http.get<boolean>(`http://localhost:8075/api/chatsessions/check-ready/${this.sessionId}`).subscribe(
-    (isReady: boolean) => {
-      if (isReady) {
-        // If both are ready, start the countdown
-        this.startCountdown();
+  checkReadyStatus() {
+    this.http.get<boolean>(`http://localhost:8075/api/chatsessions/check-ready/${this.sessionId}`).subscribe(
+      (isReady: boolean) => {
+        if (isReady) {
+          // If both are ready, start the countdown
+          this.startCountdown();
+        }
+      },
+      (error) => {
+        console.error('Error checking ready status:', error);
       }
-    },
-    (error) => {
-      console.error('Error checking ready status:', error);
-    }
-  );
-}
+    );
+  }
   startSession() {
     // const chatSessionId = sessionStorage.getItem('chatSessionId'); // Get chat session ID from session storage
     const selectedMinutes = sessionStorage.getItem('selectedMinutes'); // Get selected minutes from session storage
@@ -162,6 +193,8 @@ checkReadyStatus() {
     }).then((result) => {
       if (result.isConfirmed) {
         // Navigate to the feedback route
+        sessionStorage.removeItem('selectedMinutes');
+        sessionStorage.removeItem('chatSessionId');
         this.router.navigate(['/feedback']);
       }
     });

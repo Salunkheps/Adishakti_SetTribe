@@ -14,7 +14,7 @@
       <div class="chat-item active" *ngFor="let client of clients" (click)="selectClient(client)">
        
         <div class="chat-info">
-          <div class="name">{{ astrologerDetails.firstName }} {{ astrologerDetails.lastName }}</div>
+          <div class="name">{{ this.astrologerFirstName }} {{ this.astrologerLastName }}</div>
           <div class="message">{{ client.lastMessage }}</div>
         </div>
         <div class="time">22:00</div>
@@ -25,7 +25,7 @@
   <div class="chat-window">
     <div class="chat-header">
       <!-- <img [src]="selectedClient.image" alt="User profile picture" height="40" width="40" /> -->
-      <div class="name">{{ astrologerDetails.firstName }} {{ astrologerDetails.lastName }}</div>
+      <div class="name" *ngIf="astrologerDetails">{{ astrologerDetails.firstName }} {{ astrologerDetails.lastName }}</div>
       <div *ngIf="countdown > 0">
         Time Remaining: {{ formatCountdown() }}
       </div>

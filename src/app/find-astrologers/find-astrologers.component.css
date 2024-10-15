@@ -1,3 +1,14 @@
+div:where(.swal2-container) input:where(.swal2-input),
+div:where(.swal2-container) input:where(.swal2-file),
+div:where(.swal2-container) textarea:where(.swal2-textarea),
+div:where(.swal2-container) select:where(.swal2-select),
+div:where(.swal2-container) div:where(.swal2-radio),
+div:where(.swal2-container) label:where(.swal2-checkbox) {
+  margin-top: 0 !important; /* Remove top margin */
+  margin-left: 0 !important; /* Remove left margin */
+  margin-right: 0 !important; /* Remove right margin */
+}
+
 .outside {
   background-color: #8393a3;
   background: url("/back.jpg") no-repeat center center;

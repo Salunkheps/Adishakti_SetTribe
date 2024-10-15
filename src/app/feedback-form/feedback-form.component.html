@@ -1,72 +1,36 @@
 <app-navbar></app-navbar>
+
 <body>
   <div class="feedback-form-container">
     <h2>Submit Feedback</h2>
-    <div *ngIf="astrologerName">
+    <div>
       <p class="astroname">Astrologer's Name:</p>
-      <p>{{ astrologerName.firstName }} {{ astrologerName.lastName }}</p>
+      <p>{{ this.astrologerFirstName }} {{ this.astrologerLastName }}</p>
     </div>
 
     <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
       <div>
         <label for="rating">Rating</label>
         <div class="rating">
-          <label for="radio-1" aria-label="Rating 1"
-            ><input
-              type="radio"
-              name="rating"
-              id="radio-1"
-              class="sr-only"
-              value="1"
-              formControlName="rating"
-          /></label>
-          <label for="radio-2" aria-label="Rating 2"
-            ><input
-              type="radio"
-              name="rating"
-              id="radio-2"
-              class="sr-only"
-              value="2"
-              formControlName="rating"
-          /></label>
-          <label for="radio-3" aria-label="Rating 3"
-            ><input
-              type="radio"
-              name="rating"
-              id="radio-3"
-              class="sr-only"
-              value="3"
-              formControlName="rating"
-          /></label>
-          <label for="radio-4" aria-label="Rating 4"
-            ><input
-              type="radio"
-              name="rating"
-              id="radio-4"
-              class="sr-only"
-              value="4"
-              formControlName="rating"
-          /></label>
-          <label for="radio-5" aria-label="Rating 5"
-            ><input
-              type="radio"
-              name="rating"
-              id="radio-5"
-              class="sr-only"
-              value="5"
-              formControlName="rating"
-          /></label>
+          <label for="radio-1" aria-label="Rating 1"><input type="radio" name="rating" id="radio-1" class="sr-only"
+              value="1" formControlName="rating" /></label>
+          <label for="radio-2" aria-label="Rating 2"><input type="radio" name="rating" id="radio-2" class="sr-only"
+              value="2" formControlName="rating" /></label>
+          <label for="radio-3" aria-label="Rating 3"><input type="radio" name="rating" id="radio-3" class="sr-only"
+              value="3" formControlName="rating" /></label>
+          <label for="radio-4" aria-label="Rating 4"><input type="radio" name="rating" id="radio-4" class="sr-only"
+              value="4" formControlName="rating" /></label>
+          <label for="radio-5" aria-label="Rating 5"><input type="radio" name="rating" id="radio-5" class="sr-only"
+              value="5" formControlName="rating" /></label>
         </div>
       </div>
       <div>
         <label for="comments">Comments</label>
         <textarea id="comments" formControlName="comments"></textarea>
-        <div
-          *ngIf="
+        <div *ngIf="
             feedbackForm.get('comments')?.invalid &&
             feedbackForm.get('comments')?.touched
-          "
-        >
+          ">
           Comments are required.
         </div>
       </div>

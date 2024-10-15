@@ -223,11 +223,16 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
       if (result.isConfirmed) {
         // Retrieve astrologer regId from session storage (assuming it is stored as 'selectedAstrologer')
         const astrologerRegId = sessionStorage.getItem('regId');
-  
+
         // Call API to update astrologer's busy status to false
         this.http.put(`http://localhost:8075/api/astrologers/busy-status/${astrologerRegId}?isBusy=false`, {})
           .subscribe(() => {
             // After successful status update, navigate to the dashboard
+            // Remove items from session storage
+            sessionStorage.removeItem('chatSessionId');
+            sessionStorage.removeItem('selectedMinutes');
+            sessionStorage.removeItem('userRegId');
+            sessionStorage.removeItem('countdown');
             this.router.navigate(['/astrodash']);
           }, (error) => {
             console.error('Error updating astrologer busy status', error);
@@ -235,7 +240,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
+
 
   formatCountdown(): string {
     const minutes: number = Math.floor(this.countdown / 60);

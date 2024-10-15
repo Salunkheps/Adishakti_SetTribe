@@ -16,6 +16,12 @@ interface Astrologer {
   styleUrls: ['./feedback-form.component.css']
 })
 export class FeedbackFormComponent implements OnInit {
+  sessionId: number | null = null; // Store the session ID
+  astrologerFirstName: string | null = null; // Store the astrologer's first name
+  astrologerLastName: string | null = null; // Store the astrologer's first name
+  astrologerRegId: string | null = null; // Store the astrologer's regId
+
+
   feedbackForm: FormGroup;
   astrologerName: { firstName: string; lastName: string } | null = null; // To store astrologer's first and last name
   private apiUrl = 'http://localhost:8075/api/feedbacks';
@@ -33,16 +39,32 @@ export class FeedbackFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    const selectedAstrologer = JSON.parse(sessionStorage.getItem('selectedAstrologer')!);
-    this.getAstrologerDetails(selectedAstrologer.regId).subscribe(
-      astrologer => {
-        this.astrologerName = {
-          firstName: astrologer.firstName,
-          lastName: astrologer.lastName
-        };
+    this.sessionId = Number(sessionStorage.getItem('chatSessionId')); // Assuming you store the session ID in session storage
+
+    if (this.sessionId) {
+      this.fetchChatSessionData(this.sessionId);
+    } else {
+      console.error('Chat session ID is missing.');
+    }
+  }
+  fetchChatSessionData(sessionId: number): void {
+    // Make the GET request to fetch the chat session data
+    this.http.get<any>(`http://localhost:8075/api/chatsessions/${sessionId}`).subscribe(
+      (response) => {
+        // Extract astrologer's first name and regId
+        if (response && response.astrologer) {
+          this.astrologerFirstName = response.astrologer.firstName;
+          this.astrologerLastName = response.astrologer.lastName;
+
+          this.astrologerRegId = response.astrologer.regId;
+          console.log('Astrologer First Name:', this.astrologerFirstName);
+          console.log('Astrologer Reg ID:', this.astrologerRegId);
+        } else {
+          console.error('Astrologer data not found in response.');
+        }
       },
-      error => {
-        console.error('Error fetching astrologer details', error);
+      (error) => {
+        console.error('Error fetching chat session data:', error);
       }
     );
   }
@@ -59,7 +81,7 @@ export class FeedbackFormComponent implements OnInit {
           regId: currentUser.regId
         },
         astrologer: {
-          regId: selectedAstrologer.regId
+          regId: this.astrologerRegId
         },
         rating: this.feedbackForm.value.rating,
         comments: this.feedbackForm.value.comments
@@ -90,10 +112,5 @@ export class FeedbackFormComponent implements OnInit {
   }
   createFeedback(feedback: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, feedback);
-  }
-
-  getAstrologerDetails(regId: string): Observable<Astrologer> {
-    const url = `http://localhost:8075/api/astrologers/${regId}`;
-    return this.http.get<Astrologer>(url);
   }
 }
