@@ -10,6 +10,7 @@
       <li><a routerLink="/astroclient" routerLinkActive="active"><i class="fa-solid fa-pen-to-square"></i> Clients Report</a></li>
       <li><a routerLink="/insert-blog" routerLinkActive="active"><i class="fa-solid fa-blog"></i> Create Blogs</a></li>
       <li><a routerLink="/consultation-price" routerLinkActive="active"><i class="fa-solid fa-money-check-dollar"></i> Consultation Price</a></li>
+      <li><a routerLink="/booking" routerLinkActive="active"><i class="bi bi-calendar-fill"></i> Booking </a></li>
       <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
     </ul>
   </nav>
@@ -57,15 +58,16 @@
         <tbody>
           <tr *ngFor="let price of consultationPrices; let i = index">
             <td>{{ i + 1 }}</td> <!-- Display row number (i + 1 to start from 1) -->
-            <td>{{ price.ratePerMinute }}</td>
+            <td>₹{{ price.ratePerMinute }}</td>
             <td>
-              <button (click)="editPrice(price)" class="btn btn-warning btn-small">
+              <button (click)="editPrice(price)" class="btn btn-primary btn-small me-2">
                 <i class="fa fa-pencil" aria-hidden="true"></i>
               </button>
               <button (click)="deletePrice(price.id!)" class="btn btn-danger btn-small">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </button>
             </td>
+            
           </tr>
         </tbody>
       </table>

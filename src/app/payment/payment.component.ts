@@ -94,9 +94,9 @@ export class PaymentComponent implements OnInit, OnDestroy {
         response => {
           // Show SweetAlert on successful submission
           Swal.fire({
-            icon: 'success',
-            title: 'Payment Submitted',
-            text: 'You can start your chat once the payment is reviewed and approved by the admin. Please wait for confirmation.',
+            icon: 'info',
+            title: 'Payment in Progress!',
+            text: 'Your payment is being processed, You can start your chat once the payment is reviewed and approved. Please wait for confirmation.',
             confirmButtonText: 'OK',
           }).then((result) => {
             if (result.isConfirmed) {

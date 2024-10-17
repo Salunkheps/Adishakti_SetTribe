@@ -194,7 +194,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       if (result.isConfirmed) {
         // Navigate to the feedback route
         sessionStorage.removeItem('selectedMinutes');
-        sessionStorage.removeItem('chatSessionId');
+        // sessionStorage.removeItem('chatSessionId');
         this.router.navigate(['/feedback']);
       }
     });

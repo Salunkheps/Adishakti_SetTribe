@@ -12,28 +12,25 @@ export class BlogsComponent implements OnInit {
   individualData: any = [];
   data: Blog[] = []; // Store all blogs
   currentCategory: string = 'all'; // To track the selected category
+  selectedBlog: Blog | null = null; // For storing the clicked blog details
+  
 
   constructor(private blogService: BlogService) {}
 
   ngOnInit(): void {
     this.getData(); // By default, get all blogs on initialization
   }
-
-  toggleContent(blog: Blog) {
-    // Close all other blogs except the one clicked
-    this.blogs.forEach((b) => {
-      if (b !== blog) {
-        b.showFullContent = false; // Close other blogs
-      }
-    });
-
-    // Toggle the clicked blog's content
-    blog.showFullContent = !blog.showFullContent;
+ // Open popup with blog details
+ openPopup(blog: Blog) {
+  this.selectedBlog = blog;
+}
+// Close popup
+closePopup(event?: Event) {
+  if (event) {
+    event.stopPropagation(); // Prevent closing when clicking inside popup
   }
-
-  close() {
-    this.displayBlock = false;
-  }
+  this.selectedBlog = null;
+}
 
   getData() {
     this.blogService.getBlogs().subscribe(

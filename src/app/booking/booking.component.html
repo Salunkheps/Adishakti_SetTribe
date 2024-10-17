@@ -1,0 +1,63 @@
+<div class="dashboard-container">
+    <nav class="sidebar">
+      <div class="sidebar-header d-flex justify-content-between align-items-center">
+        <h2 class="logo-text">Adishkati</h2>
+        <!-- Toggle button for mobile to close the sidebar -->
+        
+      </div>
+      <ul class="sidebar-menu list-unstyled">
+        <li><a routerLink="/astrodash" routerLinkActive="active"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+        <li><a routerLink="/astroclient" routerLinkActive="active"><i class="fa-solid fa-pen-to-square"></i> Clients Report</a></li>
+        <li><a routerLink="/insert-blog" routerLinkActive="active"><i class="fa-solid fa-blog"></i> Create Blogs</a></li>
+        <li><a routerLink="/consultation-price" routerLinkActive="active"><i class="fa-solid fa-money-check-dollar"></i> Consultation Price</a></li>
+        <li><a routerLink="/booking" routerLinkActive="active"><i class="bi bi-calendar-fill"></i> Booking </a></li>
+        <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
+      </ul>
+    </nav>
+    
+    <div class="main-content">
+      <div class="row">
+        <div class="col-md-12 one">
+          <h2 class="text-center mt-4">BOOKING</h2>
+        </div>
+      </div>
+  
+     
+    <table class="table table-hover table-striped mt-4">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User Name</th>
+            <th>Astrologer Name</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Minutes</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let booking of bookings">
+            <td>{{ booking.id }}</td>
+            <td>{{ booking.user.firstName }} {{ booking.user.lastName }}</td>
+            <td>{{ booking.astrologer.firstName }} {{ booking.astrologer.lastName }}</td>
+            <td>{{ booking.status }}</td>
+            <td>{{ booking.date }}</td>
+            <td>{{ booking.time }}</td>
+            <td>{{ booking.minutes }}</td>
+            <td>
+                <button class="btn btn-success me-2" (click)="approveBooking(booking.id)">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+                <button class="btn btn-danger" (click)="rejectBooking(booking.id)">
+                  <i class="fa-solid fa-times"></i>
+                </button>
+              </td>
+              
+          </tr>
+        </tbody>
+      </table>
+       
+     
+    </div>
+  </div>

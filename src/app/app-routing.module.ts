@@ -33,6 +33,7 @@ import { ChatAppForAstrologerComponent } from './chat-app-for-astrolgoer/chat-ap
 import { ManageconsultationComponent } from './manageconsultation/manageconsultation.component';
 import { Footer2Component } from './footer2/footer2.component';
 import { ManageAstroFeedbackComponent } from './manage-astro-feedback/manage-astro-feedback.component';
+import { BookingComponent } from './booking/booking.component';
 // import { NavbarComponent } from './navbar/navbar.component';
 
 const routes: Routes = [
@@ -76,6 +77,7 @@ const routes: Routes = [
   { path: 'manage-consult', component: ManageconsultationComponent },
   { path: 'footer2', component: Footer2Component },
   { path: 'manage-astro-feedback', component: ManageAstroFeedbackComponent },
+  { path: 'booking', component: BookingComponent },
 ];
 
 @NgModule({

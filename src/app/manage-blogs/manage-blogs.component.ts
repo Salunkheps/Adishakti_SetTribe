@@ -64,7 +64,17 @@ export class ManageBlogsComponent implements OnInit {
           }
         }
         , // Assuming blog has an astrologer with 'firstName'
-        { title: 'Content', data: 'content' }, // Assuming blog has a 'publishedDate' field
+        {
+          title: 'Content',
+          data: 'content',
+          width: '500px', // Set an appropriate width for content
+          render: (data: string) => {
+            // Allow the content to wrap within the defined width
+            return `<div style="word-wrap: break-word; max-width: 500px;">
+                      ${data}
+                    </div>`;
+          }
+        }, // Assuming blog has a 'publishedDate' field
         { title: 'Category', data: 'blogCatagory' },
         {
           title: 'Blog Photo',
