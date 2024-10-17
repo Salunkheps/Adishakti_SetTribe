@@ -75,12 +75,19 @@ export class InsertblogComponent implements OnInit, OnDestroy {
       }, {
         title: 'Title',
         data: 'title'
+      },{
+        title: 'Category',
+        data: 'blogCatagory'
       }, {
         title: 'Content',
-        data: 'content'
-      }, {
-        title: 'Blog Category',
-        data: 'blogCatagory'
+        data: 'content',
+        width: '600px', // Set an appropriate width for content
+        render: (data: string) => {
+          // Allow the content to wrap within the defined width
+          return `<div style="word-wrap: break-word; max-width: 600px;">
+                    ${data}
+                  </div>`;
+        }
       }, {
         title: 'Blog Photo',
         render: (data: any, type: any, row: any) => {

@@ -25,8 +25,8 @@
 
       <div class="astrologer-info">
         <h3>{{ astrologer.firstName }} {{ astrologer.lastName }}</h3>
-        <p class="skills">Skills: {{ astrologer.skills }}</p>
-        <p class="languages">Languages: {{ astrologer.languagesKnown.join(', ') }}</p>
+        <p class="skills"><b>Skills:</b> {{ astrologer.skills }}</p>
+        <p class="languages"><b>Languages:</b> {{ astrologer.languagesKnown.join(', ') }}</p>
         <p><strong>Rating:</strong>
           <ng-container *ngIf="astrologer.rating !== undefined && astrologer.rating > 0">
             <span *ngFor="let star of generateStars(astrologer.rating); let i = index">

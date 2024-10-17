@@ -5,9 +5,11 @@ import { Router } from '@angular/router';
 interface Astrologer {
   email: string;
   password: string;
-  regId: string; // Add regId to the interface
-  status: string; // Add status to the interface
-  rejectionReason: string | null; // Add rejectionReason to the interface
+  regId: string;
+  status: string;
+  rejectionReason: string | null;
+  firstName: string; // Add firstName
+  lastName: string;  // Add lastName
 }
 
 @Component({
@@ -30,20 +32,6 @@ export class AstrologerLoginComponent {
     this.http.get<Astrologer>(this.apiUrl + "api/astrologers/email/" + this.email).subscribe(
       success => {
         this.astrologer = success; // Update to use astrologer
-        //   if (this.astrologer) {
-        //     if (this.astrologer.password === this.password) {
-        //       // Store astrologer data in localStorage
-        //       localStorage.setItem('currentUser', JSON.stringify(this.astrologer));
-        //       // Store regId in sessionStorage
-        //       sessionStorage.setItem('regId', this.astrologer.regId);
-        //       this.router.navigateByUrl("/astrodash");
-        //     } else {
-        //       this.errorMessage = 'Password does not match.';
-        //     }
-        //   } else {
-        //     this.errorMessage = 'Astrologer with this email not found.';
-        //   }
-        // },
         if (this.astrologer) {
           // Check if the astrologer is approved, pending, or rejected
           if (this.astrologer.status === 'Approved') {
@@ -52,6 +40,9 @@ export class AstrologerLoginComponent {
               localStorage.setItem('currentUser', JSON.stringify(this.astrologer));
               // Store regId in sessionStorage
               sessionStorage.setItem('regId', this.astrologer.regId);
+              sessionStorage.setItem('firstName', this.astrologer.firstName);
+sessionStorage.setItem('lastName', this.astrologer.lastName);
+
               this.router.navigateByUrl("/astrodash");
             } else {
               this.errorMessage = 'Password does not match.';

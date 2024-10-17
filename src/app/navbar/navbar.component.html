@@ -12,36 +12,36 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav ml-auto">
         <li class="nav-item" *ngIf="!isLoggedIn">
-          <a class="nav-link" href="/" (click)="onClickHome()">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/" style="color: white; font-size: 1.0rem;" (click)="onClickHome()">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="onClickFindAstrologers()" routerLink="/find-astrologers"
+          <a class="nav-link" (click)="onClickFindAstrologers()" routerLink="/find-astrologers" style="color: white;font-size: 1.0rem;" 
             routerLinkActive="active">Find Astrologer</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/blogs/:id" (click)="onClickBlog()"> Blogs</a>
+          <a class="nav-link" href="/blogs/:id" (click)="onClickBlog()" style="color: white;font-size: 1.0rem;"> Blogs</a>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn; else loginDropdown">
-          <a class="nav-link" (click)="logout()">
+          <a class="nav-link" style="color: white;font-size: 1.0rem;" (click)="logout()">
             <i class="fas fa-sign-out-alt"></i> Logout
           </a>
         </li>
         <ng-template #loginDropdown>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle" style="color: white;font-size: 1.0rem;" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
               Login As
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" routerLink="/login">
-                <i class="fas fa-user-plus"></i> User
+              <a class="dropdown-item" style="color: white;" routerLink="/login">
+                <i class="fas fa-user-plus"></i> User login
               </a>
-              <a class="dropdown-item" routerLink="/astrologer-login">
+              <a class="dropdown-item" style="color: white;" routerLink="/astrologer-login">
                 <i class="fas fa-user-plus"></i> Astrologer login
               </a>
-              <a class="dropdown-item" routerLink="/admin-login">
+              <a class="dropdown-item" style="color: white;" routerLink="/admin-login">
                 <i class="fas fa-user-plus"></i> Admin login
               </a>
             </div>

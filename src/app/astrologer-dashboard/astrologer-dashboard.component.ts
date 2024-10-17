@@ -13,7 +13,8 @@ export class AstrologerDashboardComponent implements OnInit, OnDestroy {
 
   isOnline: boolean = false; // Set default value
   regId?: string; // Assuming you have the regId from session storage or a service
-
+  firstName: string = '';
+  lastName: string = '';
 
   totalClients: number = 100; // Example value
   reviewsCount: number = 50; // Example value
@@ -27,11 +28,29 @@ export class AstrologerDashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Get the regId from session storage or your service
     this.regId = sessionStorage.getItem('regId') || ''; // Adjust as needed
-    // You can also fetch current online status from your backend if needed
+    this.firstName = sessionStorage.getItem('firstName') || ''; 
+   this.lastName = sessionStorage.getItem('lastName') || ''; 
+   console.log('First Name:', this.firstName);
+  console.log('Last Name:', this.lastName); 
+   // You can also fetch current online status from your backend if needed
     this.getOnlineStatus();
     this.webSocketService.connect();
 
   }
+
+ // Fetch astrologer details from the API using regId
+ getAstrologerDetails(regId: string): void {
+  const apiUrl = `http://localhost:8075/api/astrologers/${regId}`;
+  this.http.get<{ firstName: string, lastName: string }>(apiUrl).subscribe(
+    (data) => {
+      this.firstName = data.firstName; // Extract firstName
+      this.lastName = data.lastName;   // Extract lastName
+    },
+    (error: HttpErrorResponse) => {
+      console.error('Error fetching astrologer details:', error);
+    }
+  );
+}
 
   constructor(private http: HttpClient, private router: Router, private webSocketService: WebSocketService) { }
   ngOnDestroy(): void {

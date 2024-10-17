@@ -52,6 +52,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input'; 
 import { ManageconsultationComponent } from './manageconsultation/manageconsultation.component';
 import { ManageAstroFeedbackComponent } from './manage-astro-feedback/manage-astro-feedback.component';
+import { BookingComponent } from './booking/booking.component';
 
 
 
@@ -105,6 +106,7 @@ import { ManageAstroFeedbackComponent } from './manage-astro-feedback/manage-ast
     ManagePaymentsComponent,
     ManageconsultationComponent,
     ManageAstroFeedbackComponent,
+    BookingComponent,
 
 
 

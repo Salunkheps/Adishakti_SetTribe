@@ -51,7 +51,14 @@ export class ManagePaymentsComponent implements OnInit {
         },
         { title: 'Payment ID', data: 'transactionId' }, // Updated to use transactionId
         { title: 'User Name', data: 'fullName' }, // Now showing full name instead of userId
-        { title: 'Amount', data: 'amount' },
+        { 
+          title: 'Amount', 
+          data: 'amount', 
+          render: function(data, type, row) {
+            return '₹ ' + data;
+          } 
+        }
+        ,
         { title: 'Status', data: 'status' },
         {
           title: 'View',

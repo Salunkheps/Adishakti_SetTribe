@@ -10,6 +10,7 @@
       <li><a routerLink="/astroclient" routerLinkActive="active"><i class="fa-solid fa-pen-to-square"></i> Clients Report</a></li>
       <li><a routerLink="/insert-blog" routerLinkActive="active"><i class="fa-solid fa-blog"></i> Create Blogs</a></li>
       <li><a routerLink="/consultation-price" routerLinkActive="active"><i class="fa-solid fa-money-check-dollar"></i> Consultation Price</a></li>
+      <li><a routerLink="/booking" routerLinkActive="active"><i class="bi bi-calendar-fill"></i> Booking </a></li>
       <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
     </ul>
   </nav>
@@ -44,31 +45,6 @@
     <!-- Manage Availability Section -->
     <section class="availability-section">
       <h3>Current Status</h3>
-      <!-- <div class="availability-form">
-        <label for="status">Availability Status:</label>
-        <select id="status" [(ngModel)]="availabilityStatus">
-          <option value="available">Available</option>
-          <option value="unavailable">Unavailable</option>
-        </select>
-
-        <label for="rates">Consultation Rates:</label>
-        <input
-          type="number"
-          id="rates"
-          [(ngModel)]="consultationRates"
-          placeholder="Enter rate"
-        />
-
-        <label for="working-hours">Working Hours:</label>
-        <input
-          type="text"
-          id="working-hours"
-          [(ngModel)]="workingHours"
-          placeholder="Enter working hours"
-        />
-
-        <button (click)="updateAvailability()">Update</button>
-      </div> -->
       <div class="checkbox-wrapper-35">
         <input value="private" name="switch" id="switch" type="checkbox" class="switch" (change)="toggleOnlineStatus()"
           [checked]="isOnline">

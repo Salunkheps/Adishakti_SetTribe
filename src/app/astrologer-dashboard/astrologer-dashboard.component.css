@@ -282,10 +282,12 @@ body, html {
   font-weight: bold;
   color: #F9DA82; /* Light Yellow */
   animation: glow 1.5s ease-in-out infinite; /* Apply glow animation */
+  margin-left: 37px;
 }
 
 .sidebar {
   background-color: #4c70ba;
+  width: 233px;
   color: #fff;
   display: flex;
   flex-direction: column;

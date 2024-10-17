@@ -1,4 +1,3 @@
-
 /* Navbar styles */
 .navbar {
   width: 100%;
@@ -7,10 +6,15 @@
   color: #ffffff;
   display: flex;
   align-items: center;
-  padding: 10px 20px; /* Reduced height */
+  padding: 0px 20px; /* Reduced height */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 95px;
 }
 
+.collapse{
+  margin-right: 50px;
+  
+}
 
 .logo {
   display: flex;
@@ -19,74 +23,65 @@
 }
 
 .logo img {
-  height: 80px; /* Reduced size */
-  width: 80px; /* Reduced size */
+  height: 120px; /* Reduced size */
+  width: 120px; /* Reduced size */
   margin-right: 10px;
 }
 
 .logo-text {
-  font-size: 1.6rem; 
+  font-size: 1.8rem;
   font-weight: bold;
-  color: #F9DA82; 
-  animation: glow 1.5s ease-in-out infinite; 
+  color: #F9DA82;
+  animation: glow 1.8s ease-in-out infinite;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Navigation links styling */
-.nav-links {
+.navbar-nav {
   list-style: none;
   display: flex;
   margin: 0;
   padding: 0;
   flex-grow: 1; /* Allow links to take up remaining space */
-  justify-content: center; /* Center align items */
+  justify-content: flex-end; /* Right align items */
 }
 
-.nav-links li {
-  margin-left: 15px; /* Space between links */
+.navbar-nav li {
+  margin-left: 20px; /* Space between links */
   position: relative;
 }
 
-.nav-link:hover{
-  color: #F9DA82 !important;
-    animation: glow 1.5s ease-in-out infinite; /* Apply glow animation */
-
-
-}
-.col a{
-  color: #f4f4f4;
-}
-.dropdown-menu{
-  background-color: #420E57;
-}
-.nav-links a {
+.nav-link {
   color: #ffffff;
   text-decoration: none;
-  font-weight: 500; /* Medium weight for readability */
-  font-size: 14px; /* Reduced font size */
+  font-weight: 500;
+  font-size: 14px;
   display: inline-block;
-  padding: 8px 15px; /* Reduced padding for smaller height */
+  padding: 8px 15px;
   transition: color 0.3s ease, background-color 0.3s ease;
-  border-radius: 5px; /* Rounded corners for modern look */
+  border-radius: 5px;
 }
 
+.nav-link:hover {
+  color: #F9DA82 !important;
+  animation: glow 1.5s ease-in-out infinite;
+}
 
-/* Dropdown container */
+/* Dropdown styles */
+.dropdown-menu {
+  background-color: #420E57;
+  border-radius: 30%;
+}
+
 .nav-item .dropdown {
   position: relative;
 }
-
-/* Trigger button styling */
-.dropdown .dropbtn {
-  background: none;
-  border: none;
-  color: #ffffff;
-  font-size: 20px; /* Adjusted font size */
-  cursor: pointer;
-  padding: 8px 15px; /* Adjusted padding */
-  transition: color 0.3s ease;
+.dropdown:hover .dropdown-menu {
+  display: block; /* Show the dropdown on hover */
+  opacity: 1; /* Make the dropdown visible */
+  transform: translateY(0); /* Slide the dropdown down */
 }
 
-/* Basic dropdown styling */
 .dropdown .nav-link {
   color: #ffffff;
   padding: 8px 15px;
@@ -95,9 +90,16 @@
 
 .dropdown-menu {
   background-color: #420E57;
-  min-width: 200px;
-  border-radius: 5px;
+  width: 30px;
+  border-radius: 10px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  display: none; /* Initially hidden */
+  position: absolute;
+  top: 100%; /* Position it below the parent */
+  left: 0;
+  opacity: 0; /* Start with the dropdown hidden */
+  transform: translateY(-10px); /* Slide it up */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transition */
 }
 
 .dropdown-item {
@@ -108,16 +110,15 @@
 }
 
 .dropdown-item:hover {
-  background-color: #F9DA82; /* Light Yellow */
-  color: #420E57; /* Dark Purple */
+  background-color: #F9DA82;
+  color: #420E57;
 }
+
+/* Active link styling */
 .nav-link.active {
-
-  font-weight: bold; /* or any style you want to apply */
-  color: #F9DA82 !important; /* Bootstrap primary color or any color */
+  font-weight: bold;
+  color: #F9DA82 !important;
 }
-
-
 
 /* Animations */
 @keyframes glow {
@@ -129,14 +130,5 @@
   }
   100% {
     text-shadow: 0 0 10px rgba(249, 218, 130, 0.5);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }

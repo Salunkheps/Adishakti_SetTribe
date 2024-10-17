@@ -19,12 +19,14 @@
 .logo-text {
   font-size: 1.5rem; /* Reduced font size */
   font-weight: bold;
+  margin-left: 37px;
   color: #F9DA82; /* Light Yellow */
   animation: glow 1.5s ease-in-out infinite; /* Apply glow animation */
 }
 
 .sidebar {
   background-color: #4c70ba;
+  width: 233px;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -118,7 +120,7 @@ h2 {
 }
 
 .btn {
-  background-color: #3b5998; /* Match sidebar and topbar */
+ 
   color: white;
   width: 100%;
   padding: 10px;
@@ -169,4 +171,17 @@ h2 {
   vertical-align: middle; /* Center align text vertically (fallback) */
   font-size: 20px;
 
+}
+
+/* Animations */
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 10px rgba(249, 218, 130, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(249, 218, 130, 1);
+  }
+  100% {
+    text-shadow: 0 0 10px rgba(249, 218, 130, 0.5);
+  }
 }

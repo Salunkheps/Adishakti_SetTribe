@@ -72,7 +72,7 @@ export class FeedbackFormComponent implements OnInit {
   onSubmit() {
     if (this.feedbackForm.valid) {
       // Retrieve regId values from session storage
-      const selectedAstrologer = JSON.parse(sessionStorage.getItem('selectedAstrologer')!);
+      const selectedAstrologer = sessionStorage.getItem('astrologerRegId');
       const currentUser = JSON.parse(sessionStorage.getItem('currentUser')!);
 
       // Construct the feedback object
@@ -111,6 +111,8 @@ export class FeedbackFormComponent implements OnInit {
     }
   }
   createFeedback(feedback: any): Observable<any> {
+    console.log(feedback);
+    
     return this.http.post<any>(this.apiUrl, feedback);
   }
 }
