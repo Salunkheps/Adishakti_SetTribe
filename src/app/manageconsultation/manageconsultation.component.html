@@ -14,6 +14,7 @@
       <li><a routerLink="/manage-astro-feedback" routerLinkActive="active"><i class="bi bi-chat-dots-fill"></i> Astrologer Feedback</a></li>
       <li><a href="#" (click)="logout($event)"><i class="bi bi-power"></i> Logout</a></li>
     </ul>
+    
   </nav>
 
   <div class="main-content">
@@ -24,12 +25,15 @@
     </div>
 
     <div class="container mt-4">
+     
+     
       <!-- Table to display the consultation rates -->
       <table class="table table-hover table-striped" *ngIf="consultationPrices.length > 0">
         <thead style="background-color: #4c70ba; color: white;">
           <tr>
             <th>Sr No</th>
             <th>Astrologer Name</th>
+            <!-- <th>Astrologer ID</th> -->
             <th>Rate per Minute (INR)</th>
             <th>Mobile Number</th>
             <th>Status</th>
@@ -40,35 +44,31 @@
           <tr *ngFor="let consultation of consultationPrices; let i = index">
             <td>{{ i + 1 }}</td> <!-- Serial number -->
             <td>{{ consultation.firstName }} {{ consultation.lastName }}</td> <!-- Astrologer name -->
+            <!-- <td>{{ consultation.regId }}</td>  -->
             <td>₹{{ consultation.ratePerMinute }}</td> <!-- Rate per minute -->
             <td>{{ consultation.mobile }}</td> <!-- Astrologer mobile number -->
             <td>{{ consultation.rpmStatus }}</td> <!-- Status -->
             <td>
-              <!-- Show Reject button if approved -->
-              <button *ngIf="consultation.rpmStatus === 'Approved'" 
-                      class="btn btn-danger btn-sm" 
-                      (click)="rejectConsultation(consultation)">
-                <i class="fa fa-times" style="font-size: 20px;"></i> Reject
-              </button>
+              <!-- Approve Button -->
+<button [ngClass]="{
+  'btn-success': consultation.status === 'approved',
+  'btn-warning': consultation.status === 'pending',
+  'btn-danger': consultation.status !== 'pending' && consultation.status !== 'approved'
+}" class="btn btn-sm" (click)="approveConsultation(consultation)">
+<i class="fa fa-check " style="font-size: 18px;"></i>
 
-              <!-- Show Approve button if rejected -->
-              <button *ngIf="consultation.rpmStatus === 'Rejected'" 
-                      class="btn btn-success btn-sm" 
-                      (click)="approveConsultation(consultation)">
-                <i class="fa fa-check" style="font-size: 18px;"></i> Approve
-              </button>
+</button>
 
-              <!-- Show both buttons if the status is pending -->
-              <button *ngIf="consultation.rpmStatus === 'pending'" 
-                      class="btn btn-warning btn-sm" 
-                      (click)="approveConsultation(consultation)">
-                <i class="fa fa-check" style="font-size: 18px;"></i> Approve
-              </button>
-              <button *ngIf="consultation.rpmStatus === 'pending'" 
-                      class="btn btn-danger btn-sm" 
-                      (click)="rejectConsultation(consultation)">
-                <i class="fa fa-times" style="font-size: 20px;"></i> Reject
-              </button>
+<!-- Reject Button -->
+<button [ngClass]="{
+  'btn-danger': consultation.status === 'rejected',
+  'btn-warning': consultation.status === 'pending',
+  'btn-success': consultation.status !== 'rejected' && consultation.status !== 'pending'
+}" class="btn btn-sm" (click)="rejectConsultation(consultation)">
+<i class="fa fa-times" style="font-size: 20px;"></i>
+
+</button>
+
             </td>
           </tr>
         </tbody>
