@@ -17,6 +17,12 @@
   cursor: pointer;
 }
 
+label
+{
+  font-weight: bold;
+  color: black;
+}
+
 #sbtn{
   margin-left: -1px;
 }

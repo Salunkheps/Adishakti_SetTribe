@@ -152,13 +152,55 @@ export class ManageBlogsComponent implements OnInit {
       console.error('Blog ID is undefined:', blog);
       return; // Early return to prevent the API call
     }
-    this.blogService.approveBlog(blog.id).subscribe(() => {
-      console.log('Blog approved:', blog.title);
-      Swal.fire("Blog has been approved!");
-      this.fetchBlogs(); // Refresh the list after approval
-      window.location.reload(); // Reload the page after approval
+  
+    Swal.fire({
+      title: 'Are you sure?',
+      text:` Do you want to approve the blog titled "${blog.title}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, approve it!',
+      cancelButtonText: 'Cancel',
+      backdrop: true,
+      allowOutsideClick: false,
+      preConfirm: () => {
+        Swal.fire({
+          title: 'Processing...',
+          html: 'Please wait while the blog is being approved.',
+          allowOutsideClick: false,
+          willOpen: () => {
+            Swal.showLoading(); // Show loading spinner while processing
+          }
+        });
+  
+        // Simulate async operation (e.g., API call)
+        return this.blogService.approveBlog(blog.id).toPromise().then(
+          () => {
+            Swal.fire({
+              title: 'Approved!',
+              text: 'The blog has been successfully approved.',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              this.fetchBlogs(); // Refresh the list after approval
+              window.location.reload(); // Reload the page after approval
+            });
+          },
+          (error) => {
+            console.error('Error approving blog:', error);
+            Swal.fire({
+              title: 'Error!',
+              text: 'There was an issue approving the blog. Please try again.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+          }
+        );
+      }
     });
   }
+  
 
   rejectBlog(blog: Blog): void {
     if (!blog || !blog.id) {

@@ -12,12 +12,9 @@ import { WebSocketService } from '../web-socket.service';
 })
 export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
 
-  clients = [
-    { id: 1, firstName: 'Alice', lastName: 'Smith', image: 'path/to/alice.png', lastMessage: 'Hello!' },
-  ];
 
-  selectedClient: any = this.clients[0];
-  messages: any[] = [];
+  clients: any[] = [];
+  selectedClient: any;  messages: any[] = [];
   newMessage: string = '';
   isTyping: boolean = false;
   userDetails: any;
@@ -25,7 +22,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
 
   chatSessionId: string | null = null; // Store sessionId from session storage
   userRegId: string = ''; // User's regId, fetched from the backend using chat session ID
-  astrologerRegId: string = ''; // Astrologer's regId from session storage
+  astrologerRegId: string  | null = null; // Astrologer's regId from session storage
   countdown: number = 0;
   countdownInterval: any;
   selectedMinutes: number = 0;
@@ -40,6 +37,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
     const astrologer = JSON.parse(sessionStorage.getItem('astrologer')!);
     this.chatSessionId = sessionStorage.getItem('chatSessionId'); // Load chatSessionId from session storage
     this.loading = false; // Hide loading overlay when ready
+    this.fetchClients();
 
     this.webSocketService.getTimerSubject().subscribe(() => {
       this.startCountdown();
@@ -47,6 +45,14 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
     // Subscribe to message reload events
     this.webSocketService.getMessageSubject().subscribe(() => {
       this.loadMessages();  // Reload messages when a new message is received via WebSocket
+    });
+
+    this.webSocketService.getStopChatSubject().subscribe(() => {
+      this.stopTimer();
+    });
+
+    this.webSocketService.getStopChatSubject().subscribe(() => {
+      this.startTimer();
     });
 
 
@@ -89,7 +95,15 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
       this.countdown = parseInt(savedCountdown, 100);
     }
   }
-
+  startTimer() {
+    console.log('Chat resumed, setting stopChat to false');
+    sessionStorage.setItem('stopChat', 'false');
+  }
+  
+  stopTimer() {
+    console.log('Chat stopped, setting stopChat to true');
+    sessionStorage.setItem('stopChat', 'true');
+  }
 
   // Method to check if both astrologer and user are ready
   checkReadyStatus() {
@@ -161,6 +175,9 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
+
+    this.astrologerRegId = sessionStorage.getItem('regId'); // Assuming the regId is stored as a string
+
     if (this.newMessage.trim() && this.chatSessionId) {
       const messageData = {
         senderRegId: this.astrologerRegId, // Astrologer is the sender
@@ -182,17 +199,31 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
           this.newMessage = ''; // Clear input after sending
           this.scrollToBottom(); // Ensure the view is scrolled to the bottom
         },
-        (error) => {
+        (error) => {  
           console.error('Error sending message:', error);
         }
       );
     }
   }
+  selectClient(client: any) {
+    this.selectedClient = client;
 
+    // Fetch chat messages between the selected client (user) and the astrologer
+    this.fetchChatMessages(client.regId);  // Assuming `regId` is the userRegId
+
+    // Call this if you need to load messages in the UI after fetching them
+    this.loadMessages(); 
+  }
   startCountdown() {
     if (this.countdownInterval) return;
 
     this.countdownInterval = setInterval(() => {
+      const stopChat = sessionStorage.getItem('stopChat');
+      if (stopChat === 'true') {
+        this.stopCountdown(); // Stop the countdown
+        console.log('Countdown stopped because stopChat is true.');
+        return; // Exit the interval if stopChat is true
+      }
       if (this.countdown > 0) {
         this.countdown--;
         sessionStorage.setItem('countdown', this.countdown.toString());
@@ -203,13 +234,19 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  stopCountdown() {
-    if (this.countdownInterval) {
-      clearInterval(this.countdownInterval);
-      this.countdownInterval = null;
-      // sessionStorage.removeItem('countdown');
+  // stopCountdown() {
+  //   if (this.countdownInterval) {
+  //     clearInterval(this.countdownInterval);
+  //     this.countdownInterval = null;
+  //     // sessionStorage.removeItem('countdown');
+  //   }
+  // }
+  //   // Method to stop the countdown
+    stopCountdown() {
+      if (this.countdownInterval) {
+        clearInterval(this.countdownInterval); // Clear the interval to stop the countdown
+      }
     }
-  }
 
   showChatFinishedAlert() {
     Swal.fire({
@@ -250,5 +287,43 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.webSocketService.disconnect(); // Disconnect on component destroy
+  }
+
+  fetchClients() {
+    // Replace 'Devraj_052557' with the astrologer's regId dynamically if necessary
+    const astrologerRegId = 'Devraj_052557'; 
+    const url = `http://localhost:8075/api/chatsessions/astrologer/${astrologerRegId}/distinct-users`;
+
+    this.http.get<any[]>(url).subscribe(
+      (response) => {
+        // Populate clients with the list of users
+        this.clients = response;
+        if (this.clients.length > 0) {
+          // Set the first client as selected by default
+          this.selectedClient = this.clients[0];
+        }
+      },
+      (error) => {
+        console.error('Error fetching clients:', error);
+        Swal.fire('Error', 'Failed to load clients', 'error');
+      }
+    );
+  }
+
+  fetchChatMessages(userRegId: string) {
+    const astrologerRegId = 'Devraj_052557';  // Use astrologer's regId dynamically if needed
+    const url = `http://localhost:8075/api/chatmessages/messages?userRegId=${userRegId}&astrologerRegId=${astrologerRegId}`;
+
+    this.http.get<any[]>(url).subscribe(
+      (response) => {
+        // Assign the response (chat messages) to `chatMessages` array
+        this.messages = response;
+        console.log('Chat messages:', this.messages);
+      },
+      (error) => {
+        console.error('Error fetching chat messages:', error);
+        Swal.fire('Error', 'Failed to load chat messages', 'error');
+      }
+    );
   }
 }

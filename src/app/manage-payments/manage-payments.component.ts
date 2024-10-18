@@ -18,7 +18,7 @@ export class ManagePaymentsComponent implements OnInit {
   ngOnInit(): void {
     this.dtOptions = {
       ajax: (dataTablesParameters: any, callback) => {
-        this.http.get<any[]>('http://localhost:8075/api/payments/pending').subscribe(data => {
+        this.http.get<any[]>('http://localhost:8075/api/payments/all').subscribe(data => {
           // Fetch user details for each payment and store full name in payment object
           const paymentsWithFullNames = data.map(payment => {
             return this.fetchUserDetails(payment.userId).then(fullName => {
@@ -104,7 +104,7 @@ export class ManagePaymentsComponent implements OnInit {
   }
 
   loadPayments(): void {
-    this.http.get<any[]>('http://localhost:8075/api/payments/pending').subscribe((data: any[]) => {
+    this.http.get<any[]>('http://localhost:8075/api/payments/all').subscribe((data: any[]) => {
       this.payments = data;
       this.payments.forEach(payment => {
         const regId = payment.userId;
@@ -114,7 +114,6 @@ export class ManagePaymentsComponent implements OnInit {
       });
     });
   }
-
   fetchUserDetails(regId: string): Promise<string> {
     return new Promise((resolve, reject) => {
       this.http.get<any>(`http://localhost:8075/api/users/regId/${regId}`).subscribe(user => {
@@ -161,7 +160,6 @@ export class ManagePaymentsComponent implements OnInit {
       }
     });
   }
-
   rejectPayment(paymentId: string): void {
     Swal.fire({
       title: 'Are you sure?',
@@ -174,7 +172,6 @@ export class ManagePaymentsComponent implements OnInit {
       cancelButtonText: 'No, go back'
     }).then((result) => {
       if (result.isConfirmed) {
-        // Proceed with rejecting the payment
         this.http.put(`http://localhost:8075/api/payments/reject/${paymentId}`, {}, { responseType: 'text' })
           .subscribe({
           next: (response) => {

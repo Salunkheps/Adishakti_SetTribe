@@ -11,24 +11,17 @@ import { WebSocketService } from '../web-socket.service';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  clients = [
-    { id: 1, firstName: 'Alice', lastName: 'Smith', image: 'path/to/alice.png', lastMessage: 'Hello!' },
-  ];
-
-  selectedClient: any = this.clients[0];
+  astrologers: any[] = []; // To hold the astrologers fetched from the API
+  selectedClient: any = this.astrologers[0];
   messages: any[] = [];
   newMessage: string = '';
   isTyping: boolean = false;
   astrologerDetails: any; // Property to hold astrologer details
-
-
   sessionId: number | null = null; // Store sessionId once it's created
   currentUserRegId: string = ''; // User's regId
   astrologerRegId: string = ''; // Astrologer's regId
   countdown: number = 0; // Timer in seconds
   countdownInterval: any; // Interval for countdown
-
-  // New properties to hold session data
   selectedMinutes: number = 0;
   astrologerFirstName: string = '';
   astrologerLastName: string = '';
@@ -42,6 +35,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.webSocketService.connect(); // Connect to WebSocket on component init
     this.sessionId = sessionStorage.getItem('chatSessionId') ? Number(sessionStorage.getItem('chatSessionId')) : null;
+
+    this.getDistinctAstrologers();
 
     this.loadSessionData(); // Fetch session data from the database
     const selectedMinutes = sessionStorage.getItem('selectedMinutes');
@@ -64,6 +59,14 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.webSocketService.getTimerSubject().subscribe(() => {
       this.startCountdown();
+    });
+
+    this.webSocketService.getStopChatSubject().subscribe(() => {
+      this.stopTimer();
+    });
+
+    this.webSocketService.getStopChatSubject().subscribe(() => {
+      this.startTimer();
     });
 
     // Load countdown from session storage
@@ -90,8 +93,33 @@ export class ChatComponent implements OnInit, OnDestroy {
         // If no existing session, create a new session
       }
     }
-
   }
+  startTimer() {
+    sessionStorage.setItem('stopChat', 'false');
+  }
+  stopTimer() {
+    sessionStorage.setItem('stopChat', 'true');
+  }
+  getDistinctAstrologers() {
+    // Fetch 'currentUser' from session storage
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+    const userId = currentUser.regId; // Extract 'regId' from currentUser
+    if (userId) {
+      // Make the API call using the extracted userId
+      this.http.get<any[]>(`http://localhost:8075/api/chatsessions/user/${userId}/distinct-astrologer`)
+        .subscribe(
+          (data) => {
+            this.astrologers = data;
+          },
+          (error) => {
+            console.error('Error fetching astrologers:', error);
+          }
+        );
+    } else {
+      console.error('User ID not found in session storage');
+    }
+  }
+
   loadSessionData() {
     this.http.get<any>(`http://localhost:8075/api/chatsessions/${this.sessionId}`).subscribe(
       (sessionData) => {
@@ -167,11 +195,15 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
   startCountdown() {
     // Save the countdown in session storage every second
     this.countdownInterval = setInterval(() => {
+      const stopChat = sessionStorage.getItem('stopChat');
+      if (stopChat === 'true') {
+        this.stopCountdown(); // Stop the countdown
+        console.log('Countdown stopped because stopChat is true.');
+        return; // Exit the interval if stopChat is true
+      }
       if (this.countdown > 0) {
         this.countdown--; // Decrease the countdown by 1 second
         sessionStorage.setItem('countdown', this.countdown.toString()); // Save countdown
@@ -180,6 +212,12 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.showChatFinishedAlert(); // Call the SweetAlert method when time is up
       }
     }, 1000);
+  }
+  // Method to stop the countdown
+  stopCountdown() {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval); // Clear the interval to stop the countdown
+    }
   }
 
   showChatFinishedAlert() {
@@ -194,18 +232,75 @@ export class ChatComponent implements OnInit, OnDestroy {
       if (result.isConfirmed) {
         // Navigate to the feedback route
         sessionStorage.removeItem('selectedMinutes');
-        // sessionStorage.removeItem('chatSessionId');
         this.router.navigate(['/feedback']);
       }
     });
   }
 
-  stopCountdown() {
-    if (this.countdownInterval) {
-      clearInterval(this.countdownInterval); // Clear the interval
-      this.countdownInterval = null;
-      sessionStorage.removeItem('countdown'); // Clear countdown from session storage
+  openExtendChat() {
+    // Stop the chat session immediately when the SweetAlert opens
+    if (this.sessionId !== null) {
+      this.stopChatSession(this.sessionId); // Stop the session if sessionId is not null
+    } else {
+      console.error('Session ID is null. Cannot stop the chat session.');
     }
+    Swal.fire({
+      title: 'Enter the number of minutes to extend',
+      input: 'number',
+      inputAttributes: {
+        min: '1',  // Minimum value for minutes
+        max: '60', // Maximum value (optional, set it based on your logic)
+        step: '1'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Extend',
+      cancelButtonText: 'Cancel', // Add cancel button text
+      showLoaderOnConfirm: true,
+      preConfirm: (minutes) => {
+        if (minutes <= 0) {
+          Swal.showValidationMessage('Please enter a valid number of minutes');
+        }
+        return minutes;
+      }
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        this.extendChatSession(result.value);
+      } else if (result.isDismissed) {
+        // If the user clicks the cancel button
+        sessionStorage.setItem('stopChat', 'false');
+      }
+    });
+  }
+
+  extendChatSession(minutes: number) {
+    const apiUrl = `http://localhost:8075/api/chatsessions/extend-chat/minutes/${this.sessionId}`;
+    const body = { extendedMinutes: minutes };  // Your PUT payload
+    this.http.put(apiUrl, body).subscribe(
+      (response) => {
+        Swal.fire('Success', 'Chat session extended by ' + minutes + ' minutes', 'success');
+      },
+      (error) => {
+        Swal.fire('Error', 'Failed to extend chat session', 'error');
+      }
+    );
+  }
+
+  // New method to stop the chat session and save stopChat value in session storage
+  stopChatSession(sessionId: number) {
+    const url = `http://localhost:8075/api/chatsessions/${sessionId}/stop-chat`;
+    this.http.put(url, {}, { responseType: 'text' }).subscribe({
+      next: (response) => {
+        console.log('Chat session stopped:', response);
+        // Store the stopChat value (e.g., true) in session storage
+        sessionStorage.setItem('stopChat', 'true');
+      },
+      error: (error) => {
+        console.error('Error stopping chat session:', error);
+        Swal.fire('Error', 'Failed to stop the chat session', 'error');
+        // Optionally, store stopChat as false if the API call fails
+        sessionStorage.setItem('stopChat', 'false');
+      }
+    });
   }
 
   loadMessages() {
@@ -254,7 +349,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         content: this.newMessage,
         sessionId: this.sessionId,
       };
-
+      
       this.http.post<any>('http://localhost:8075/api/chatmessages/create', messageData).subscribe(
         (message) => {
           this.messages.push({
@@ -267,19 +362,39 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.messages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()); // Sort after adding new message
           this.newMessage = ''; // Clear input after sending
           this.scrollToBottom(); // Ensure the view is scrolled to the bottom
+          console.log("message Data : ",messageData);
+
         },
         (error) => {
           console.error('Error sending message:', error);
         }
-      );
+      );  
     }
   }
 
-  selectClient(client: any) {
-    this.selectedClient = client;
-    this.startSession(); // Start or fetch the session for the selected client
-    this.loadMessages(); // Load messages for the selected client
+  selectAstrologer(astrologer: any) {
+    console.log('Selected astrologer:', astrologer);
+    // Fetch 'currentUser' from session storage
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+    const userRegId = currentUser.regId; // Extract user's regId
+
+    if (userRegId && astrologer.regId) {
+      // Make the API call to fetch chat messages between user and astrologer
+      this.http.get<any[]>(`http://localhost:8075/api/chatmessages/messages?userRegId=${userRegId}&astrologerRegId=${astrologer.regId}`)
+        .subscribe(
+          (messages) => {
+            console.log('Fetched chat messages:', messages);
+            this.messages = messages; // Store the chat messages in a variable
+          },
+          (error) => {
+            console.error('Error fetching chat messages:', error);
+          }
+        );
+    } else {
+      console.error('User ID or astrologer ID is missing');
+    }
   }
+
   formatCountdown(): string {
     const minutes: number = Math.floor(this.countdown / 60);
     const seconds: number = this.countdown % 60;

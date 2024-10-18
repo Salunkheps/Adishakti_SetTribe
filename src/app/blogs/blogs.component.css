@@ -225,7 +225,7 @@ h1 {
 }
 
 .pkk span:hover {
-  color: rgb(141, 132, 132);
+  color: rgb(141,132,132);
 }
 .blog-card {
   background-color: #f9f9f9;
@@ -270,20 +270,21 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  justify-content: center; /* Horizontally center content */
+  align-items: center;     /* Vertically center content */
+  z-index: 999;
 }
 
 .popup-content {
-  background-color: #fff;
+  background-color: white;
   padding: 20px;
-  width: 60%;
+  max-width: 80%;
   max-height: 80%;
   overflow-y: auto;
-  border-radius: 10px;
+  border-radius: 8px;
+  text-align: center; /* Center text and content */
   position: relative;
 }
 
@@ -297,13 +298,23 @@ h1 {
 
 .close {
   position: absolute;
-  top: 10px;
-  right: 20px;
+  top: 2px;
+  right: 6px;
   font-size: 24px;
   cursor: pointer;
+  color: red;
 }
 
 .close:hover {
   color: red;
 }
 
+/* Popup Blog Image Styling */
+.popup-blog-image {
+  width: 100%;
+  max-width: 400px; /* Set a maximum width for the image */
+  height: auto;
+  margin: 0 auto 15px auto; /* Center the image horizontally */
+  display: block;
+  border-radius: 5px;
+}
