@@ -8,7 +8,7 @@
 
 .hs_astro_why_adishakti_img_wrapper img {
   width: 660px;
-  height: 80%; /* Ensure proportion with content */
+  height: 62%; /* Ensure proportion with content */
   object-fit: cover; /* Keep aspect ratio */
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(134, 70, 156, 0.2); /* Soft purple shadow */
@@ -48,13 +48,15 @@
 .hs_astro_why_adishakti_cont_wrapper ul {
   list-style: none;
   padding: 0;
-  margin-bottom: 20%;
+  margin-bottom: 60%;
+  margin-top: -30px;
+  
 }
 
 .hs_astro_why_adishakti_cont_wrapper ul li {
   font-size: 18px;
   color: white;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
   transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;

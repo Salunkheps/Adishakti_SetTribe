@@ -1,5 +1,4 @@
 <app-navbar></app-navbar>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,9 +48,7 @@
     <i class="fa fa-book fa-lg" aria-hidden="true"></i> Education
   </a>
 </div>
-
   </nav>
-
   <!-- Blog Display Area -->
   <div class="blogs" style="margin-left:300px">
     <div class="one">
@@ -72,15 +69,16 @@
       </div>
     </div>
   </div>
-
-  <!-- Popup Modal -->
-  <div class="popup-modal" *ngIf="selectedBlog" (click)="closePopup($event)">
-    <div class="popup-content" (click)="$event.stopPropagation()">
-      <span class="close" (click)="closePopup()">&times;</span>
-      <h2>{{ selectedBlog.title }}</h2>
-      <p>{{ selectedBlog.content }}</p>
-    </div>
+ <!-- Popup Modal -->
+<div class="popup-modal" *ngIf="selectedBlog" (click)="closePopup($event)">
+  <div class="popup-content" (click)="$event.stopPropagation()">
+    <span class="close" (click)="closePopup()">&times;</span>
+    <!-- Display blog image in the popup -->
+    <img [src]="selectedBlog.imageUrl" alt="Blog Image" class="popup-blog-image" />
+    <h2>{{ selectedBlog.title }}</h2>
+    <p>{{ selectedBlog.content }}</p>
   </div>
+</div>
 
   <app-footer2></app-footer2>
 </body>

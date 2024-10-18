@@ -11,10 +11,10 @@
     </div>
     
     <div class="chat-list">
-      <div class="chat-item active" *ngFor="let client of clients" >
-        <!-- (click)="selectClient(client)" -->
+      <div class="chat-item active" *ngFor="let client of clients" (click)="selectClient(client)">
+
         <div class="chat-info">
-          <div class="name">{{ userDetails?.firstName }} {{ userDetails?.lastName }}</div>
+          <div class="name">{{ client.firstName }} {{ client.lastName }}</div>
           <div class="message">{{ client.lastMessage }}</div>
         </div>
         <div class="time">22:00</div>

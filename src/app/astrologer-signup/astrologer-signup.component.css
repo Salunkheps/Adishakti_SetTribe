@@ -223,48 +223,42 @@ body {
   color: red;
 }
 
-/* Main Heading Style */
-h3 {
-  position: relative;
-  padding: 0;
-  margin: 0;
-  font-family: "Raleway", sans-serif;
-  font-weight: 300;
-  font-size: 40px;
-  color: #080808;
-  transition: all 0.4s ease 0s;
+h2 {
+  font-size: 30px;
+  color: #0F0F8F;
+  text-align: center; /* Center the text */
 }
 
-/* Heading Style with Underline */
-.one h3 {
-  text-align: center;
-  /* text-transform: uppercase; */
+/* Decorative elements for the heading */
+.one h2 {
+  text-transform: uppercase;
   padding-bottom: 5px;
+  margin-bottom: 5%; /* Adjust the bottom margin */
+  position: relative;
 }
 
-.one h3:before {
-  width: 28px;
-  height: 5px;
-  display: block;
+.one h2:before,
+.one h2:after {
   content: "";
   position: absolute;
-  bottom: 3px;
-  left: 50%;
-  margin-left: -14px;
   background-color: #b80000;
+  left: 50%; /* Center the pseudo-elements */
+  transform: translateX(-50%);
 }
 
-.one h3:after {
+.one h2:before {
+  width: 28px;
+  height: 5px;
+  bottom: -10px; /* Adjust the distance from the heading */
+}
+
+.one h2:after {
   width: 100px;
   height: 1px;
-  display: block;
-  content: "";
-  position: relative;
-  margin-top: 25px;
-  left: 50%;
-  margin-left: -50px;
-  background-color: #b80000;
+  top: 100%; /* Place below the heading */
+  margin-top: 7px;
 }
+
 
 /* Responsive Styles */
 @media (max-width: 768px) {

@@ -95,3 +95,40 @@
   text-decoration: underline;
   color: #F9DA82; /* Hover color */
 }
+
+/* Ensure the bottom footer has a white text color */
+.hs_bottom_footer_main_wrapper {
+  padding: 10px 0; /* Reduced padding to decrease height */
+  background-color: #420e57; /* Set to your desired background color */
+  /* position: fixed; */
+  width: 100%;
+  bottom: 0;
+}
+
+.footer_bottom_cont_wrapper p {
+  color: #ffffff; /* Text color */
+  font-size: 12px; /* Reduced font size */
+  margin: 0; /* Remove default margin */
+}
+
+.footer_bottom_list_wrapper ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 10px; /* Reduced gap */
+  margin: 0;
+}
+
+.footer_bottom_list_wrapper ul li {
+  margin: 0;
+}
+
+.footer_bottom_list_wrapper ul li a {
+  color: #ffffff; /* Link color */
+  text-decoration: none;
+}
+
+.footer_bottom_list_wrapper ul li a:hover {
+  text-decoration: underline;
+  color: #f9da82; /* Hover color */
+}

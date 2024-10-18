@@ -1,0 +1,122 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .alert {
+    position: relative;
+    top: 10;
+    left: 0;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    margin: 10px;
+    line-height: 1.8;
+    border-radius: 5px;
+    cursor: hand;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-weight: 400;
+  }
+  
+  .warning {
+    background-color: #FDF7DF;
+    border: 1px solid #FEEC6F;
+    color: #C9971C;
+  }
+  
+  .payment-card {
+    background-color: #ffffff;
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Slightly deeper shadow */
+    width: 100%;
+    max-width: 400px; /* Maximum width */
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 20px; /* Margin around the card */
+    overflow: hidden;
+    margin-left: 550px; /* Ensure content does not overflow */
+  }
+  
+  .payment-card img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    max-height: 400px; /* Maximum height to avoid overflow */
+    object-fit: contain; /* Ensure the image scales properly without cropping */
+  }
+  
+  .payment-card h2 {
+    font-size: 26px; /* Larger font size for the heading */
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333; /* Darker color for better contrast */
+  }
+  
+  .payment-card p {
+    font-size: 20px; /* Slightly larger font size for payment details */
+    margin: 16px 0;
+    color: #666; /* Slightly lighter color */
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .logo img {
+    height: 50px;
+    width: 50px; /* Consistent width with height */
+    margin-right: 10px;
+  }
+  
+  .logo h6 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px; /* Adjusted font size */
+    font-weight: 400; /* Normal weight */
+    margin: 0;
+    color: #007bff; /* Matching color with button */
+    text-decoration: underline; /* Underlined text for emphasis */
+  }
+  
+  button {
+    margin-top: 20px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 18px; /* Slightly larger font size */
+    transition: background-color 0.3s ease; /* Smooth color transition */
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  @media (max-width: 768px) {
+    .payment-card {
+      width: 90%; /* Adjust width for smaller screens */
+      padding: 15px; /* Adjust padding for smaller screens */
+    }
+  
+    .payment-card h2 {
+      font-size: 22px; /* Adjust font size for smaller screens */
+    }
+  
+    .payment-card p {
+      font-size: 18px; /* Adjust font size for smaller screens */
+    }
+  
+    button {
+      width: 100%; /* Make button full-width on smaller screens */
+      padding: 14px 0; /* Adjust padding for better touch targets */
+    }
+  }
+  

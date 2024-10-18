@@ -107,12 +107,31 @@ export class ManageSkillsComponent implements OnInit {
       }
 
       const skill = { skillname: this.newSkillName }; // Create skill object
+
+      Swal.fire({
+        title: 'Adding Skill...',
+        html: 'Please wait while the skill is being added.',
+        allowOutsideClick: false,
+        willOpen: () => {
+          Swal.showLoading(); // Show loading spinner
+        }
+      });
+
       this.http.post<any>(this.apiUrl, skill).subscribe((createdSkill) => {
         // Push the new skill into the local array for immediate update in the UI
         this.skills.push(createdSkill);
         this.resetForm(); // Reset the form after adding the skill
-        Swal.fire("Skill added!");
-        window.location.reload(); 
+
+        // Show success message after the skill is added
+        Swal.fire({
+          title: 'Skill Added!',
+          text: 'The skill has been added successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.getAllSkills(); // Refresh the skills list
+          window.location.reload(); // Reload the page after adding the skill
+        });
       }, (error) => {
         console.error("Error adding skill:", error);
         Swal.fire({
@@ -127,7 +146,7 @@ export class ManageSkillsComponent implements OnInit {
   deleteSkill(index: number): void {
     if (index >= 0 && index < this.skills.length) {
       const skill = this.skills[index];
-
+  
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -144,10 +163,16 @@ export class ManageSkillsComponent implements OnInit {
               title: "Deleted!",
               text: "The skill has been deleted.",
               icon: "success"
+            }).then(() => {
+              window.location.reload(); // Refresh the page after deletion
             });
-            window.location.reload(); // Refresh the page after deletion
           }, (error) => {
             console.error("Error deleting skill:", error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: 'There was an issue deleting the skill. Please try again.',
+            });
           });
         }
       });
@@ -163,25 +188,39 @@ export class ManageSkillsComponent implements OnInit {
     this.editIndex = index;
   }
 
-  // Update the skill via API
-  updateSkill(): void {
-    if (this.newSkillName && this.editIndex !== -1) {
-      const skill = { id: this.skills[this.editIndex].id, skillname: this.newSkillName };
-      this.http.put(`${this.apiUrl}/${skill.id}`, skill).subscribe(() => {
-        Swal.fire("Skill has been updated!");
-        window.location.reload();
-        this.getAllSkills(); // Reload the skills after updating
-        this.resetForm();
-      }, (error) => {
-        console.error("Error updating skill:", error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error!',
-          text: 'There was an issue updating the skill. Please try again.',
+ // Update the skill via API
+updateSkill(): void {
+  if (this.newSkillName && this.editIndex !== -1) {
+    const skill = { id: this.skills[this.editIndex].id, skillname: this.newSkillName };
+    
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to update this skill?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, update it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.http.put(`${this.apiUrl}/${skill.id}`, skill).subscribe(() => {
+          Swal.fire("Skill has been updated!").then(() => {
+            window.location.reload();
+            this.getAllSkills(); // Reload the skills after updating
+            this.resetForm();
+          });
+        }, (error) => {
+          console.error("Error updating skill:", error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'There was an issue updating the skill. Please try again.',
+          });
         });
-      });
-    }
+      }
+    });
   }
+}
 
   // Reset form fields
   resetForm(): void {

@@ -9,15 +9,16 @@
     <div class="search-bar">
       <input placeholder="Search" type="text" />
     </div>
-    
+
     <div class="chat-list">
-      <div class="chat-item active" *ngFor="let client of clients" (click)="selectClient(client)">
-       
+      <div class="chat-item active" *ngFor="let astrologer of astrologers" (click)="selectAstrologer(astrologer)">
+
         <div class="chat-info">
-          <div class="name">{{ this.astrologerFirstName }} {{ this.astrologerLastName }}</div>
-          <div class="message">{{ client.lastMessage }}</div>
+          <div class="name">{{ astrologer.firstName }} {{ astrologer.lastName }}</div>
+          <div class="message">{{ astrologer.lastMessage }}</div> <!-- You can populate lastMessage as needed -->
         </div>
         <div class="time">22:00</div>
+
       </div>
     </div>
   </div>
@@ -25,19 +26,21 @@
   <div class="chat-window">
     <div class="chat-header">
       <!-- <img [src]="selectedClient.image" alt="User profile picture" height="40" width="40" /> -->
-      <div class="name" *ngIf="astrologerDetails">{{ astrologerDetails.firstName }} {{ astrologerDetails.lastName }}</div>
+      <div class="name" *ngIf="astrologerDetails">{{ astrologerDetails.firstName }} {{ astrologerDetails.lastName }}
+      </div>
       <div *ngIf="countdown > 0">
         Time Remaining: {{ formatCountdown() }}
       </div>
-      <div class="icons">
-        <i class="fas fa-phone"></i>
-        <i class="fas fa-video"></i>
-        <i class="fas fa-ellipsis-h"></i>
+      <div class="icons" *ngIf="countdown <= 60 && countdown > 0">
+        <!-- <div class="icons" *ngIf="countdown <= 60"> -->
+        <button class="btn-extend-chat" (click)="openExtendChat()">Extend Chat</button>
       </div>
     </div>
 
     <div class="chat-messages">
-      <div *ngFor="let message of messages" [ngClass]="{'sent': message.isSender, 'received': !message.isSender}" class="message">
+      <div *ngFor="let message of messages" [ngClass]="{'sent': message.isSender, 'received': !message.isSender}"
+        class="message">
+        
         <div class="text">{{ message.content }}</div>
         <div class="time">{{ message.time }}</div>
       </div>

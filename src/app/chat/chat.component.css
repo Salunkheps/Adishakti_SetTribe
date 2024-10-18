@@ -115,6 +115,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #f5f7fb;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .chat-header {
@@ -146,23 +147,28 @@ body {
 .chat-messages {
   flex: 1;
   padding: 20px;
-  overflow-y: auto;
+  overflow-y:auto;
+  /* width: 100vh; */
 }
 
 .chat-messages .message {
   margin-bottom: 20px;
+  
 }
 
 .chat-messages .message.sent {
-  text-align: right;
+  text-align: right;  
 }
 
 .chat-messages .message .text {
+  text-align: left;
   display: inline-block;
   padding: 10px 20px;
   border-radius: 20px;
   background-color: #e6f0ff;
-  max-width: 60%;
+  max-width: 60%; /* Limit the width of the text bubble */
+  word-wrap: break-word; /* Ensure long words wrap onto the next line */
+  white-space: pre-wrap; /* Preserve whitespace and ensure text wraps correctly */
 }
 
 .chat-messages .message.sent .text {
@@ -190,4 +196,39 @@ body {
   color: #4a90e2;
   font-size: 24px;
   cursor: pointer;
+}
+
+.btn-extend-chat {
+  background-color: #008cba;
+}
+
+.btn-extend-chat:hover {
+  background-color: #005f73;
+  transform: translateY(-2px);
+}
+
+.btn-extend-chat{
+  padding: 12px 24px; /* Increased padding for buttons */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.user-message {
+  background-color: #d1f1d1;
+  text-align: right;
+}
+
+.astrologer-message {
+  background-color: #f1d1d1;
+  text-align: left;
+}
+
+.message-content {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 10px;
 }
