@@ -159,6 +159,10 @@ body {
 .chat-messages .message.sent {
   text-align: right;  
 }
+.chat-messages .message.received {
+  text-align: left; /* Align the astrologer's messages to the left */
+}
+
 
 .chat-messages .message .text {
   text-align: left;
@@ -174,6 +178,14 @@ body {
 .chat-messages .message.sent .text {
   background-color: #4a90e2;
   color: #fff;
+}
+
+.chat-messages .message.sent .time {
+  text-align: right; /* Time on the right for sent messages */
+}
+
+.chat-messages .message.received .time {
+  text-align: left; /* Time on the left for received messages */
 }
 
 .chat-input {
@@ -196,4 +208,39 @@ body {
   color: #4a90e2;
   font-size: 24px;
   cursor: pointer;
+}
+
+.btn-extend-chat {
+  background-color: #008cba;
+}
+
+.btn-extend-chat:hover {
+  background-color: #005f73;
+  transform: translateY(-2px);
+}
+
+.btn-extend-chat{
+  padding: 12px 24px; /* Increased padding for buttons */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.user-message {
+  background-color: #d1f1d1;
+  text-align: right;
+}
+
+.astrologer-message {
+  background-color: #f1d1d1;
+  text-align: left;
+}
+
+.message-content {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 10px;
 }

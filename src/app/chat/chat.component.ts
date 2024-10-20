@@ -11,6 +11,7 @@ import { WebSocketService } from '../web-socket.service';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit, OnDestroy {
+  [x: string]: any;
   astrologers: any[] = []; // To hold the astrologers fetched from the API
   selectedClient: any = this.astrologers[0];
   messages: any[] = [];
@@ -25,16 +26,20 @@ export class ChatComponent implements OnInit, OnDestroy {
   selectedMinutes: number = 0;
   astrologerFirstName: string = '';
   astrologerLastName: string = '';
+  isPaymentMade: boolean = false;
+  selectedAstrologer: any; // Selected astrologer
 
   constructor(private chatService: ChatService, private http: HttpClient, private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef) {
     this.webSocketService.connect(); // Connect to WebSocket on component init
-
   }
 
 
   ngOnInit(): void {
     this.webSocketService.connect(); // Connect to WebSocket on component init
     this.sessionId = sessionStorage.getItem('chatSessionId') ? Number(sessionStorage.getItem('chatSessionId')) : null;
+    this.astrologerRegId = sessionStorage.getItem('astrologerRegId') || '';
+
+    this.selectedAstrologer = { regId: (this.astrologerRegId = sessionStorage.getItem('astrologerRegId') || '') };
 
     this.getDistinctAstrologers();
 
@@ -138,6 +143,8 @@ export class ChatComponent implements OnInit, OnDestroy {
           firstName: this.astrologerFirstName,
           lastName: this.astrologerLastName
         };
+
+        sessionStorage.setItem('astrologerRegId', this.astrologerRegId);
 
         this.loadMessages();
         this.checkReadyStatus();
@@ -349,7 +356,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         content: this.newMessage,
         sessionId: this.sessionId,
       };
-      
+
       this.http.post<any>('http://localhost:8075/api/chatmessages/create', messageData).subscribe(
         (message) => {
           this.messages.push({
@@ -362,29 +369,41 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.messages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()); // Sort after adding new message
           this.newMessage = ''; // Clear input after sending
           this.scrollToBottom(); // Ensure the view is scrolled to the bottom
-          console.log("message Data : ",messageData);
+          console.log("message Data : ", messageData);
 
         },
         (error) => {
           console.error('Error sending message:', error);
         }
-      );  
+      );
     }
   }
 
   selectAstrologer(astrologer: any) {
+    this.selectedAstrologer = astrologer;
+    this.astrologerDetails = {
+      firstName: astrologer.firstName,
+      lastName: astrologer.lastName,
+    };
+
     console.log('Selected astrologer:', astrologer);
-    // Fetch 'currentUser' from session storage
     const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
     const userRegId = currentUser.regId; // Extract user's regId
 
     if (userRegId && astrologer.regId) {
-      // Make the API call to fetch chat messages between user and astrologer
       this.http.get<any[]>(`http://localhost:8075/api/chatmessages/messages?userRegId=${userRegId}&astrologerRegId=${astrologer.regId}`)
         .subscribe(
           (messages) => {
-            console.log('Fetched chat messages:', messages);
-            this.messages = messages; // Store the chat messages in a variable
+            this.messages = messages
+              .map((msg) => ({
+                content: msg.content,
+                time: new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                isSender: msg.senderRegId === this.currentUserRegId,
+                timestamp: new Date(msg.timestamp) // Store the timestamp for sorting
+              }))
+              .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()); // Sort based on timestamp
+            this.cdr.detectChanges(); // Add this line        this.scrollToBottom();
+            this.scrollToBottom();
           },
           (error) => {
             console.error('Error fetching chat messages:', error);
@@ -393,6 +412,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     } else {
       console.error('User ID or astrologer ID is missing');
     }
+  }
+
+  isPaymentMadeForSelectedAstrologer(): boolean {
+    return this.selectedAstrologer?.regId === this.astrologerRegId;
   }
 
   formatCountdown(): string {

@@ -14,7 +14,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
 
 
   clients: any[] = [];
-  selectedClient: any;  messages: any[] = [];
+  selectedClient: any; messages: any[] = [];
   newMessage: string = '';
   isTyping: boolean = false;
   userDetails: any;
@@ -22,10 +22,11 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
 
   chatSessionId: string | null = null; // Store sessionId from session storage
   userRegId: string = ''; // User's regId, fetched from the backend using chat session ID
-  astrologerRegId: string  | null = null; // Astrologer's regId from session storage
+  astrologerRegId: string | null = null; // Astrologer's regId from session storage
   countdown: number = 0;
   countdownInterval: any;
   selectedMinutes: number = 0;
+  selectedClientRegId: string | null = null;
 
   constructor(private chatService: ChatService, private http: HttpClient, private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef) {
     this.webSocketService.connect(); // Connect to WebSocket on component init
@@ -45,6 +46,8 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
     // Subscribe to message reload events
     this.webSocketService.getMessageSubject().subscribe(() => {
       this.loadMessages();  // Reload messages when a new message is received via WebSocket
+      this.cdr.detectChanges();  // Ensure UI updates when new messages are received via WebSocket
+
     });
 
     this.webSocketService.getStopChatSubject().subscribe(() => {
@@ -99,7 +102,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
     console.log('Chat resumed, setting stopChat to false');
     sessionStorage.setItem('stopChat', 'false');
   }
-  
+
   stopTimer() {
     console.log('Chat stopped, setting stopChat to true');
     sessionStorage.setItem('stopChat', 'true');
@@ -151,7 +154,6 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
             }))
             .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()); // Sort based on timestamp
           this.cdr.detectChanges(); // Add this line
-
           this.scrollToBottom(); // Ensure the view is scrolled to the bottom to show the latest message
         },
         (error) => {
@@ -196,23 +198,19 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
 
           });
           this.messages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()); // Sort after adding new message
+          this.cdr.detectChanges(); // Add this line
           this.newMessage = ''; // Clear input after sending
           this.scrollToBottom(); // Ensure the view is scrolled to the bottom
         },
-        (error) => {  
+        (error) => {
           console.error('Error sending message:', error);
         }
       );
     }
   }
-  selectClient(client: any) {
-    this.selectedClient = client;
-
-    // Fetch chat messages between the selected client (user) and the astrologer
-    this.fetchChatMessages(client.regId);  // Assuming `regId` is the userRegId
-
-    // Call this if you need to load messages in the UI after fetching them
-    this.loadMessages(); 
+  selectClient(clientRegId: any) {
+    this.selectedClientRegId = clientRegId;
+    this.fetchChatMessages(clientRegId);  // Assuming `regId` is the userRegId   
   }
   startCountdown() {
     if (this.countdownInterval) return;
@@ -242,11 +240,11 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
   //   }
   // }
   //   // Method to stop the countdown
-    stopCountdown() {
-      if (this.countdownInterval) {
-        clearInterval(this.countdownInterval); // Clear the interval to stop the countdown
-      }
+  stopCountdown() {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval); // Clear the interval to stop the countdown
     }
+  }
 
   showChatFinishedAlert() {
     Swal.fire({
@@ -291,7 +289,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
 
   fetchClients() {
     // Replace 'Devraj_052557' with the astrologer's regId dynamically if necessary
-    const astrologerRegId = 'Devraj_052557'; 
+    const astrologerRegId = sessionStorage.getItem('regId');
     const url = `http://localhost:8075/api/chatsessions/astrologer/${astrologerRegId}/distinct-users`;
 
     this.http.get<any[]>(url).subscribe(
@@ -310,15 +308,25 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
     );
   }
 
-  fetchChatMessages(userRegId: string) {
-    const astrologerRegId = 'Devraj_052557';  // Use astrologer's regId dynamically if needed
-    const url = `http://localhost:8075/api/chatmessages/messages?userRegId=${userRegId}&astrologerRegId=${astrologerRegId}`;
+  fetchChatMessages(clientRegId: string) {
+    const astrologerRegId = sessionStorage.getItem('regId');
+    console.log('Astrologer regId:', astrologerRegId);
+
+
+    const url = `http://localhost:8075/api/chatmessages/messages?userRegId=${clientRegId}&astrologerRegId=${astrologerRegId}`;
 
     this.http.get<any[]>(url).subscribe(
-      (response) => {
-        // Assign the response (chat messages) to `chatMessages` array
-        this.messages = response;
-        console.log('Chat messages:', this.messages);
+      (messages) => {
+        this.messages = messages
+          .map((msg) => ({
+            content: msg.content,
+            time: new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            isSender: msg.senderRegId === this.astrologerRegId,
+            timestamp: new Date(msg.timestamp) // Store the timestamp for sorting
+          }))
+          .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()); // Sort based on timestamp
+        this.cdr.detectChanges(); 
+        this.scrollToBottom();
       },
       (error) => {
         console.error('Error fetching chat messages:', error);
