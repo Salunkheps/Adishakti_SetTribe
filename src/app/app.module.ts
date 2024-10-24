@@ -53,6 +53,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ManageconsultationComponent } from './manageconsultation/manageconsultation.component';
 import { ManageAstroFeedbackComponent } from './manage-astro-feedback/manage-astro-feedback.component';
 import { PaymentToExtendChatComponent } from './payment-to-extend-chat/payment-to-extend-chat.component';
+import { BookingComponent } from './booking/booking.component';
 
 
 
@@ -84,11 +85,8 @@ import { PaymentToExtendChatComponent } from './payment-to-extend-chat/payment-t
     AstroProfileComponent,
     ClientListComponent,
     AstroReportComponent,
-    
     InsertblogComponent,
-
     CallWithAstrologerComponent,
-
     AstrologerLoginComponent,
     ManageAstrologersComponent,
     ManageUsersComponent,
@@ -107,7 +105,7 @@ import { PaymentToExtendChatComponent } from './payment-to-extend-chat/payment-t
     ManageconsultationComponent,
     ManageAstroFeedbackComponent,
     PaymentToExtendChatComponent,
-
+    BookingComponent
 
 
   ],

@@ -47,7 +47,7 @@ export class WebSocketService {
             this.stopChatSubject.next(); // Correct handling of stop message
           } else if (notificationMessage === 'The chat session has resumed.') {
             this.startChatSubject.next(); // Correct handling of resume message
-          } else{
+          } else {
             this.showAlertForAstrologer(message.body); // Show SweetAlert if not "reload"
           }
         });
@@ -79,6 +79,8 @@ export class WebSocketService {
             this.stopChatSubject.next();
           } else if (message.body.startsWith('The chat session has resumed.')) {
             this.startChatSubject.next();
+          } else if (message.body.startsWith('Your chat has been extended by')) {
+            this.NotifyUserChatExtendedByAstrologer(message.body);
           } else {
             this.showAlertForUser(message.body); // Show SweetAlert if not "reload"
           }
@@ -261,6 +263,7 @@ export class WebSocketService {
           confirmButtonText: 'Submit',
           cancelButtonText: 'Cancel',
         }).then((reasonResult) => {
+
           if (reasonResult.isConfirmed) {
             const declineReason = reasonResult.value; // Get the input value
 
@@ -313,10 +316,35 @@ export class WebSocketService {
         // Navigate to the payment page when the user clicks "Proceed to Pay"
         sessionStorage.setItem('chatSessionId', chatSessionId);
         this.router.navigate(['/payment-to-extend-chat']); // Navigate to the payment page
-      } else {
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
         console.log("Payment process was canceled.");
+        this.resumeChat(); // Call the resumeChat method if "Cancel" is clicked
       }
     });
+  }
+
+
+  // New method to resume chat
+  resumeChat() {
+    const chatSessionId = sessionStorage.getItem('chatSessionId');
+    if (chatSessionId) {
+      this.http.put(`http://localhost:8075/api/chatsessions/resume-chat/${chatSessionId}`, {}, { responseType: 'text' })
+        .subscribe(
+          response => {
+            console.log('Chat resumed successfully:', response);
+            // Optionally, you can add logic here to update the UI or notify the user
+            // Swal.fire('Chat Resumed', 'The chat has been resumed successfully.', 'success');
+            // this.checkStopChatStatus();
+          },
+          error => {
+            console.error('Error resuming chat:', error);
+            // Swal.fire('Error', 'Failed to resume the chat. Please try again.', 'error');
+            // this.checkStopChatStatus();
+          }
+        );
+    } else {
+      console.warn('No chat session ID found in session storage.');
+    }
   }
 
   // Disconnect WebSocket
@@ -327,4 +355,19 @@ export class WebSocketService {
       });
     }
   }
+  private NotifyUserChatExtendedByAstrologer(message: string): void {
+    const [msg, chatSessionId, extendedTime] = message.split('|'); // Assuming the extended time is included in the message
+  
+    // Show notification for chat extension
+    Swal.fire({
+      title: 'Chat Extension Approved',
+      text: msg, // Show the extended time in the message
+      icon: 'success',
+      confirmButtonText: 'OK',
+    }).then(() => {
+      // Any additional logic can go here if needed
+    });
+  }
+  
+
 }
