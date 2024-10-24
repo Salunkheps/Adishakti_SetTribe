@@ -17,50 +17,43 @@
       <h4><b>Blog Categories</b></h4>
     </div>
     <div class="w3-bar-block">
-  <!-- Button to fetch all blogs -->
-  <a class="w3-bar-item w3-button w3-padding mt-4" 
-     (click)="getAllBlogs()" 
-     [ngClass]="{'w3-blue': currentCategory === 'all'}">
-    <i class="fa fa-th-large fa-lg" aria-hidden="true"></i> ALL Blogs
-  </a>
-  <!-- Button to fetch Technology blogs -->
-  <a class="w3-bar-item w3-button w3-padding mt-3" 
-     (click)="getTech()" 
-     [ngClass]="{'w3-blue': currentCategory === 'tecnology'}">
-    <i class="fa fa-laptop fa-lg" aria-hidden="true"></i> Technology
-  </a>
-  <!-- Button to fetch Health blogs -->
-  <a class="w3-bar-item w3-button w3-padding mt-3" 
-     (click)="getHealth()" 
-     [ngClass]="{'w3-blue': currentCategory === 'health'}">
-    <i class="fa fa-heartbeat fa-lg" aria-hidden="true"></i> Health
-  </a>
-  <!-- Button to fetch Lifestyle blogs -->
-  <a class="w3-bar-item w3-button w3-padding mt-3" 
-     (click)="getLifestyle()" 
-     [ngClass]="{'w3-blue': currentCategory === 'lifestyle'}">
-    <i class="fa fa-smile-o fa-lg" aria-hidden="true"></i> Lifestyle
-  </a>
-  <!-- Button to fetch Education blogs -->
-  <a class="w3-bar-item w3-button w3-padding mt-3" 
-     (click)="getEducation()" 
-     [ngClass]="{'w3-blue': currentCategory === 'education'}">
-    <i class="fa fa-book fa-lg" aria-hidden="true"></i> Education
-  </a>
-</div>
+      <!-- Button to fetch all blogs -->
+      <a class="w3-bar-item w3-button w3-padding mt-4" (click)="getAllBlogs()" [ngClass]="{'w3-blue': currentCategory === 'all'}">
+        <i class="fa fa-th-large fa-lg" aria-hidden="true"></i> ALL Blogs
+      </a>
+      <!-- Button to fetch Technology blogs -->
+      <a class="w3-bar-item w3-button w3-padding mt-3" (click)="getTech()" [ngClass]="{'w3-blue': currentCategory === 'tecnology'}">
+        <i class="fa fa-laptop fa-lg" aria-hidden="true"></i> Technology
+      </a>
+      <!-- Button to fetch Health blogs -->
+      <a class="w3-bar-item w3-button w3-padding mt-3" (click)="getHealth()" [ngClass]="{'w3-blue': currentCategory === 'health'}">
+        <i class="fa fa-heartbeat fa-lg" aria-hidden="true"></i> Health
+      </a>
+      <!-- Button to fetch Lifestyle blogs -->
+      <a class="w3-bar-item w3-button w3-padding mt-3" (click)="getLifestyle()" [ngClass]="{'w3-blue': currentCategory === 'lifestyle'}">
+        <i class="fa fa-smile-o fa-lg" aria-hidden="true"></i> Lifestyle
+      </a>
+      <!-- Button to fetch Education blogs -->
+      <a class="w3-bar-item w3-button w3-padding mt-3" (click)="getEducation()" [ngClass]="{'w3-blue': currentCategory === 'education'}">
+        <i class="fa fa-book fa-lg" aria-hidden="true"></i> Education
+      </a>
+    </div>
   </nav>
+
   <!-- Blog Display Area -->
   <div class="blogs" style="margin-left:300px">
     <div class="one">
       <h1>{{ currentCategory | titlecase }} Blogs</h1> <!-- Dynamic Category Heading -->
     </div>
-    <div class="w3-row-padding">
+
+    <!-- If there are blogs, display them; otherwise, show a message -->
+    <div *ngIf="blogs.length > 0" class="w3-row-padding">
       <div class="w3-third w3-container w3-margin-bottom" *ngFor="let blog of blogs">
         <div class="blog-card">
           <img [src]="blog.imageUrl" alt="Blog Image" class="blog-image">
           <div class="blog-content">
-            <p><b>{{blog.title}}</b></p>
-            <p>{{blog.content | slice:0:100}}...</p>
+            <p><b>{{ blog.title }}</b></p>
+            <p>{{ blog.content | slice:0:100 }}...</p>
             <div class="view-more">
               <button (click)="openPopup(blog)">View More</button>
             </div>
@@ -68,17 +61,28 @@
         </div>
       </div>
     </div>
+
+    <!-- Display message dynamically when no blogs are available -->
+    <!-- <div *ngIf="blogs.length === 0">
+      <p>No blogs available in the {{ currentCategory | titlecase }} category.</p>
+    </div>
+  </div> -->
+
+     <div *ngIf="blogs.length === 0" class="no-blogs-message">
+      <i class="fa fa-exclamation-circle fa-lg" aria-hidden="true"></i>
+      <p>No blogs available in the {{ currentCategory | titlecase }} category.</p>
+    </div>
   </div>
- <!-- Popup Modal -->
-<div class="popup-modal" *ngIf="selectedBlog" (click)="closePopup($event)">
-  <div class="popup-content" (click)="$event.stopPropagation()">
-    <span class="close" (click)="closePopup()">&times;</span>
-    <!-- Display blog image in the popup -->
-    <img [src]="selectedBlog.imageUrl" alt="Blog Image" class="popup-blog-image" />
-    <h2>{{ selectedBlog.title }}</h2>
-    <p>{{ selectedBlog.content }}</p>
+
+  <!-- Popup Modal -->
+  <div class="popup-modal" *ngIf="selectedBlog" (click)="closePopup($event)">
+    <div class="popup-content" (click)="$event.stopPropagation()">
+      <span class="close" (click)="closePopup()">&times;</span>
+      <img [src]="selectedBlog.imageUrl" alt="Blog Image" class="popup-blog-image" />
+      <h2>{{ selectedBlog.title }}</h2>
+      <p>{{ selectedBlog.content }}</p>
+    </div>
   </div>
-</div>
 
   <app-footer2></app-footer2>
 </body>

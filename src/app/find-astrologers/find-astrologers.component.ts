@@ -47,6 +47,40 @@ export class FindAstrologersComponent implements OnInit, OnDestroy {
     this.filteredAstrologers = this.data;
     this.getAllData();
     this.webSocketService.connect();
+    this.checkBookingStatus();
+  }
+
+
+  checkBookingStatus() {
+    const userRegId = '123'; // Replace with actual userRegId
+    const url = `http://localhost:8075/api/bookings/status/user/${userRegId}`;
+
+    this.http.get(url).subscribe(
+      (response: any) => {
+        if (response.status === 'approved') {
+          // Show SweetAlert immediately after booking approval
+          Swal.fire({
+            icon: 'success',
+            title: 'Booking Approved',
+            text: 'Your Slot Booking request has been accepted!',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            // You can redirect the user or take other actions after OK button is clicked.
+            console.log('User clicked OK');
+          });
+        } else if (response.status === 'rejected') {
+          Swal.fire({
+            icon: 'error',
+            title: 'Booking Rejected',
+            text: 'Your Slot Booking request has been rejected.',
+            confirmButtonText: 'OK'
+          });
+        }
+      },
+      (error) => {
+        console.error('Error fetching booking status', error);
+      }
+    );
   }
 
   bookAstrologer(astrologer: Astrologer): void {

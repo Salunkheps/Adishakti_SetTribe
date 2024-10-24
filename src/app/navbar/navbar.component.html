@@ -1,36 +1,35 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light col">
-    <div>
-      <div class="logo">
-        <img src="\images\header\Guiding_Brilliance-removebg-preview.png" alt="Logo" class="logo-image">
-        <span class="logo-text">Adishakti</span>
-      </div>
+    <div class="logo">
+      <img src="\images\header\Guiding_Brilliance-removebg-preview.png" alt="Logo" class="logo-image">
+      <span class="logo-text">Adishakti</span>
     </div>
-  
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
       aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item" *ngIf="!isLoggedIn">
-          <a class="nav-link" href="/" style="color: white; font-size: 1.0rem;" (click)="onClickHome()">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/" style="color: white; font-size: 1.0rem;" (click)="onClickHome()">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="onClickFindAstrologers()" routerLink="/find-astrologers" style="color: white;font-size: 1.0rem;" 
+          <a class="nav-link" (click)="onClickFindAstrologers()" routerLink="/find-astrologers" style="color: white; font-size: 1.0rem;"
             routerLinkActive="active">Find Astrologer</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/blogs/:id" (click)="onClickBlog()" style="color: white;font-size: 1.0rem;"> Blogs</a>
+          <a class="nav-link" href="/blogs/:id" (click)="onClickBlog()" style="color: white; font-size: 1.0rem;">Blogs</a>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn; else loginDropdown">
-          <a class="nav-link" style="color: white;font-size: 1.0rem;" (click)="logout()">
+          <a class="nav-link" style="color: white; font-size: 1.0rem;" (click)="logout()">
             <i class="fas fa-sign-out-alt"></i> Logout
           </a>
         </li>
         <ng-template #loginDropdown>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" style="color: white;font-size: 1.0rem;" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle" style="color: white; font-size: 1.0rem;" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
               Login As
             </a>

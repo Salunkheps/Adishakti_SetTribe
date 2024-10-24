@@ -63,7 +63,7 @@ export class ManagePaymentsComponent implements OnInit {
         {
           title: 'View',
           render: (data: any, type: any, row: any) => {
-            return `<a href="http://localhost:8075/api/payments/getScreenshotByUserId/${row.userId}" target="_blank" style="text-decoration: none;">View Payment Screenshot</a>`;
+            return `<a href="http://localhost:8075/api/payments/getScreenshotById/${row.id}" target="_blank" style="text-decoration: none;">View Payment Screenshot</a>`;
           },
         },
         {
