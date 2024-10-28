@@ -56,7 +56,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
       this.stopTimer();
     });
 
-    this.webSocketService.getStopChatSubject().subscribe(() => {
+    this.webSocketService.getStartChatSubject().subscribe(() => {
       this.startTimer();
     });
 
@@ -85,7 +85,6 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
           if (savedCountdown) {
             this.countdown = parseInt(savedCountdown, 10); // Parse saved countdown
           }
-          // this.startCountdown();
         },
         (error) => {
           console.error('Error fetching session details:', error);
@@ -231,7 +230,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
         // Check if countdown is less than 70 seconds to start scanning
       if (this.countdown < 70) {
         this.checkStopChatStatus(); // Start scanning for stopChat
-        this.hasCheckedStopChat = true; // Mark that we have checked
+        // this.hasCheckedStopChat = true; // Mark that we have checked
       }
       } else {
         // this.stopCountdown();
@@ -242,7 +241,9 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
     // Start a separate interval to check stopChat every second
     setInterval(() => {
       const stopChat = sessionStorage.getItem('stopChat');
-      if (stopChat === 'false') {
+      const remainingTime = parseInt(sessionStorage.getItem('countdown') || '0', 10);
+
+      if (stopChat === 'false' && remainingTime > 0 && remainingTime < 70) {
         // Resume the countdown if it was previously stopped
         this.resumeChat()
         if (this.countdownInterval === null) { // Check if the countdown is stopped
@@ -299,6 +300,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.webSocketService.disconnect(); // Disconnect on component destroy
+    clearInterval(this.countdownInterval); 
   }
 
   fetchClients() {
@@ -494,7 +496,7 @@ export class ChatAppForAstrologerComponent implements OnInit, OnDestroy {
               }
             },
             (error) => {
-              console.error('Error fetching stopChat status:', error);
+              // console.error('Error fetching stopChat status:', error);
             }
           );
       }, 1000);
