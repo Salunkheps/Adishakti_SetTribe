@@ -152,11 +152,6 @@ export class WebSocketService {
         text: 'Admin has approved the payment and now your chat has been extended.',
         icon: 'info',
         confirmButtonText: 'OK',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          sessionStorage.setItem('stopChat', 'false'); // Set stopChat to false in session storage
-          console.log("Stop chat has been set to false.");
-        }
       });
     }
   }
@@ -189,18 +184,39 @@ export class WebSocketService {
         }
       });
     } else {
-      // If chatSessionId is already present, show a different SweetAlert (ABC)
-      Swal.fire({
-        title: 'Chat Extended',
-        text: 'Admin has approved the payment and now your chat has been Extended.',
-        icon: 'info',
-        confirmButtonText: 'OK',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          sessionStorage.setItem('stopChat', 'false'); // Set stopChat to false in session storage
-          console.log("Stop chat has been set to false.");
+      const apiUrl = `http://localhost:8075/api/chatsessions/${storedChatSessionId}`; // Define API URL
+
+      // Make the HTTP GET request to fetch the chat session
+      this.http.get<any>(apiUrl).subscribe(
+        (response) => {
+          const extendedMinutes = response.extendedMinutes; // Fetch extendedMinutes from the response
+          // Retrieve existing countdown from session storage
+          const existingCountdown = sessionStorage.getItem('countdown');
+          let newCountdown = 0;
+
+          // If existing countdown exists, parse it and add extendedMinutes
+          if (existingCountdown) {
+            newCountdown = parseInt(existingCountdown, 10) + extendedMinutes; // Add extendedMinutes to existing countdown
+          } else {
+            newCountdown = extendedMinutes; // If no existing countdown, just set it to extendedMinutes
+          }
+
+          // Save the new countdown back to session storage
+          sessionStorage.setItem('countdown', newCountdown.toString());
+          console.log(`New countdown saved in session storage: ${newCountdown}`);
+
+          // Show SweetAlert notification
+          Swal.fire({
+            title: 'Chat Extended',
+            text: 'Admin has approved the payment and now your chat has been Extended.',
+            icon: 'info',
+            confirmButtonText: 'OK',
+          });
+        },
+        (error) => {
+          console.error('Error fetching chat session:', error);
         }
-      });
+      );
     }
   }
 
@@ -357,7 +373,7 @@ export class WebSocketService {
   }
   private NotifyUserChatExtendedByAstrologer(message: string): void {
     const [msg, chatSessionId, extendedTime] = message.split('|'); // Assuming the extended time is included in the message
-  
+
     // Show notification for chat extension
     Swal.fire({
       title: 'Chat Extension Approved',
@@ -368,6 +384,6 @@ export class WebSocketService {
       // Any additional logic can go here if needed
     });
   }
-  
+
 
 }
